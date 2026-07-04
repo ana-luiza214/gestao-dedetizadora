@@ -73,3 +73,16 @@ li {
   padding: 5px;
   border-radius: 5px;
 }
+.topbar {
+  display: flex;
+  align-items: center;
+  background: #1e3a8a;
+  padding: 12px;
+  justify-content: center;
+}
+
+.logo-only {
+  height: 45px;   /* mesmo “tamanho visual” do título */
+  width: auto;
+  object-fit: contain;
+}
