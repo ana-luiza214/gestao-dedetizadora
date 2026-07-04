@@ -2,60 +2,72 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Sistema Dedetizadora</title>
+  <title>Sistema Dedetizadora Pro</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="loginBox">
-  <h2>Login do Sistema</h2>
-
+  <h2>Login</h2>
   <input id="user" placeholder="Usuário">
   <input id="pass" type="password" placeholder="Senha">
-
   <button onclick="login()">Entrar</button>
 </div>
 
 <!-- SISTEMA -->
 <div id="app" style="display:none;">
 
-  <h1>Gestão Dedetizadora</h1>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>Dedetizadora</h2>
+    <button onclick="mostrarSecao('clientes')">Clientes</button>
+    <button onclick="mostrarSecao('servicos')">Serviços</button>
+    <button onclick="mostrarSecao('os')">OS</button>
+    <button onclick="logout()">Sair</button>
+  </div>
 
-  <button onclick="logout()">Sair</button>
+  <!-- CONTEUDO -->
+  <div class="content">
 
-  <div class="container">
-
-    <h2>Dashboard</h2>
-    <p id="dashboard"></p>
-
-    <hr>
+    <h1>Dashboard</h1>
+    <div class="card" id="dashboard"></div>
 
     <!-- CLIENTES -->
-    <h2>Clientes</h2>
+    <div id="clientes" class="card">
+      <h2>Clientes</h2>
 
-    <input id="busca" placeholder="Buscar cliente..." onkeyup="buscarCliente()">
+      <input id="nome" placeholder="Nome">
+      <input id="telefone" placeholder="Telefone">
 
-    <input id="nome" placeholder="Nome">
-    <input id="telefone" placeholder="Telefone">
-    <input id="endereco" placeholder="Endereço">
+      <button onclick="adicionarCliente()">Salvar</button>
 
-    <button onclick="adicionarCliente()">Salvar Cliente</button>
+      <ul id="listaClientes"></ul>
+    </div>
 
-    <ul id="listaClientes"></ul>
+    <!-- SERVIÇOS -->
+    <div id="servicos" class="card" style="display:none;">
+      <h2>Serviços</h2>
 
-    <hr>
+      <input id="clienteServico" placeholder="Cliente">
+      <input id="tipoServico" placeholder="Serviço">
+
+      <button onclick="adicionarServico()">Agendar</button>
+
+      <ul id="listaServicos"></ul>
+    </div>
 
     <!-- OS -->
-    <h2>Ordens de Serviço</h2>
+    <div id="os" class="card" style="display:none;">
+      <h2>Ordens de Serviço</h2>
 
-    <input id="clienteOS" placeholder="Cliente">
-    <input id="servicoOS" placeholder="Serviço">
-    <input id="dataOS" type="date">
+      <input id="clienteOS" placeholder="Cliente">
+      <input id="servicoOS" placeholder="Serviço">
 
-    <button onclick="criarOS()">Criar OS</button>
+      <button onclick="criarOS()">Criar OS</button>
 
-    <ul id="listaOS"></ul>
+      <ul id="listaOS"></ul>
+    </div>
 
   </div>
 </div>
