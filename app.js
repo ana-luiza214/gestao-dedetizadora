@@ -72,4 +72,32 @@ function mostrarSecao(secao) {
 function atualizarDashboard() {
   document.getElementById("dashboard").innerText =
     `Sistema ativo | Clientes: ${clientes.length} | OS: ${osList.length}`;
+} function editarCliente(index) {
+  let novoNome = prompt("Novo nome:", clientes[index].nome);
+  let novoTel = prompt("Novo telefone:", clientes[index].telefone);
+
+  if (novoNome && novoTel) {
+    clientes[index].nome = novoNome;
+    clientes[index].telefone = novoTel;
+
+    localStorage.setItem("clientes", JSON.stringify(clientes));
+    mostrarClientes();
+  }
+}function verCliente(index) {
+  let c = clientes[index];
+
+  alert(
+    "FICHA DO CLIENTE\n\n" +
+    "Nome: " + c.nome + "\n" +
+    "Telefone: " + c.telefone + "\n" +
+    "Endereço: " + (c.endereco || "não cadastrado")
+  );
+}li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li button {
+  margin-left: 5px;
 }
