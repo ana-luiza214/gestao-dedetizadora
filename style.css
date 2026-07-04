@@ -1,110 +1,58 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: #f4f6f9;
+  background: #f3f4f6;
 }
 
-/* LOGIN */
-#loginBox {
-  width: 300px;
-  margin: 120px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-}
-
-/* LAYOUT PRINCIPAL */
-#app {
+.topbar {
+  background: #1e3a8a;
+  color: white;
   display: flex;
-}
-
-/* SIDEBAR */
-.sidebar {
-  width: 220px;
-  height: 100vh;
-  background: #1e293b;
-  color: white;
-  padding: 20px;
-  position: fixed;
-}
-
-.sidebar h2 {
-  color: #38bdf8;
-}
-
-.sidebar button {
-  width: 100%;
-  margin: 8px 0;
+  align-items: center;
   padding: 10px;
-  border: none;
-  background: #334155;
-  color: white;
-  cursor: pointer;
-  border-radius: 6px;
 }
 
-.sidebar button:hover {
-  background: #38bdf8;
+.logo {
+  width: 50px;
+  margin-right: 10px;
 }
 
-/* CONTEUDO */
-.content {
-  margin-left: 240px;
-  padding: 20px;
-  width: 100%;
-}
-
-/* CARDS */
-.card {
+.container {
+  width: 500px;
+  margin: auto;
   background: white;
-  padding: 15px;
+  padding: 20px;
+  margin-top: 20px;
   border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  margin-bottom: 15px;
+  box-shadow: 0px 0px 10px #ccc;
 }
 
-/* INPUTS */
 input {
   width: 100%;
   padding: 10px;
   margin: 5px 0;
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: 5px;
 }
 
-/* BOTÕES */
 button {
+  width: 100%;
   padding: 10px;
-  background: #22c55e;
+  background: #2563eb;
   color: white;
   border: none;
-  border-radius: 6px;
+  margin-top: 5px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 button:hover {
-  background: #16a34a;
+  background: #1e3a8a;
 }
 
-/* LISTAS */
 li {
-  background: #f1f5f9;
-  padding: 8px;
+  background: #facc15;
   margin: 5px 0;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-}
-.trash {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  width: auto;
-  padding: 5px;
-}
-
-.trash:hover {
-  transform: scale(1.2);
+  padding: 8px;
+  border-radius: 5px;
 }
