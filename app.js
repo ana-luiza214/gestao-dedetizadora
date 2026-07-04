@@ -1,6 +1,14 @@
+
+/* =========================
+   DADOS
+========================= */
+
 let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
 let osList = JSON.parse(localStorage.getItem("osList")) || [];
+
+let pagar = JSON.parse(localStorage.getItem("pagar")) || [];
+let receber = JSON.parse(localStorage.getItem("receber")) || [];
 
 /* =========================
    CLIENTES
@@ -24,10 +32,6 @@ function adicionarCliente() {
 
   salvarClientes();
   mostrarClientes();
-
-  document.getElementById("nome").value = "";
-  document.getElementById("telefone").value = "";
-  document.getElementById("endereco").value = "";
 }
 
 function mostrarClientes(lista = clientes) {
@@ -73,25 +77,18 @@ function adicionarServico() {
   let data = document.getElementById("data").value;
   let cliente = document.getElementById("clienteServico").value;
   let tipo = document.getElementById("tipoServico").value;
+  let valor = Number(document.getElementById("valorServico").value);
 
-  if (!data || !cliente || !tipo) {
-    alert("Preencha todos os campos!");
+  if (!data || !cliente || !tipo || !valor) {
+    alert("Preencha tudo!");
     return;
   }
 
-  servicos.push({
-    data,
-    cliente,
-    tipo,
-    status: "Agendado"
-  });
+  servicos.push({ data, cliente, tipo, valor, status: "Agendado" });
 
   salvarServicos();
   mostrarServicos();
-
-  document.getElementById("data").value = "";
-  document.getElementById("clienteServico").value = "";
-  document.getElementById("tipoServico").value = "";
+  atualizarFinanceiro();
 }
 
 function mostrarServicos() {
@@ -101,7 +98,7 @@ function mostrarServicos() {
   servicos.forEach((s, index) => {
     ul.innerHTML += `
       <li>
-        ${s.data} - ${s.cliente} - ${s.tipo} - ${s.status}
+        ${s.data} - ${s.cliente} - ${s.tipo} - R$ ${s.valor}
         <button onclick="deletarServico(${index})">X</button>
       </li>
     `;
@@ -112,60 +109,95 @@ function deletarServico(index) {
   servicos.splice(index, 1);
   salvarServicos();
   mostrarServicos();
+  atualizarFinanceiro();
 }
 
 /* =========================
-   ORDEM DE SERVIÇO (OS)
+   OS
 ========================= */
-
-function salvarOS() {
-  localStorage.setItem("osList", JSON.stringify(osList));
-}
 
 function criarOS() {
   let cliente = document.getElementById("clienteOS").value;
   let servico = document.getElementById("servicoOS").value;
   let data = document.getElementById("dataOS").value;
 
-  if (!cliente || !servico || !data) {
-    alert("Preencha todos os campos da OS!");
-    return;
-  }
-
   osList.push({
     id: Date.now(),
     cliente,
     servico,
-    data,
-    status: "Agendado"
+    data
   });
 
-  salvarOS();
+  localStorage.setItem("osList", JSON.stringify(osList));
   mostrarOS();
-
-  document.getElementById("clienteOS").value = "";
-  document.getElementById("servicoOS").value = "";
-  document.getElementById("dataOS").value = "";
 }
 
 function mostrarOS() {
   let ul = document.getElementById("listaOS");
   ul.innerHTML = "";
 
-  osList.forEach((o) => {
+  osList.forEach(o => {
     ul.innerHTML += `
       <li>
-        OS #${o.id} - ${o.cliente} - ${o.servico} - ${o.data} - ${o.status}
-        <button onclick="deletarOS(${o.id})">X</button>
+        OS #${o.id} - ${o.cliente} - ${o.servico} - ${o.data}
       </li>
     `;
   });
 }
 
-function deletarOS(id) {
-  osList = osList.filter(o => o.id !== id);
-  salvarOS();
-  mostrarOS();
+/* =========================
+   FINANCEIRO
+========================= */
+
+function addPagar() {
+  let descricao = document.getElementById("descricaoPagar").value;
+  let valor = Number(document.getElementById("valorPagar").value);
+
+  pagar.push({ descricao, valor });
+
+  localStorage.setItem("pagar", JSON.stringify(pagar));
+  mostrarPagar();
+  atualizarFinanceiro();
+}
+
+function addReceber() {
+  let descricao = document.getElementById("descricaoReceber").value;
+  let valor = Number(document.getElementById("valorReceber").value);
+
+  receber.push({ descricao, valor });
+
+  localStorage.setItem("receber", JSON.stringify(receber));
+  mostrarReceber();
+  atualizarFinanceiro();
+}
+
+function mostrarPagar() {
+  let ul = document.getElementById("listaPagar");
+  ul.innerHTML = "";
+
+  pagar.forEach(p => {
+    ul.innerHTML += `<li>${p.descricao} - R$ ${p.valor}</li>`;
+  });
+}
+
+function mostrarReceber() {
+  let ul = document.getElementById("listaReceber");
+  ul.innerHTML = "";
+
+  receber.forEach(r => {
+    ul.innerHTML += `<li>${r.descricao} - R$ ${r.valor}</li>`;
+  });
+}
+
+function atualizarFinanceiro() {
+  let totalReceber = receber.reduce((t, r) => t + r.valor, 0);
+  let totalPagar = pagar.reduce((t, p) => t + p.valor, 0);
+  let faturamento = servicos.reduce((t, s) => t + s.valor, 0);
+
+  let lucro = faturamento - totalPagar;
+
+  document.getElementById("resumoFinanceiro").innerText =
+    `Faturamento: R$ ${faturamento} | A Receber: R$ ${totalReceber} | A Pagar: R$ ${totalPagar} | Lucro: R$ ${lucro}`;
 }
 
 /* =========================
@@ -175,3 +207,6 @@ function deletarOS(id) {
 mostrarClientes();
 mostrarServicos();
 mostrarOS();
+mostrarPagar();
+mostrarReceber();
+atualizarFinanceiro();
