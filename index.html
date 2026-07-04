@@ -2,74 +2,61 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Sistema Dedetizadora Pro</title>
+  <title>Dedetizadora Confiança</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginBox">
-  <h2>Login</h2>
-  <input id="user" placeholder="Usuário">
-  <input id="pass" type="password" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
+<div class="topbar">
+  <img src="logo.png" class="logo">
+  <h1>Dedetizadora Confiança</h1>
 </div>
 
-<!-- SISTEMA -->
-<div id="app" style="display:none;">
+<div class="container">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <h2>Dedetizadora</h2>
-    <button onclick="mostrarSecao('clientes')">Clientes</button>
-    <button onclick="mostrarSecao('servicos')">Serviços</button>
-    <button onclick="mostrarSecao('os')">OS</button>
-    <button onclick="logout()">Sair</button>
-  </div>
+  <h2>Clientes</h2>
 
-  <!-- CONTEUDO -->
-  <div class="content">
+  <input id="nome" placeholder="Nome">
+  <input id="telefone" placeholder="Telefone">
 
-    <h1>Dashboard</h1>
-    <div class="card" id="dashboard"></div>
+  <button onclick="addCliente()">Salvar Cliente</button>
 
-    <!-- CLIENTES -->
-    <div id="clientes" class="card">
-      <h2>Clientes</h2>
+  <ul id="listaClientes"></ul>
 
-      <input id="nome" placeholder="Nome">
-      <input id="telefone" placeholder="Telefone">
+  <hr>
 
-      <button onclick="adicionarCliente()">Salvar</button>
+  <h2>Serviços (Agenda)</h2>
 
-      <ul id="listaClientes"></ul>
-    </div>
+  <input id="clienteServico" placeholder="Cliente">
+  <input id="dataServico" type="date">
+  <input id="retornoDias" type="number" placeholder="Dias para retorno">
 
-    <!-- SERVIÇOS -->
-    <div id="servicos" class="card" style="display:none;">
-      <h2>Serviços</h2>
+  <button onclick="addServico()">Salvar Serviço</button>
 
-      <input id="clienteServico" placeholder="Cliente">
-      <input id="tipoServico" placeholder="Serviço">
+  <ul id="listaServicos"></ul>
 
-      <button onclick="adicionarServico()">Agendar</button>
+  <hr>
 
-      <ul id="listaServicos"></ul>
-    </div>
+  <h2>Ordens de Serviço</h2>
 
-    <!-- OS -->
-    <div id="os" class="card" style="display:none;">
-      <h2>Ordens de Serviço</h2>
+  <input id="clienteOS" placeholder="Cliente">
+  <input id="servicoOS" placeholder="Serviço">
 
-      <input id="clienteOS" placeholder="Cliente">
-      <input id="servicoOS" placeholder="Serviço">
+  <button onclick="addOS()">Criar OS</button>
 
-      <button onclick="criarOS()">Criar OS</button>
+  <ul id="listaOS"></ul>
 
-      <ul id="listaOS"></ul>
-    </div>
+  <hr>
 
-  </div>
+  <h2>Financeiro</h2>
+
+  <input id="descricao" placeholder="Descrição">
+  <input id="valor" type="number" placeholder="Valor">
+
+  <button onclick="addFinanceiro()">Adicionar</button>
+
+  <p id="resumo"></p>
+
 </div>
 
 <script src="app.js"></script>
