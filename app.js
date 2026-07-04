@@ -18,7 +18,24 @@ function logout() {
 
 /* MENU */
 function mostrarSecao(secao) {
-  document.getElementById("clientes").style.display = "none";
+  document.getElementById("clientes").style.display = "none";function mostrarClientes(lista = clientes) {
+  let ul = document.getElementById("listaClientes");
+  ul.innerHTML = "";
+
+  lista.forEach((c, index) => {
+    ul.innerHTML += `
+      <li>
+        <span>
+          ${c.nome} - ${c.telefone}
+        </span>
+
+        <button class="trash" onclick="deletarCliente(${index})">
+          🗑️
+        </button>
+      </li>
+    `;
+  });
+}
   document.getElementById("servicos").style.display = "none";
   document.getElementById("os").style.display = "none";
 
