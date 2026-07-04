@@ -1,5 +1,6 @@
 let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+let osList = JSON.parse(localStorage.getItem("osList")) || [];
 
 /* =========================
    CLIENTES
@@ -23,7 +24,10 @@ function adicionarCliente() {
 
   salvarClientes();
   mostrarClientes();
-  limparCamposCliente();
+
+  document.getElementById("nome").value = "";
+  document.getElementById("telefone").value = "";
+  document.getElementById("endereco").value = "";
 }
 
 function mostrarClientes(lista = clientes) {
@@ -33,7 +37,7 @@ function mostrarClientes(lista = clientes) {
   lista.forEach((c, index) => {
     ul.innerHTML += `
       <li>
-        ${c.nome} - ${c.telefone} - ${c.endereco}
+        ${c.nome} - ${c.telefone}
         <button onclick="deletarCliente(${index})">X</button>
       </li>
     `;
@@ -57,14 +61,8 @@ function buscarCliente() {
   mostrarClientes(filtrados);
 }
 
-function limparCamposCliente() {
-  document.getElementById("nome").value = "";
-  document.getElementById("telefone").value = "";
-  document.getElementById("endereco").value = "";
-}
-
 /* =========================
-   SERVIÇOS (AGENDA)
+   SERVIÇOS
 ========================= */
 
 function salvarServicos() {
@@ -77,7 +75,7 @@ function adicionarServico() {
   let tipo = document.getElementById("tipoServico").value;
 
   if (!data || !cliente || !tipo) {
-    alert("Preencha todos os campos do serviço!");
+    alert("Preencha todos os campos!");
     return;
   }
 
@@ -117,8 +115,63 @@ function deletarServico(index) {
 }
 
 /* =========================
+   ORDEM DE SERVIÇO (OS)
+========================= */
+
+function salvarOS() {
+  localStorage.setItem("osList", JSON.stringify(osList));
+}
+
+function criarOS() {
+  let cliente = document.getElementById("clienteOS").value;
+  let servico = document.getElementById("servicoOS").value;
+  let data = document.getElementById("dataOS").value;
+
+  if (!cliente || !servico || !data) {
+    alert("Preencha todos os campos da OS!");
+    return;
+  }
+
+  osList.push({
+    id: Date.now(),
+    cliente,
+    servico,
+    data,
+    status: "Agendado"
+  });
+
+  salvarOS();
+  mostrarOS();
+
+  document.getElementById("clienteOS").value = "";
+  document.getElementById("servicoOS").value = "";
+  document.getElementById("dataOS").value = "";
+}
+
+function mostrarOS() {
+  let ul = document.getElementById("listaOS");
+  ul.innerHTML = "";
+
+  osList.forEach((o) => {
+    ul.innerHTML += `
+      <li>
+        OS #${o.id} - ${o.cliente} - ${o.servico} - ${o.data} - ${o.status}
+        <button onclick="deletarOS(${o.id})">X</button>
+      </li>
+    `;
+  });
+}
+
+function deletarOS(id) {
+  osList = osList.filter(o => o.id !== id);
+  salvarOS();
+  mostrarOS();
+}
+
+/* =========================
    INICIALIZAÇÃO
 ========================= */
 
 mostrarClientes();
 mostrarServicos();
+mostrarOS();
