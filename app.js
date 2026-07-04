@@ -1,5 +1,9 @@
 let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 
+function salvar() {
+  localStorage.setItem("clientes", JSON.stringify(clientes));
+}
+
 function adicionarCliente() {
   let nome = document.getElementById("nome").value;
   let telefone = document.getElementById("telefone").value;
@@ -10,27 +14,42 @@ function adicionarCliente() {
     return;
   }
 
-  let cliente = {
-    nome,
-    telefone,
-    endereco
-  };
+  clientes.push({ nome, telefone, endereco });
 
-  clientes.push(cliente);
-
-  localStorage.setItem("clientes", JSON.stringify(clientes));
-
+  salvar();
   mostrarClientes();
   limparCampos();
 }
 
-function mostrarClientes() {
-  let lista = document.getElementById("listaClientes");
-  lista.innerHTML = "";
+function mostrarClientes(lista = clientes) {
+  let ul = document.getElementById("listaClientes");
+  ul.innerHTML = "";
 
-  clientes.forEach((c) => {
-    lista.innerHTML += `<li>${c.nome} - ${c.telefone} - ${c.endereco}</li>`;
+  lista.forEach((c, index) => {
+    ul.innerHTML += `
+      <li>
+        ${c.nome} - ${c.telefone}
+        <button onclick="deletarCliente(${index})">X</button>
+      </li>
+    `;
   });
+}
+
+function deletarCliente(index) {
+  clientes.splice(index, 1);
+  salvar();
+  mostrarClientes();
+}
+
+function buscarCliente() {
+  let texto = document.getElementById("busca").value.toLowerCase();
+
+  let filtrados = clientes.filter(c =>
+    c.nome.toLowerCase().includes(texto) ||
+    c.telefone.includes(texto)
+  );
+
+  mostrarClientes(filtrados);
 }
 
 function limparCampos() {
