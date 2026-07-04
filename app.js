@@ -29,7 +29,15 @@ function mostrarSecao(secao) {
           ${c.nome} - ${c.telefone}
         </span>
 
-        <button class="trash" onclick="deletarCliente(${index})">
+        <button class="trash" onclick=function deletarCliente(index) {
+  let confirmacao = confirm("Tem certeza que deseja excluir este cliente?");
+
+  if (confirmacao) {
+    clientes.splice(index, 1);
+    localStorage.setItem("clientes", JSON.stringify(clientes));
+    mostrarClientes();
+  }
+}(${index})">
           🗑️
         </button>
       </li>
