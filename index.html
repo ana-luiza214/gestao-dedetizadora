@@ -32,6 +32,7 @@
     <input id="data" type="date">
     <input id="clienteServico" placeholder="Cliente">
     <input id="tipoServico" placeholder="Tipo de serviço">
+    <input id="valorServico" placeholder="Valor do serviço">
 
     <button onclick="adicionarServico()">Agendar Serviço</button>
 
@@ -49,6 +50,28 @@
     <button onclick="criarOS()">Criar OS</button>
 
     <ul id="listaOS"></ul>
+
+    <hr>
+
+    <!-- FINANCEIRO -->
+    <h2>Financeiro</h2>
+
+    <h3>Resumo</h3>
+    <p id="resumoFinanceiro"></p>
+
+    <h3>Contas a Pagar</h3>
+    <input id="descricaoPagar" placeholder="Descrição">
+    <input id="valorPagar" placeholder="Valor">
+    <button onclick="addPagar()">Adicionar</button>
+
+    <ul id="listaPagar"></ul>
+
+    <h3>Contas a Receber</h3>
+    <input id="descricaoReceber" placeholder="Descrição">
+    <input id="valorReceber" placeholder="Valor">
+    <button onclick="addReceber()">Adicionar</button>
+
+    <ul id="listaReceber"></ul>
 
   </div>
 
