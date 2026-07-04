@@ -35,7 +35,25 @@ function mostrarSecao(secao) {
   if (confirmacao) {
     clientes.splice(index, 1);
     localStorage.setItem("clientes", JSON.stringify(clientes));
-    mostrarClientes();
+    mostrarClientes();function mostrarClientes(lista = clientes) {
+  let ul = document.getElementById("listaClientes");
+  ul.innerHTML = "";
+
+  lista.forEach((c, index) => {
+    ul.innerHTML += `
+      <li>
+        <span onclick="verCliente(${index})" style="cursor:pointer;">
+          ${c.nome} - ${c.telefone}
+        </span>
+
+        <div>
+          <button onclick="editarCliente(${index})">✏️</button>
+          <button class="trash" onclick="deletarCliente(${index})">🗑️</button>
+        </div>
+      </li>
+    `;
+  });
+}
   }
 }(${index})">
           🗑️
