@@ -1,6 +1,11 @@
 let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
 
-function salvar() {
+/* =========================
+   CLIENTES
+========================= */
+
+function salvarClientes() {
   localStorage.setItem("clientes", JSON.stringify(clientes));
 }
 
@@ -16,9 +21,9 @@ function adicionarCliente() {
 
   clientes.push({ nome, telefone, endereco });
 
-  salvar();
+  salvarClientes();
   mostrarClientes();
-  limparCampos();
+  limparCamposCliente();
 }
 
 function mostrarClientes(lista = clientes) {
@@ -28,7 +33,7 @@ function mostrarClientes(lista = clientes) {
   lista.forEach((c, index) => {
     ul.innerHTML += `
       <li>
-        ${c.nome} - ${c.telefone}
+        ${c.nome} - ${c.telefone} - ${c.endereco}
         <button onclick="deletarCliente(${index})">X</button>
       </li>
     `;
@@ -37,7 +42,7 @@ function mostrarClientes(lista = clientes) {
 
 function deletarCliente(index) {
   clientes.splice(index, 1);
-  salvar();
+  salvarClientes();
   mostrarClientes();
 }
 
@@ -52,10 +57,68 @@ function buscarCliente() {
   mostrarClientes(filtrados);
 }
 
-function limparCampos() {
+function limparCamposCliente() {
   document.getElementById("nome").value = "";
   document.getElementById("telefone").value = "";
   document.getElementById("endereco").value = "";
 }
 
+/* =========================
+   SERVIÇOS (AGENDA)
+========================= */
+
+function salvarServicos() {
+  localStorage.setItem("servicos", JSON.stringify(servicos));
+}
+
+function adicionarServico() {
+  let data = document.getElementById("data").value;
+  let cliente = document.getElementById("clienteServico").value;
+  let tipo = document.getElementById("tipoServico").value;
+
+  if (!data || !cliente || !tipo) {
+    alert("Preencha todos os campos do serviço!");
+    return;
+  }
+
+  servicos.push({
+    data,
+    cliente,
+    tipo,
+    status: "Agendado"
+  });
+
+  salvarServicos();
+  mostrarServicos();
+
+  document.getElementById("data").value = "";
+  document.getElementById("clienteServico").value = "";
+  document.getElementById("tipoServico").value = "";
+}
+
+function mostrarServicos() {
+  let ul = document.getElementById("listaServicos");
+  ul.innerHTML = "";
+
+  servicos.forEach((s, index) => {
+    ul.innerHTML += `
+      <li>
+        ${s.data} - ${s.cliente} - ${s.tipo} - ${s.status}
+        <button onclick="deletarServico(${index})">X</button>
+      </li>
+    `;
+  });
+}
+
+function deletarServico(index) {
+  servicos.splice(index, 1);
+  salvarServicos();
+  mostrarServicos();
+}
+
+/* =========================
+   INICIALIZAÇÃO
+========================= */
+
 mostrarClientes();
+mostrarServicos();
