@@ -7,55 +7,88 @@
 </head>
 <body>
 
+<!-- TOPO -->
 <div class="topbar">
   <img src="logo.png" class="logo">
   <h1>Dedetizadora Confiança</h1>
 </div>
 
-<div class="container">
+<!-- MENU LATERAL -->
+<div class="sidebar">
+  <button onclick="abrir('clientes')">Clientes</button>
+  <button onclick="abrir('servicos')">Serviços</button>
+  <button onclick="abrir('os')">OS</button>
+  <button onclick="abrir('financeiro')">Financeiro</button>
+  <button onclick="abrir('historico')">Histórico</button>
+  <button onclick="abrir('calendario')">Calendário</button>
+</div>
 
-  <h2>Clientes</h2>
+<!-- CONTEÚDO -->
+<div class="content">
 
-  <input id="nome" placeholder="Nome">
-  <input id="telefone" placeholder="Telefone">
+  <!-- CLIENTES -->
+  <div id="clientes" class="secao">
+    <h2>Clientes</h2>
 
-  <button onclick="addCliente()">Salvar Cliente</button>
+    <input id="nome" placeholder="Nome">
+    <input id="telefone" placeholder="Telefone">
+    <input id="endereco" placeholder="Endereço">
 
-  <ul id="listaClientes"></ul>
+    <button onclick="addCliente()">Salvar Cliente</button>
 
-  <hr>
+    <ul id="listaClientes"></ul>
+  </div>
 
-  <h2>Serviços (Agenda)</h2>
+  <!-- SERVIÇOS -->
+  <div id="servicos" class="secao hidden">
+    <h2>Serviços</h2>
 
-  <input id="clienteServico" placeholder="Cliente">
-  <input id="dataServico" type="date">
-  <input id="retornoDias" type="number" placeholder="Dias para retorno">
+    <select id="clienteServico"></select>
+    <input id="dataServico" type="date">
+    <input id="retornoDias" type="number" placeholder="Dias para retorno">
 
-  <button onclick="addServico()">Salvar Serviço</button>
+    <button onclick="addServico()">Salvar Serviço</button>
 
-  <ul id="listaServicos"></ul>
+    <ul id="listaServicos"></ul>
+  </div>
 
-  <hr>
+  <!-- OS -->
+  <div id="os" class="secao hidden">
+    <h2>Ordens de Serviço</h2>
 
-  <h2>Ordens de Serviço</h2>
+    <select id="clienteOS"></select>
+    <input id="servicoOS" placeholder="Serviço">
 
-  <input id="clienteOS" placeholder="Cliente">
-  <input id="servicoOS" placeholder="Serviço">
+    <button onclick="addOS()">Criar OS</button>
 
-  <button onclick="addOS()">Criar OS</button>
+    <ul id="listaOS"></ul>
+  </div>
 
-  <ul id="listaOS"></ul>
+  <!-- FINANCEIRO -->
+  <div id="financeiro" class="secao hidden">
+    <h2>Financeiro</h2>
 
-  <hr>
+    <input id="descFin" placeholder="Descrição">
+    <input id="valorFin" type="number">
 
-  <h2>Financeiro</h2>
+    <button onclick="addFinanceiro()">Adicionar</button>
 
-  <input id="descricao" placeholder="Descrição">
-  <input id="valor" type="number" placeholder="Valor">
+    <ul id="listaFin"></ul>
+  </div>
 
-  <button onclick="addFinanceiro()">Adicionar</button>
+  <!-- HISTÓRICO -->
+  <div id="historico" class="secao hidden">
+    <h2>Histórico Financeiro</h2>
 
-  <p id="resumo"></p>
+    <ul id="listaHistorico"></ul>
+  </div>
+
+  <!-- CALENDÁRIO -->
+  <div id="calendario" class="secao hidden">
+    <h2>Calendário de Serviços</h2>
+
+    <div id="cal"></div>
+  </div>
 
 </div>
 
