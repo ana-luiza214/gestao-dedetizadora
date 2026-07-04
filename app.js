@@ -1,37 +1,34 @@
-/* =========================
-   DADOS
-========================= */
-
 let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
-let osList = JSON.parse(localStorage.getItem("osList")) || [];
+let os = JSON.parse(localStorage.getItem("os")) || [];
 let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
 
-/* =========================
-   CLIENTES
-========================= */
-
-function addCliente() {
-  let nome = document.getElementById("nome").value;
-  let telefone = document.getElementById("telefone").value;
-
-  if (!nome || !telefone) return alert("Preencha tudo");
-
-  clientes.push({ nome, telefone });
-
-  localStorage.setItem("clientes", JSON.stringify(clientes));
-
-  mostrarClientes();
+/* MENU */
+function abrir(secao) {
+  document.querySelectorAll(".secao").forEach(s => s.classList.add("hidden"));
+  document.getElementById(secao).classList.remove("hidden");
 }
 
-function mostrarClientes() {
-  let ul = document.getElementById("listaClientes");
-  ul.innerHTML = "";
+/* CLIENTES */
+function addCliente() {
+  clientes.push({
+    nome: nome.value,
+    telefone: telefone.value,
+    endereco: endereco.value
+  });
+
+  salvar();
+  atualizarClientes();
+  atualizarSelects();
+}
+
+function atualizarClientes() {
+  listaClientes.innerHTML = "";
 
   clientes.forEach((c, i) => {
-    ul.innerHTML += `
+    listaClientes.innerHTML += `
       <li>
-        ${c.nome} - ${c.telefone}
+        ${c.nome} - ${c.endereco}
         <button onclick="delCliente(${i})">🗑️</button>
       </li>
     `;
@@ -40,123 +37,151 @@ function mostrarClientes() {
 
 function delCliente(i) {
   clientes.splice(i, 1);
-  localStorage.setItem("clientes", JSON.stringify(clientes));
-  mostrarClientes();
+  salvar();
+  atualizarClientes();
+  atualizarSelects();
 }
 
-/* =========================
-   SERVIÇOS + AGENDA
-========================= */
+/* SELECT CLIENTES */
+function atualizarSelects() {
+  clienteServico.innerHTML = "";
+  clienteOS.innerHTML = "";
 
+  clientes.forEach(c => {
+    clienteServico.innerHTML += `<option>${c.nome}</option>`;
+    clienteOS.innerHTML += `<option>${c.nome}</option>`;
+  });
+}
+
+/* SERVIÇOS */
 function addServico() {
-  let cliente = document.getElementById("clienteServico").value;
-  let data = document.getElementById("dataServico").value;
-  let retorno = document.getElementById("retornoDias").value;
+  let data = dataServico.value;
 
-  if (!cliente || !data) return alert("Preencha tudo");
-
-  let retornoData = new Date(data);
-  retornoData.setDate(retornoData.getDate() + Number(retorno));
+  let retorno = new Date(data);
+  retorno.setDate(retorno.getDate() + Number(retornoDias.value));
 
   servicos.push({
-    cliente,
+    cliente: clienteServico.value,
     data,
-    retorno: retornoData.toISOString().split("T")[0]
+    retorno: retorno.toISOString().split("T")[0]
   });
 
-  localStorage.setItem("servicos", JSON.stringify(servicos));
-
-  mostrarServicos();
-  checarLembretes();
+  salvar();
+  atualizarServicos();
 }
 
-function mostrarServicos() {
-  let ul = document.getElementById("listaServicos");
-  ul.innerHTML = "";
+function atualizarServicos() {
+  listaServicos.innerHTML = "";
 
-  servicos.forEach((s) => {
-    ul.innerHTML += `
+  servicos.forEach((s, i) => {
+    listaServicos.innerHTML += `
       <li>
-        ${s.cliente} - Serviço: ${s.data} - Retorno: ${s.retorno}
+        ${s.cliente} | ${s.data} | retorno ${s.retorno}
+        <button onclick="delServico(${i})">🗑️</button>
       </li>
     `;
   });
 }
 
-/* =========================
-   OS
-========================= */
+function delServico(i) {
+  servicos.splice(i, 1);
+  salvar();
+  atualizarServicos();
+}
 
+/* OS */
 function addOS() {
-  let cliente = document.getElementById("clienteOS").value;
-  let servico = document.getElementById("servicoOS").value;
-
-  osList.push({
-    id: Date.now(),
-    cliente,
-    servico
+  os.push({
+    cliente: clienteOS.value,
+    servico: servicoOS.value
   });
 
-  localStorage.setItem("osList", JSON.stringify(osList));
-
-  mostrarOS();
+  salvar();
+  atualizarOS();
 }
 
-function mostrarOS() {
-  let ul = document.getElementById("listaOS");
-  ul.innerHTML = "";
+function atualizarOS() {
+  listaOS.innerHTML = "";
 
-  osList.forEach(o => {
-    ul.innerHTML += `
+  os.forEach((o, i) => {
+    listaOS.innerHTML += `
       <li>
-        OS #${o.id} - ${o.cliente} - ${o.servico}
+        ${o.cliente} - ${o.servico}
+        <button onclick="delOS(${i})">🗑️</button>
       </li>
     `;
   });
 }
 
-/* =========================
-   FINANCEIRO
-========================= */
+function delOS(i) {
+  os.splice(i, 1);
+  salvar();
+  atualizarOS();
+}
 
+/* FINANCEIRO */
 function addFinanceiro() {
-  let desc = document.getElementById("descricao").value;
-  let valor = Number(document.getElementById("valor").value);
+  financeiro.push({
+    desc: descFin.value,
+    valor: Number(valorFin.value)
+  });
 
-  financeiro.push({ desc, valor });
-
-  localStorage.setItem("financeiro", JSON.stringify(financeiro));
-
+  salvar();
   atualizarFinanceiro();
+  atualizarHistorico();
 }
 
 function atualizarFinanceiro() {
-  let total = financeiro.reduce((t, f) => t + f.valor, 0);
+  listaFin.innerHTML = "";
 
-  document.getElementById("resumo").innerText =
-    "Total financeiro: R$ " + total;
-}
-
-/* =========================
-   LEMBRETE DE RETORNO
-========================= */
-
-function checarLembretes() {
-  let hoje = new Date().toISOString().split("T")[0];
-
-  servicos.forEach(s => {
-    if (s.retorno === hoje) {
-      alert("⚠️ Retorno do cliente hoje: " + s.cliente);
-    }
+  financeiro.forEach(f => {
+    listaFin.innerHTML += `<li>${f.desc} - R$ ${f.valor}</li>`;
   });
 }
 
-/* =========================
-   INICIAL
-========================= */
+/* HISTÓRICO */
+function atualizarHistorico() {
+  listaHistorico.innerHTML = "";
 
-mostrarClientes();
-mostrarServicos();
-mostrarOS();
+  financeiro.forEach(f => {
+    listaHistorico.innerHTML += `<li>${f.desc} - R$ ${f.valor}</li>`;
+  });
+}
+
+/* CALENDÁRIO */
+function montarCalendario() {
+  let html = "";
+
+  servicos.forEach(s => {
+    let cor = s.retorno === new Date().toISOString().split("T")[0]
+      ? "#facc15"
+      : "#2563eb";
+
+    html += `
+      <div style="background:${cor};color:white;padding:10px;margin:5px;border-radius:6px;">
+        ${s.data} - ${s.cliente} <br>
+        retorno: ${s.retorno}
+      </div>
+    `;
+  });
+
+  cal.innerHTML = html;
+}
+
+setInterval(montarCalendario, 1000);
+
+/* SALVAR */
+function salvar() {
+  localStorage.setItem("clientes", JSON.stringify(clientes));
+  localStorage.setItem("servicos", JSON.stringify(servicos));
+  localStorage.setItem("os", JSON.stringify(os));
+  localStorage.setItem("financeiro", JSON.stringify(financeiro));
+}
+
+/* INIT */
+atualizarClientes();
+atualizarSelects();
+atualizarServicos();
+atualizarOS();
 atualizarFinanceiro();
-checarLembretes();
+atualizarHistorico();
