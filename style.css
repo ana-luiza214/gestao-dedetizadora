@@ -96,3 +96,15 @@ li {
   display: flex;
   justify-content: space-between;
 }
+.trash {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  width: auto;
+  padding: 5px;
+}
+
+.trash:hover {
+  transform: scale(1.2);
+}
