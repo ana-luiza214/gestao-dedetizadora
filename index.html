@@ -7,18 +7,24 @@
 </head>
 <body>
 
-  <h1>Sistema de Gestão</h1>
+  <h1>Gestão Dedetizadora</h1>
 
-  <h2>Cadastro de Clientes</h2>
+  <div class="container">
 
-  <input id="nome" placeholder="Nome">
-  <input id="telefone" placeholder="Telefone">
-  <input id="endereco" placeholder="Endereço">
+    <h2>Cadastro de Clientes</h2>
 
-  <button onclick="adicionarCliente()">Salvar</button>
+    <input id="busca" placeholder="Buscar cliente..." onkeyup="buscarCliente()">
 
-  <h2>Clientes</h2>
-  <ul id="listaClientes"></ul>
+    <input id="nome" placeholder="Nome">
+    <input id="telefone" placeholder="Telefone">
+    <input id="endereco" placeholder="Endereço">
+
+    <button onclick="adicionarCliente()">Salvar</button>
+
+    <h2>Clientes</h2>
+    <ul id="listaClientes"></ul>
+
+  </div>
 
   <script src="app.js"></script>
 </body>
