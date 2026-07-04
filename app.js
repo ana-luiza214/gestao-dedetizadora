@@ -1,103 +1,162 @@
+/* =========================
+   DADOS
+========================= */
 
-/* LOGIN */
-function login() {
-  let u = document.getElementById("user").value;
-  let p = document.getElementById("pass").value;
+let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+let osList = JSON.parse(localStorage.getItem("osList")) || [];
+let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
 
-  if (u === "admin" && p === "1234") {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("app").style.display = "flex";
-  } else {
-    alert("Login inválido");
-  }
+/* =========================
+   CLIENTES
+========================= */
+
+function addCliente() {
+  let nome = document.getElementById("nome").value;
+  let telefone = document.getElementById("telefone").value;
+
+  if (!nome || !telefone) return alert("Preencha tudo");
+
+  clientes.push({ nome, telefone });
+
+  localStorage.setItem("clientes", JSON.stringify(clientes));
+
+  mostrarClientes();
 }
 
-function logout() {
-  location.reload();
-}
-
-/* MENU */
-function mostrarSecao(secao) {
-  document.getElementById("clientes").style.display = "none";function mostrarClientes(lista = clientes) {
+function mostrarClientes() {
   let ul = document.getElementById("listaClientes");
   ul.innerHTML = "";
 
-  lista.forEach((c, index) => {
+  clientes.forEach((c, i) => {
     ul.innerHTML += `
       <li>
-        <span>
-          ${c.nome} - ${c.telefone}
-        </span>
-
-        <button class="trash" onclick=function deletarCliente(index) {
-  let confirmacao = confirm("Tem certeza que deseja excluir este cliente?");
-
-  if (confirmacao) {
-    clientes.splice(index, 1);
-    localStorage.setItem("clientes", JSON.stringify(clientes));
-    mostrarClientes();function mostrarClientes(lista = clientes) {
-  let ul = document.getElementById("listaClientes");
-  ul.innerHTML = "";
-
-  lista.forEach((c, index) => {
-    ul.innerHTML += `
-      <li>
-        <span onclick="verCliente(${index})" style="cursor:pointer;">
-          ${c.nome} - ${c.telefone}
-        </span>
-
-        <div>
-          <button onclick="editarCliente(${index})">✏️</button>
-          <button class="trash" onclick="deletarCliente(${index})">🗑️</button>
-        </div>
+        ${c.nome} - ${c.telefone}
+        <button onclick="delCliente(${i})">🗑️</button>
       </li>
     `;
   });
 }
-  }
-}(${index})">
-          🗑️
-        </button>
+
+function delCliente(i) {
+  clientes.splice(i, 1);
+  localStorage.setItem("clientes", JSON.stringify(clientes));
+  mostrarClientes();
+}
+
+/* =========================
+   SERVIÇOS + AGENDA
+========================= */
+
+function addServico() {
+  let cliente = document.getElementById("clienteServico").value;
+  let data = document.getElementById("dataServico").value;
+  let retorno = document.getElementById("retornoDias").value;
+
+  if (!cliente || !data) return alert("Preencha tudo");
+
+  let retornoData = new Date(data);
+  retornoData.setDate(retornoData.getDate() + Number(retorno));
+
+  servicos.push({
+    cliente,
+    data,
+    retorno: retornoData.toISOString().split("T")[0]
+  });
+
+  localStorage.setItem("servicos", JSON.stringify(servicos));
+
+  mostrarServicos();
+  checarLembretes();
+}
+
+function mostrarServicos() {
+  let ul = document.getElementById("listaServicos");
+  ul.innerHTML = "";
+
+  servicos.forEach((s) => {
+    ul.innerHTML += `
+      <li>
+        ${s.cliente} - Serviço: ${s.data} - Retorno: ${s.retorno}
       </li>
     `;
   });
 }
-  document.getElementById("servicos").style.display = "none";
-  document.getElementById("os").style.display = "none";
 
-  document.getElementById(secao).style.display = "block";
+/* =========================
+   OS
+========================= */
+
+function addOS() {
+  let cliente = document.getElementById("clienteOS").value;
+  let servico = document.getElementById("servicoOS").value;
+
+  osList.push({
+    id: Date.now(),
+    cliente,
+    servico
+  });
+
+  localStorage.setItem("osList", JSON.stringify(osList));
+
+  mostrarOS();
 }
 
-/* DASHBOARD SIMPLES */
-function atualizarDashboard() {
-  document.getElementById("dashboard").innerText =
-    `Sistema ativo | Clientes: ${clientes.length} | OS: ${osList.length}`;
-} function editarCliente(index) {
-  let novoNome = prompt("Novo nome:", clientes[index].nome);
-  let novoTel = prompt("Novo telefone:", clientes[index].telefone);
+function mostrarOS() {
+  let ul = document.getElementById("listaOS");
+  ul.innerHTML = "";
 
-  if (novoNome && novoTel) {
-    clientes[index].nome = novoNome;
-    clientes[index].telefone = novoTel;
-
-    localStorage.setItem("clientes", JSON.stringify(clientes));
-    mostrarClientes();
-  }
-}function verCliente(index) {
-  let c = clientes[index];
-
-  alert(
-    "FICHA DO CLIENTE\n\n" +
-    "Nome: " + c.nome + "\n" +
-    "Telefone: " + c.telefone + "\n" +
-    "Endereço: " + (c.endereco || "não cadastrado")
-  );
-}li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  osList.forEach(o => {
+    ul.innerHTML += `
+      <li>
+        OS #${o.id} - ${o.cliente} - ${o.servico}
+      </li>
+    `;
+  });
 }
 
-li button {
-  margin-left: 5px;
+/* =========================
+   FINANCEIRO
+========================= */
+
+function addFinanceiro() {
+  let desc = document.getElementById("descricao").value;
+  let valor = Number(document.getElementById("valor").value);
+
+  financeiro.push({ desc, valor });
+
+  localStorage.setItem("financeiro", JSON.stringify(financeiro));
+
+  atualizarFinanceiro();
 }
+
+function atualizarFinanceiro() {
+  let total = financeiro.reduce((t, f) => t + f.valor, 0);
+
+  document.getElementById("resumo").innerText =
+    "Total financeiro: R$ " + total;
+}
+
+/* =========================
+   LEMBRETE DE RETORNO
+========================= */
+
+function checarLembretes() {
+  let hoje = new Date().toISOString().split("T")[0];
+
+  servicos.forEach(s => {
+    if (s.retorno === hoje) {
+      alert("⚠️ Retorno do cliente hoje: " + s.cliente);
+    }
+  });
+}
+
+/* =========================
+   INICIAL
+========================= */
+
+mostrarClientes();
+mostrarServicos();
+mostrarOS();
+atualizarFinanceiro();
+checarLembretes();
