@@ -1,7 +1,7 @@
 let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
 let os = JSON.parse(localStorage.getItem("os")) || [];
-let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
+let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];   
 
 let clienteSelecionadoId = null;
 let clienteEditandoId = null;
