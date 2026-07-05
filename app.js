@@ -17,9 +17,10 @@ function abrir(secao){
 
     atualizarClientes();
     atualizarSelects();
+    atualizarFinanceiro();
+    atualizarHistorico();
     atualizarDashboard();
     montarCalendario();
-
 }
 
 /* ==========================
@@ -48,7 +49,6 @@ function addCliente(){
     atualizarClientes();
     atualizarSelects();
     atualizarDashboard();
-
 }
 
 function atualizarClientes(){
@@ -72,12 +72,8 @@ function atualizarClientes(){
                 <button onclick="editarCliente(${c.id})">✏️</button>
                 <button onclick="delCliente(${c.id})">🗑️</button>
             </div>
-
-        </li>
-        `;
-
+        </li>`;
     });
-
 }
 
 function delCliente(id){
@@ -90,7 +86,6 @@ function delCliente(id){
     atualizarClientes();
     atualizarSelects();
     atualizarDashboard();
-
 }
 
 /* ==========================
@@ -99,7 +94,6 @@ function delCliente(id){
 function editarCliente(id){
 
     let c = clientes.find(c => c.id === id);
-
     if(!c) return;
 
     clienteEditandoId = id;
@@ -109,13 +103,11 @@ function editarCliente(id){
     document.getElementById("editEndereco").value = c.endereco;
 
     abrir("editarCliente");
-
 }
 
 function salvarEdicaoCliente(){
 
     let c = clientes.find(c => c.id === clienteEditandoId);
-
     if(!c) return;
 
     c.nome = document.getElementById("editNome").value;
@@ -132,7 +124,6 @@ function salvarEdicaoCliente(){
     montarCalendario();
 
     abrir("clientes");
-
 }
 
 /* ==========================
@@ -143,16 +134,19 @@ function atualizarSelects(){
     let s1 = document.getElementById("clienteServico");
     let s2 = document.getElementById("clienteOS");
 
-    s1.innerHTML = "";
-    s2.innerHTML = "";
+    if(s1){
+        s1.innerHTML = "";
+        clientes.forEach(c=>{
+            s1.innerHTML += `<option>${c.nome}</option>`;
+        });
+    }
 
-    clientes.forEach(c=>{
-
-        s1.innerHTML += `<option>${c.nome}</option>`;
-        s2.innerHTML += `<option>${c.nome}</option>`;
-
-    });
-
+    if(s2){
+        s2.innerHTML = "";
+        clientes.forEach(c=>{
+            s2.innerHTML += `<option>${c.nome}</option>`;
+        });
+    }
 }
 
 /* ==========================
@@ -179,7 +173,20 @@ function addServico(){
     salvar();
     atualizarDashboard();
     montarCalendario();
+}
 
+/* ==========================
+   EXCLUIR SERVIÇO
+========================== */
+function delServico(index){
+
+    if(!confirm("Excluir este serviço?")) return;
+
+    servicos.splice(index, 1);
+
+    salvar();
+    atualizarDashboard();
+    montarCalendario();
 }
 
 /* ==========================
@@ -201,7 +208,6 @@ function addOS(){
 
     salvar();
     atualizarDashboard();
-
 }
 
 /* ==========================
@@ -228,7 +234,6 @@ function addFinanceiro(){
     atualizarFinanceiro();
     atualizarHistorico();
     atualizarDashboard();
-
 }
 
 function atualizarFinanceiro(){
@@ -236,24 +241,19 @@ function atualizarFinanceiro(){
     let lista = document.getElementById("listaFin");
     let totalEl = document.getElementById("totalFinanceiro");
 
-    let total = 0;
+    if(!lista || !totalEl) return;
 
+    let total = 0;
     lista.innerHTML = "";
 
     financeiro.forEach(f=>{
-
         total += f.valor;
 
         lista.innerHTML += `
-        <li>
-            ${f.desc} - R$ ${f.valor.toFixed(2)}
-        </li>
-        `;
-
+        <li>${f.desc} - R$ ${f.valor.toFixed(2)}</li>`;
     });
 
     totalEl.innerText = "Total: R$ " + total.toFixed(2);
-
 }
 
 /* ==========================
@@ -262,19 +262,14 @@ function atualizarFinanceiro(){
 function atualizarHistorico(){
 
     let lista = document.getElementById("listaHistorico");
+    if(!lista) return;
 
     lista.innerHTML = "";
 
     financeiro.forEach(f=>{
-
         lista.innerHTML += `
-        <li>
-            ${f.data} - ${f.desc} - R$ ${f.valor.toFixed(2)}
-        </li>
-        `;
-
+        <li>${f.data} - ${f.desc} - R$ ${f.valor.toFixed(2)}</li>`;
     });
-
 }
 
 /* ==========================
@@ -289,8 +284,7 @@ function atualizarDashboard(){
     let total = financeiro.reduce((a,b)=>a+b.valor,0);
 
     document.getElementById("saldoTotal").innerText =
-    "R$ " + total.toFixed(2);
-
+        "R$ " + total.toFixed(2);
 }
 
 /* ==========================
@@ -314,7 +308,6 @@ function montarCalendario(){
 
         if(!datas[s.retorno]) datas[s.retorno] = {serv:[], ret:[]};
         datas[s.retorno].ret.push(s);
-
     });
 
     for(let d in datas){
@@ -325,27 +318,39 @@ function montarCalendario(){
         <strong>${formatarData(d)}</strong><br>`;
 
         bloco.serv.forEach(s=>{
+
+            let realIndex = servicos.findIndex(x =>
+                x.clienteId === s.clienteId &&
+                x.data === s.data &&
+                x.retorno === s.retorno
+            );
+
             html += `
-            <div class="servico-dia"
-            onclick="verCliente(${s.clienteId})">
-            🔵 ${s.cliente}
+            <div class="servico-dia">
+                🔵 ${s.cliente}
+                <button onclick="delServico(${realIndex})">X</button>
             </div>`;
         });
 
         bloco.ret.forEach(s=>{
+
+            let realIndex = servicos.findIndex(x =>
+                x.clienteId === s.clienteId &&
+                x.data === s.data &&
+                x.retorno === s.retorno
+            );
+
             html += `
-            <div class="retorno-dia"
-            onclick="verCliente(${s.clienteId})">
-            🟡 ${s.cliente}
+            <div class="retorno-dia">
+                🟡 ${s.cliente}
+                <button onclick="delServico(${realIndex})">X</button>
             </div>`;
         });
 
         html += `</div>`;
 
         cal.innerHTML += html;
-
     }
-
 }
 
 /* ==========================
@@ -366,7 +371,6 @@ function verCliente(id){
         "Telefone: " + c.telefone + "\n" +
         "Endereço: " + c.endereco
     );
-
 }
 
 /* ==========================
@@ -380,7 +384,6 @@ function formatarData(data){
     if(partes.length !== 3) return data;
 
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
-
 }
 
 /* ==========================
@@ -392,7 +395,6 @@ function salvar(){
     localStorage.setItem("servicos", JSON.stringify(servicos));
     localStorage.setItem("os", JSON.stringify(os));
     localStorage.setItem("financeiro", JSON.stringify(financeiro));
-
 }
 
 /* ==========================
