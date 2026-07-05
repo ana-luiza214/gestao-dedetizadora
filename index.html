@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dedetizadora Confiança - Sistema Profissional</title>
+    <title>Dedetizadora Confiança - Sistema</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,12 +17,12 @@
 <header class="topbar">
 
     <div class="logo-area">
-        <img src="logo.png" class="logo-only" alt="Logo Dedetizadora Confiança">
+        <img src="logo.png" class="logo-only" alt="Logo">
     </div>
 
     <div class="empresa">
         <h1>Sistema de Gestão</h1>
-        <p>Dedetizadora Confiança - V2.0 Profissional</p>
+        <p>Dedetizadora Confiança</p>
     </div>
 
 </header>
@@ -32,13 +32,13 @@
 ========================= -->
 <aside class="sidebar">
 
-    <button data-abrir="dashboard">📊 Dashboard</button>
-    <button data-abrir="clientes">👥 Clientes</button>
-    <button data-abrir="servicos">🧴 Serviços</button>
-    <button data-abrir="os">📄 OS</button>
-    <button data-abrir="financeiro">💰 Financeiro</button>
-    <button data-abrir="historico">📚 Histórico</button>
-    <button data-abrir="calendario">📅 Calendário</button>
+    <button onclick="abrir('dashboard')">📊 Dashboard</button>
+    <button onclick="abrir('clientes')">👥 Clientes</button>
+    <button onclick="abrir('servicos')">🧴 Serviços</button>
+    <button onclick="abrir('os')">📄 OS</button>
+    <button onclick="abrir('financeiro')">💰 Financeiro</button>
+    <button onclick="abrir('historico')">📚 Histórico</button>
+    <button onclick="abrir('calendario')">📅 Calendário</button>
 
 </aside>
 
@@ -47,9 +47,7 @@
 ========================= -->
 <main class="content">
 
-<!-- =========================
-     DASHBOARD
-========================= -->
+<!-- DASHBOARD -->
 <section id="dashboard" class="secao">
 
     <h2>Dashboard</h2>
@@ -80,9 +78,7 @@
 
 </section>
 
-<!-- =========================
-     CLIENTES
-========================= -->
+<!-- CLIENTES -->
 <section id="clientes" class="secao hidden">
 
     <h2>Clientes</h2>
@@ -99,27 +95,21 @@
 
 </section>
 
-<!-- =========================
-     DETALHE CLIENTE (HISTÓRICO)
-========================= -->
+<!-- DETALHE CLIENTE -->
 <section id="detalheCliente" class="secao hidden">
 
     <h2>Ficha do Cliente</h2>
 
     <div id="infoCliente"></div>
 
-    <h3>Histórico Completo</h3>
+    <h3>Histórico</h3>
     <ul id="historicoCliente"></ul>
 
-    <button onclick="abrir('clientes')" style="margin-top:10px;">
-        Voltar
-    </button>
+    <button onclick="abrir('clientes')">Voltar</button>
 
 </section>
 
-<!-- =========================
-     EDITAR CLIENTE
-========================= -->
+<!-- EDITAR CLIENTE -->
 <section id="editarCliente" class="secao hidden">
 
     <h2>Editar Cliente</h2>
@@ -128,7 +118,7 @@
     <input id="editTelefone" placeholder="Telefone">
     <input id="editEndereco" placeholder="Endereço">
 
-    <button onclick="salvarEdicaoCliente()">Salvar Alterações</button>
+    <button onclick="salvarEdicaoCliente()">Salvar</button>
 
     <button onclick="abrir('clientes')" style="background:#dc3545;margin-top:10px;">
         Cancelar
@@ -136,9 +126,7 @@
 
 </section>
 
-<!-- =========================
-     SERVIÇOS
-========================= -->
+<!-- SERVIÇOS -->
 <section id="servicos" class="secao hidden">
 
     <h2>Serviços</h2>
@@ -151,9 +139,7 @@
 
 </section>
 
-<!-- =========================
-     OS
-========================= -->
+<!-- OS -->
 <section id="os" class="secao hidden">
 
     <h2>Ordens de Serviço</h2>
@@ -165,9 +151,7 @@
 
 </section>
 
-<!-- =========================
-     FINANCEIRO
-========================= -->
+<!-- FINANCEIRO -->
 <section id="financeiro" class="secao hidden">
 
     <h2>Financeiro</h2>
@@ -190,9 +174,7 @@
 
 </section>
 
-<!-- =========================
-     HISTÓRICO GERAL
-========================= -->
+<!-- HISTÓRICO -->
 <section id="historico" class="secao hidden">
 
     <h2>Histórico Geral</h2>
@@ -201,12 +183,10 @@
 
 </section>
 
-<!-- =========================
-     CALENDÁRIO
-========================= -->
+<!-- CALENDÁRIO -->
 <section id="calendario" class="secao hidden">
 
-    <h2>Calendário de Serviços</h2>
+    <h2>Calendário</h2>
 
     <div id="cal" class="calendario-grid"></div>
 
