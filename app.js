@@ -217,6 +217,7 @@ function addFinanceiro(){
 
     let desc = document.getElementById("descFin");
     let valor = document.getElementById("valorFin");
+    let tipo = document.getElementById("tipoFin");
 
     if(!desc.value.trim() || !valor.value)
         return alert("Preencha tudo");
@@ -224,7 +225,8 @@ function addFinanceiro(){
     financeiro.push({
         desc: desc.value,
         valor: Number(valor.value),
-        data: new Date().toLocaleDateString("pt-BR")
+        tipo: tipo.value,
+        data: new Date().toISOString().split("T")[0]
     });
 
     desc.value = "";
@@ -236,24 +238,76 @@ function addFinanceiro(){
     atualizarDashboard();
 }
 
+/* ==========================
+   EXCLUIR FINANCEIRO
+========================== */
+function delFinanceiro(index){
+
+    if(!confirm("Excluir lançamento?")) return;
+
+    financeiro.splice(index, 1);
+
+    salvar();
+    atualizarFinanceiro();
+    atualizarHistorico();
+    atualizarDashboard();
+}
+
+/* ==========================
+   FINANCEIRO LISTA + FILTRO
+========================== */
 function atualizarFinanceiro(){
 
     let lista = document.getElementById("listaFin");
     let totalEl = document.getElementById("totalFinanceiro");
+    let filtro = document.getElementById("filtroMes");
 
     if(!lista || !totalEl) return;
 
-    let total = 0;
     lista.innerHTML = "";
 
-    financeiro.forEach(f=>{
-        total += f.valor;
+    let dados = financeiro;
+
+    if(filtro && filtro.value){
+        dados = financeiro.filter(f =>
+            f.data.startsWith(filtro.value)
+        );
+    }
+
+    let total = 0;
+
+    dados.forEach((f, index)=>{
+
+        let valorFinal = f.tipo === "entrada" ? f.valor : -f.valor;
+        total += valorFinal;
+
+        let cor = f.tipo === "entrada" ? "#16a34a" : "#dc2626";
+        let sinal = f.tipo === "entrada" ? "+" : "-";
 
         lista.innerHTML += `
-        <li>${f.desc} - R$ ${f.valor.toFixed(2)}</li>`;
+        <li style="display:flex;justify-content:space-between;align-items:center;">
+            
+            <div>
+                <strong>${f.desc}</strong><br>
+                <small>${f.data} - ${f.tipo}</small>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;">
+                
+                <span style="color:${cor};font-weight:bold;">
+                    ${sinal} R$ ${f.valor.toFixed(2)}
+                </span>
+
+                <button onclick="delFinanceiro(${index})"
+                style="background:#dc3545;color:white;border:none;padding:5px 8px;border-radius:6px;cursor:pointer;">
+                    🗑️
+                </button>
+
+            </div>
+        </li>`;
     });
 
-    totalEl.innerText = "Total: R$ " + total.toFixed(2);
+    totalEl.innerText = "Saldo: R$ " + total.toFixed(2);
 }
 
 /* ==========================
@@ -281,7 +335,11 @@ function atualizarDashboard(){
     document.getElementById("totalServicos").innerText = servicos.length;
     document.getElementById("totalOS").innerText = os.length;
 
-    let total = financeiro.reduce((a,b)=>a+b.valor,0);
+    let total = financeiro.reduce((acc, f) => {
+        return f.tipo === "entrada"
+            ? acc + f.valor
+            : acc - f.valor;
+    }, 0);
 
     document.getElementById("saldoTotal").innerText =
         "R$ " + total.toFixed(2);
@@ -348,7 +406,6 @@ function montarCalendario(){
         });
 
         html += `</div>`;
-
         cal.innerHTML += html;
     }
 }
@@ -374,7 +431,7 @@ function verCliente(id){
 }
 
 /* ==========================
-   DATA BR
+   FORMATAR DATA
 ========================== */
 function formatarData(data){
 
@@ -406,14 +463,3 @@ atualizarFinanceiro();
 atualizarHistorico();
 atualizarDashboard();
 montarCalendario();
-function delFinanceiro(index){
-
-    if(!confirm("Excluir este lançamento financeiro?")) return;
-
-    financeiro.splice(index, 1);
-
-    salvar();
-    atualizarFinanceiro();
-    atualizarHistorico();
-    atualizarDashboard();
-}
