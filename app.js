@@ -1,4 +1,5 @@
-alert("JS CARREGOU");
+
+
 /* ==========================================
    DADOS
 ========================================== */
@@ -28,7 +29,7 @@ function salvar(){
 
 function abrir(id){
 
-    document.querySelectorAll(".secao").forEach(s => {
+    document.querySelectorAll(".secao").forEach(s=>{
         s.classList.add("hidden");
     });
 
@@ -51,8 +52,6 @@ function render(){
     atualizarServicos();
     atualizarOS();
     atualizarFinanceiro();
-    atualizarHistorico();
-    atualizarHistoricoCliente();
     montarCalendario();
     preencherClientes();
 }
@@ -208,7 +207,7 @@ function atualizarServicos(){
         <li>
             <span>
                 ${c?.nome || "Cliente"}<br>
-                ${s.data} - retorno ${s.retorno}
+                ${s.data} - retorno ${s.retorno || ""}
             </span>
             <div>
                 <button class="btn-delete" onclick="delServico(${i})">🗑️</button>
@@ -314,7 +313,7 @@ function delFinanceiro(i){
 }
 
 /* ==========================================
-   CALENDÁRIO SIMPLES
+   CALENDÁRIO
 ========================================== */
 
 function montarCalendario(){
@@ -346,6 +345,28 @@ function montarCalendario(){
             <b>${d}</b>
             ${dias[d].map(x=>`<div>${x}</div>`).join("")}
         </div>`;
+    });
+}
+
+/* ==========================================
+   CLIENTES SELECT
+========================================== */
+
+function preencherClientes(){
+
+    const selects = [
+        document.getElementById("clienteServico"),
+        document.getElementById("clienteOS")
+    ];
+
+    selects.forEach(sel=>{
+        if(!sel) return;
+
+        sel.innerHTML = `<option value="">Selecione</option>`;
+
+        clientes.forEach(c=>{
+            sel.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
+        });
     });
 }
 
