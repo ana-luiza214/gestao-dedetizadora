@@ -61,6 +61,7 @@ body{
     height:calc(100vh - 75px);
     background:#154c79;
     padding:15px;
+    overflow-y:auto;
 }
 
 .sidebar button{
@@ -85,7 +86,7 @@ body{
    CONTEÚDO
 ========================= */
 .content{
-    margin-left:250px;
+    margin-left:230px;
     margin-top:90px;
     padding:20px;
 }
@@ -162,6 +163,22 @@ button:hover{
     color:black;
 }
 
+/* botões especiais */
+.btn-edit{
+    background:#facc15;
+    color:black;
+}
+
+.btn-delete{
+    background:#dc3545;
+    color:white;
+}
+
+.btn-success{
+    background:#28a745;
+    color:white;
+}
+
 /* =========================
    LISTAS
 ========================= */
@@ -179,29 +196,17 @@ li{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    gap:10px;
+}
+
+li span{
+    flex:1;
+    word-break:break-word;
 }
 
 li div{
     display:flex;
     gap:5px;
-}
-
-/* botões lista */
-li button{
-    padding:6px 8px;
-    font-size:13px;
-}
-
-/* editar */
-li button:first-child{
-    background:#facc15;
-    color:black;
-}
-
-/* excluir */
-li button:last-child{
-    background:#dc3545;
-    color:white;
 }
 
 /* =========================
@@ -231,6 +236,8 @@ li button:last-child{
     display:grid;
     grid-template-columns:repeat(7, 1fr);
     gap:10px;
+    max-height:600px;
+    overflow:auto;
 }
 
 .dia{
@@ -247,7 +254,6 @@ li button:last-child{
     color:#0f4c81;
 }
 
-/* item cliente no calendário */
 .dia div{
     background:#2563eb;
     color:white;
@@ -276,4 +282,10 @@ li button:last-child{
 .calendario-grid{
     grid-template-columns:repeat(2,1fr);
 }
+}
+
+@media(max-width:600px){
+    .calendario-grid{
+        grid-template-columns:1fr;
+    }
 }
