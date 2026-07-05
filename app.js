@@ -377,3 +377,9 @@ function preencherClientes(){
 window.addEventListener("load",()=>{
     abrir("dashboard");
 });
+function fecharModalCliente(){
+    const modal = document.getElementById("modalCliente");
+    if(modal){
+        modal.classList.add("hidden");
+    }
+}
