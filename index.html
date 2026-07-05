@@ -1,455 +1,165 @@
-let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
-let os = JSON.parse(localStorage.getItem("os")) || [];
-let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-/* ==========================
-   MENU
-========================== */
-function abrir(secao){
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dedetizadora Confiança</title>
 
-    document.querySelectorAll(".secao")
-    .forEach(s => s.classList.add("hidden"));
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    document.getElementById(secao).classList.remove("hidden");
+<body>
 
-    atualizarDashboard();
-    montarCalendario();
-    atualizarClientes();
+    <!-- TOPO -->
+    <header class="topbar">
 
-}
+        <div class="logo-area">
+            <img src="logo.png" alt="Dedetizadora Confiança" class="logo-only">
+        </div>
 
-/* ==========================
-   CLIENTES
-========================== */
-function addCliente(){
+        <div class="empresa">
+            <h1>Sistema de Gestão</h1>
+            <p>Dedetizadora Confiança</p>
+        </div>
 
-    let nome = document.getElementById("nome");
-    let telefone = document.getElementById("telefone");
-    let endereco = document.getElementById("endereco");
+    </header>
 
-    if(!nome.value.trim()) return alert("Digite o nome");
+    <!-- MENU -->
+    <aside class="sidebar">
 
-    clientes.push({
-        nome: nome.value,
-        telefone: telefone.value,
-        endereco: endereco.value
-    });
+        <button onclick="abrir('dashboard')">📊 Dashboard</button>
+        <button onclick="abrir('clientes')">👥 Clientes</button>
+        <button onclick="abrir('servicos')">🧴 Serviços</button>
+        <button onclick="abrir('os')">📄 Ordens de Serviço</button>
+        <button onclick="abrir('financeiro')">💰 Financeiro</button>
+        <button onclick="abrir('historico')">📚 Histórico</button>
+        <button onclick="abrir('calendario')">📅 Calendário</button>
 
-    nome.value = "";
-    telefone.value = "";
-    endereco.value = "";
+    </aside>
 
-    salvar();
-    atualizarClientes();
-    atualizarSelects();
-    atualizarDashboard();
-}
+    <!-- CONTEÚDO -->
+    <main class="content">
 
-function atualizarClientes(){
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="secao">
 
-    let lista = document.getElementById("listaClientes");
-    let pesquisa = document.getElementById("pesquisaCliente");
+            <h2>Dashboard</h2>
 
-    lista.innerHTML = "";
+            <div class="cards">
 
-    let filtro = pesquisa ? pesquisa.value.toLowerCase() : "";
+                <div class="card">
+                    <h3>Clientes</h3>
+                    <span id="totalClientes">0</span>
+                </div>
 
-    clientes
-    .filter(c => c.nome.toLowerCase().includes(filtro))
-    .forEach((c,i)=>{
+                <div class="card">
+                    <h3>Serviços</h3>
+                    <span id="totalServicos">0</span>
+                </div>
 
-        lista.innerHTML += `
-        <li>
-            ${c.nome} - ${c.endereco}
-            <button onclick="delCliente(${i})">🗑️</button>
-        </li>
-        `;
+                <div class="card">
+                    <h3>OS</h3>
+                    <span id="totalOS">0</span>
+                </div>
 
-    });
+                <div class="card">
+                    <h3>Saldo</h3>
+                    <span id="saldoTotal">R$ 0,00</span>
+                </div>
 
-}
+            </div>
 
-function delCliente(i){
+        </section>
 
-    if(confirm("Excluir cliente?")){
+        <!-- CLIENTES -->
+        <section id="clientes" class="secao hidden">
 
-        clientes.splice(i,1);
+            <h2>Clientes</h2>
 
-        salvar();
-        atualizarClientes();
-        atualizarSelects();
-        atualizarDashboard();
+            <div class="form-grid">
 
-    }
+                <input id="nome" placeholder="Nome">
+                <input id="telefone" placeholder="Telefone">
+                <input id="endereco" placeholder="Endereço">
 
-}
+            </div>
 
-/* ==========================
-   SELECTS
-========================== */
-function atualizarSelects(){
+            <button onclick="addCliente()">Salvar Cliente</button>
 
-    let s1 = document.getElementById("clienteServico");
-    let s2 = document.getElementById("clienteOS");
+            <input id="pesquisaCliente" placeholder="Pesquisar cliente..." oninput="atualizarClientes()">
 
-    s1.innerHTML = "";
-    s2.innerHTML = "";
+            <ul id="listaClientes"></ul>
 
-    clientes.forEach(c=>{
+        </section>
 
-        s1.innerHTML += `<option>${c.nome}</option>`;
-        s2.innerHTML += `<option>${c.nome}</option>`;
+        <!-- SERVIÇOS -->
+        <section id="servicos" class="secao hidden">
 
-    });
+            <h2>Serviços</h2>
 
-}
+            <select id="clienteServico"></select>
+            <input id="dataServico" type="date">
+            <input id="retornoDias" type="number" placeholder="Dias para retorno">
 
-/* ==========================
-   SERVIÇOS
-========================== */
-function addServico(){
+            <button onclick="addServico()">Salvar Serviço</button>
 
-    let cliente = document.getElementById("clienteServico");
-    let data = document.getElementById("dataServico");
-    let dias = document.getElementById("retornoDias");
+            <ul id="listaServicos"></ul>
 
-    if(!data.value) return alert("Escolha a data");
+        </section>
 
-    let retorno = new Date(data.value);
-    retorno.setDate(retorno.getDate() + Number(dias.value || 0));
+        <!-- OS -->
+        <section id="os" class="secao hidden">
 
-    servicos.push({
-        cliente: cliente.value,
-        data: data.value,
-        retorno: retorno.toISOString().split("T")[0]
-    });
+            <h2>Ordens de Serviço</h2>
 
-    cliente.value = "";
-    data.value = "";
-    dias.value = "";
+            <select id="clienteOS"></select>
+            <input id="servicoOS" placeholder="Descrição do serviço">
 
-    salvar();
-    atualizarServicos();
-    atualizarDashboard();
-    montarCalendario();
+            <button onclick="addOS()">Criar OS</button>
 
-}
+            <ul id="listaOS"></ul>
 
-function atualizarServicos(){
+        </section>
 
-    let lista = document.getElementById("listaServicos");
+        <!-- FINANCEIRO -->
+        <section id="financeiro" class="secao hidden">
 
-    lista.innerHTML = "";
+            <h2>Financeiro</h2>
 
-    servicos.forEach((s,i)=>{
+            <input id="descFin" placeholder="Descrição">
+            <input id="valorFin" type="number" placeholder="Valor">
 
-        lista.innerHTML += `
-        <li>
-            ${s.cliente} | ${formatarData(s.data)} | retorno ${formatarData(s.retorno)}
-            <button onclick="delServico(${i})">🗑️</button>
-        </li>
-        `;
+            <button onclick="addFinanceiro()">Adicionar</button>
 
-    });
+            <h3 id="totalFinanceiro">Total: R$ 0,00</h3>
 
-}
+            <ul id="listaFin"></ul>
 
-function delServico(i){
+        </section>
 
-    if(confirm("Excluir serviço?")){
+        <!-- HISTÓRICO -->
+        <section id="historico" class="secao hidden">
 
-        servicos.splice(i,1);
+            <h2>Histórico Financeiro</h2>
 
-        salvar();
-        atualizarServicos();
-        atualizarDashboard();
-        montarCalendario();
+            <ul id="listaHistorico"></ul>
 
-    }
+        </section>
 
-}
+        <!-- CALENDÁRIO -->
+        <section id="calendario" class="secao hidden">
 
-/* ==========================
-   OS
-========================== */
-function addOS(){
+            <h2>Calendário de Serviços</h2>
 
-    let cliente = document.getElementById("clienteOS");
-    let servico = document.getElementById("servicoOS");
+            <div id="cal" class="calendario-grid"></div>
 
-    if(!servico.value.trim()) return alert("Digite o serviço");
+        </section>
 
-    os.push({
-        cliente: cliente.value,
-        servico: servico.value
-    });
+    </main>
 
-    servico.value = "";
+    <script src="app.js"></script>
 
-    salvar();
-    atualizarOS();
-    atualizarDashboard();
+</body>
 
-}
-
-function atualizarOS(){
-
-    let lista = document.getElementById("listaOS");
-
-    lista.innerHTML = "";
-
-    os.forEach((o,i)=>{
-
-        lista.innerHTML += `
-        <li>
-            ${o.cliente} - ${o.servico}
-            <button onclick="delOS(${i})">🗑️</button>
-        </li>
-        `;
-
-    });
-
-}
-
-function delOS(i){
-
-    if(confirm("Excluir OS?")){
-
-        os.splice(i,1);
-
-        salvar();
-        atualizarOS();
-        atualizarDashboard();
-
-    }
-
-}
-
-/* ==========================
-   FINANCEIRO
-========================== */
-function addFinanceiro(){
-
-    let desc = document.getElementById("descFin");
-    let valor = document.getElementById("valorFin");
-
-    if(!desc.value.trim() || !valor.value)
-        return alert("Preencha tudo");
-
-    financeiro.push({
-        desc: desc.value,
-        valor: Number(valor.value),
-        data: new Date().toLocaleDateString("pt-BR")
-    });
-
-    desc.value = "";
-    valor.value = "";
-
-    salvar();
-    atualizarFinanceiro();
-    atualizarHistorico();
-    atualizarDashboard();
-
-}
-
-function atualizarFinanceiro(){
-
-    let lista = document.getElementById("listaFin");
-    let totalEl = document.getElementById("totalFinanceiro");
-
-    let total = 0;
-
-    lista.innerHTML = "";
-
-    financeiro.forEach(f=>{
-
-        total += f.valor;
-
-        lista.innerHTML += `
-        <li>
-            ${f.desc} - R$ ${f.valor.toFixed(2)}
-        </li>
-        `;
-
-    });
-
-    totalEl.innerText = "Total: R$ " + total.toFixed(2);
-
-}
-
-/* ==========================
-   HISTÓRICO
-========================== */
-function atualizarHistorico(){
-
-    let lista = document.getElementById("listaHistorico");
-
-    lista.innerHTML = "";
-
-    financeiro.forEach(f=>{
-
-        lista.innerHTML += `
-        <li>
-            ${f.data} - ${f.desc} - R$ ${f.valor.toFixed(2)}
-        </li>
-        `;
-
-    });
-
-}
-
-/* ==========================
-   DASHBOARD
-========================== */
-function atualizarDashboard(){
-
-    document.getElementById("totalClientes").innerText = clientes.length;
-    document.getElementById("totalServicos").innerText = servicos.length;
-    document.getElementById("totalOS").innerText = os.length;
-
-    let total = financeiro.reduce((a,b)=>a + b.valor,0);
-
-    document.getElementById("saldoTotal").innerText =
-    "R$ " + total.toFixed(2);
-
-}
-
-/* ==========================
-   CALENDÁRIO
-========================== */
-function montarCalendario(){
-
-    let cal = document.getElementById("cal");
-    if(!cal) return;
-
-    let hoje = new Date().toISOString().split("T")[0];
-
-    cal.innerHTML = "";
-
-    let datas = {};
-
-    servicos.forEach(s=>{
-
-        if(!datas[s.data]) datas[s.data] = {serv:[], ret:[]};
-        datas[s.data].serv.push(s);
-
-        if(!datas[s.retorno]) datas[s.retorno] = {serv:[], ret:[]};
-        datas[s.retorno].ret.push(s);
-
-    });
-
-    for(let d in datas){
-
-        let bloco = datas[d];
-
-        let html = `<div class="dia ${d===hoje?'dia-hoje':''}">
-        <strong>${formatarData(d)}</strong><br>`;
-
-        bloco.serv.forEach(s=>{
-            html += `
-            <div class="servico-dia"
-            onclick="verCliente(${JSON.stringify(s.cliente)})">
-            🔵 ${s.cliente}
-            </div>`;
-        });
-
-        bloco.ret.forEach(s=>{
-            html += `
-            <div class="retorno-dia"
-            onclick="verCliente(${JSON.stringify(s.cliente)})">
-            🟡 ${s.cliente}
-            </div>`;
-        });
-
-        html += `</div>`;
-
-        cal.innerHTML += html;
-
-    }
-
-}
-
-/* ==========================
-   VER CLIENTE
-========================== */
-function verCliente(nome){
-
-    let c = clientes.find(c => c.nome === nome);
-
-    if(!c){
-        alert("Cliente não encontrado");
-        return;
-    }
-
-    alert(
-        "CLIENTE\n\n" +
-        "Nome: " + c.nome + "\n" +
-        "Telefone: " + c.telefone + "\n" +
-        "Endereço: " + c.endereco
-    );
-
-}
-
-/* ==========================
-   DATA BR
-========================== */
-function formatarData(data){
-
-    if(!data) return "";
-
-    let partes = data.split("-");
-    if(partes.length !== 3) return data;
-
-    return `${partes[2]}/${partes[1]}/${partes[0]}`;
-
-}
-
-/* ==========================
-   ALERTA RETORNO
-========================== */
-function alertaRetornos(){
-
-    let hoje = new Date().toISOString().split("T")[0];
-
-    let lista = servicos.filter(s => s.retorno === hoje);
-
-    if(lista.length > 0){
-
-        let msg = "RETORNOS DE HOJE:\n\n";
-
-        lista.forEach(s=>{
-            msg += "- " + s.cliente + "\n";
-        });
-
-        alert(msg);
-
-    }
-
-}
-
-/* ==========================
-   SALVAR
-========================== */
-function salvar(){
-
-    localStorage.setItem("clientes", JSON.stringify(clientes));
-    localStorage.setItem("servicos", JSON.stringify(servicos));
-    localStorage.setItem("os", JSON.stringify(os));
-    localStorage.setItem("financeiro", JSON.stringify(financeiro));
-
-}
-
-/* ==========================
-   INIT
-========================== */
-atualizarClientes();
-atualizarSelects();
-atualizarServicos();
-atualizarOS();
-atualizarFinanceiro();
-atualizarHistorico();
-atualizarDashboard();
-montarCalendario();
-
-setTimeout(alertaRetornos, 500);
+</html>
