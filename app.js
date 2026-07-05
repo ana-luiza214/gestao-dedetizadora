@@ -1,18 +1,36 @@
+/* ==========================
+   DADOS
+========================== */
 let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
 let os = JSON.parse(localStorage.getItem("os")) || [];
 let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
 
 let clienteSelecionadoId = null;
+let clienteEditandoId = null;
 
 /* ==========================
-   SALVAR
+   SALVAR NO LOCALSTORAGE
 ========================== */
 function salvar(){
     localStorage.setItem("clientes", JSON.stringify(clientes));
     localStorage.setItem("servicos", JSON.stringify(servicos));
     localStorage.setItem("os", JSON.stringify(os));
     localStorage.setItem("financeiro", JSON.stringify(financeiro));
+}
+
+/* ==========================
+   NAVEGAÇÃO DE TELAS
+========================== */
+function abrir(id){
+    document.querySelectorAll(".secao").forEach(sec => {
+        sec.classList.add("hidden");
+    });
+
+    let alvo = document.getElementById(id);
+    if(alvo) alvo.classList.remove("hidden");
+
+    render();
 }
 
 /* ==========================
@@ -31,12 +49,12 @@ function clienteDuplicado(nome, telefone, endereco){
 ========================== */
 function addCliente(){
 
-    let nome = document.getElementById("nome")?.value.trim();
-    let telefone = document.getElementById("telefone")?.value.trim();
-    let endereco = document.getElementById("endereco")?.value.trim();
+    let nome = document.getElementById("nome").value.trim();
+    let telefone = document.getElementById("telefone").value.trim();
+    let endereco = document.getElementById("endereco").value.trim();
 
     if(!nome || !telefone || !endereco){
-        return alert("Preencha tudo");
+        return alert("Preencha todos os campos");
     }
 
     if(clienteDuplicado(nome, telefone, endereco)){
@@ -51,14 +69,14 @@ function addCliente(){
     });
 
     salvar();
-    limpar();
+    limparCamposCliente();
     render();
 }
 
 /* ==========================
-   LIMPAR
+   LIMPAR CAMPOS
 ========================== */
-function limpar(){
+function limparCamposCliente(){
     ["nome","telefone","endereco"].forEach(id=>{
         let el = document.getElementById(id);
         if(el) el.value = "";
@@ -66,25 +84,29 @@ function limpar(){
 }
 
 /* ==========================
-   LISTA CLIENTES
+   ATUALIZAR CLIENTES
 ========================== */
 function atualizarClientes(){
 
     let lista = document.getElementById("listaClientes");
     if(!lista) return;
 
+    let filtro = document.getElementById("pesquisaCliente").value.toLowerCase();
+
     lista.innerHTML = "";
 
-    clientes.forEach(c=>{
+    clientes
+    .filter(c => c.nome.toLowerCase().includes(filtro))
+    .forEach(c=>{
         lista.innerHTML += `
         <li>
-            <span onclick="verCliente('${c.id}')" style="cursor:pointer">
+            <span onclick="verCliente('${c.id}')">
                 ${c.nome}
             </span>
 
             <div>
-                <button onclick="editarCliente('${c.id}')">✏️</button>
-                <button onclick="delCliente('${c.id}')">🗑️</button>
+                <button class="btn-edit" onclick="editarCliente('${c.id}')">✏️</button>
+                <button class="btn-delete" onclick="delCliente('${c.id}')">🗑️</button>
             </div>
         </li>`;
     });
@@ -96,7 +118,7 @@ function atualizarClientes(){
 function delCliente(id){
     if(!confirm("Excluir cliente?")) return;
 
-    clientes = clientes.filter(c=>c.id!==id);
+    clientes = clientes.filter(c => c.id !== id);
     salvar();
     render();
 }
@@ -106,7 +128,7 @@ function delCliente(id){
 ========================== */
 function verCliente(id){
 
-    let c = clientes.find(x=>x.id===id);
+    let c = clientes.find(x => x.id === id);
     if(!c) return;
 
     clienteSelecionadoId = id;
@@ -121,15 +143,37 @@ function verCliente(id){
 }
 
 /* ==========================
-   FINANCEIRO DELETE
+   EDITAR CLIENTE
 ========================== */
-function delFinanceiro(index){
+function editarCliente(id){
 
-    if(!confirm("Excluir lançamento?")) return;
+    let c = clientes.find(x => x.id === id);
+    if(!c) return;
 
-    financeiro.splice(index,1);
+    clienteEditandoId = id;
+
+    document.getElementById("editNome").value = c.nome;
+    document.getElementById("editTelefone").value = c.telefone;
+    document.getElementById("editEndereco").value = c.endereco;
+
+    abrir("editarCliente");
+}
+
+/* ==========================
+   SALVAR EDIÇÃO CLIENTE
+========================== */
+function salvarEdicaoCliente(){
+
+    let c = clientes.find(x => x.id === clienteEditandoId);
+    if(!c) return;
+
+    c.nome = document.getElementById("editNome").value;
+    c.telefone = document.getElementById("editTelefone").value;
+    c.endereco = document.getElementById("editEndereco").value;
+
     salvar();
     render();
+    abrir("clientes");
 }
 
 /* ==========================
@@ -137,9 +181,9 @@ function delFinanceiro(index){
 ========================== */
 function addFinanceiro(){
 
-    let desc = document.getElementById("descFin")?.value;
-    let valor = Number(document.getElementById("valorFin")?.value);
-    let tipo = document.getElementById("tipoFin")?.value;
+    let desc = document.getElementById("descFin").value;
+    let valor = Number(document.getElementById("valorFin").value);
+    let tipo = document.getElementById("tipoFin").value;
 
     if(!desc || !valor) return alert("Preencha");
 
@@ -171,29 +215,101 @@ function atualizarFinanceiro(){
 
     financeiro.forEach((f,i)=>{
 
-        total += f.tipo==="entrada" ? f.valor : -f.valor;
+        total += f.tipo === "entrada" ? f.valor : -f.valor;
 
         lista.innerHTML += `
         <li>
             ${f.desc} - ${f.tipo} - R$ ${f.valor}
-
-            <button onclick="delFinanceiro(${i})">🗑️</button>
+            <button class="btn-delete" onclick="delFinanceiro(${i})">🗑️</button>
         </li>`;
     });
 
-    totalEl.innerText = "Saldo: R$ " + total.toFixed(2);
+    if(totalEl){
+        totalEl.innerText = "Saldo: R$ " + total.toFixed(2);
+    }
 }
 
 /* ==========================
-   CALENDÁRIO (SEMANAL / MENSAL / ANUAL)
+   DELETE FINANCEIRO
 ========================== */
-let modoCalendario = "semanal";
+function delFinanceiro(index){
+    if(!confirm("Excluir lançamento?")) return;
 
-function setCalendarioModo(modo){
-    modoCalendario = modo;
-    montarCalendario();
+    financeiro.splice(index,1);
+    salvar();
+    render();
 }
 
+/* ==========================
+   SERVIÇO
+========================== */
+function addServico(){
+
+    let clienteId = document.getElementById("clienteServico").value;
+    let data = document.getElementById("dataServico").value;
+    let retornoDias = Number(document.getElementById("retornoDias").value || 0);
+
+    if(!clienteId || !data) return alert("Preencha");
+
+    let retorno = new Date(data);
+    retorno.setDate(retorno.getDate() + retornoDias);
+
+    servicos.push({
+        id: Date.now().toString(),
+        clienteId,
+        data,
+        retorno: retorno.toISOString().split("T")[0]
+    });
+
+    salvar();
+    render();
+}
+
+/* ==========================
+   OS
+========================== */
+function addOS(){
+
+    let clienteId = document.getElementById("clienteOS").value;
+    let servico = document.getElementById("servicoOS").value;
+
+    if(!clienteId || !servico) return alert("Preencha");
+
+    os.push({
+        id: Date.now().toString(),
+        clienteId,
+        servico,
+        data: new Date().toISOString().split("T")[0]
+    });
+
+    salvar();
+    render();
+}
+
+/* ==========================
+   PREENCHER SELECTS
+========================== */
+function preencherClientes(){
+
+    let selects = [
+        document.getElementById("clienteServico"),
+        document.getElementById("clienteOS")
+    ];
+
+    selects.forEach(sel=>{
+        if(!sel) return;
+
+        sel.innerHTML = "";
+
+        clientes.forEach(c=>{
+            sel.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
+        });
+    });
+}
+
+/* ==========================
+   CALENDÁRIO
+========================== */
 function montarCalendario(){
 
     let cal = document.getElementById("cal");
@@ -205,48 +321,36 @@ function montarCalendario(){
 
     servicos.forEach(s=>{
 
-        if(!datas[s.data]) datas[s.data] = {serv:[], ret:[]};
+        let c = clientes.find(x => x.id === s.clienteId);
 
-        let c = clientes.find(x=>x.id===s.clienteId);
+        if(!datas[s.data]) datas[s.data] = {serv:[], ret:[]};
 
         datas[s.data].serv.push({
             ...s,
             cliente: c?.nome || "Cliente"
         });
 
-        if(!datas[s.retorno]) datas[s.retorno] = {serv:[], ret:[]};
+        if(s.retorno){
+            if(!datas[s.retorno]) datas[s.retorno] = {serv:[], ret:[]};
 
-        datas[s.retorno].ret.push({
-            ...s,
-            cliente: c?.nome || "Cliente"
-        });
+            datas[s.retorno].ret.push({
+                ...s,
+                cliente: c?.nome || "Cliente"
+            });
+        }
     });
 
-    let keys = Object.keys(datas).sort();
-
-    keys.forEach(d=>{
-
+    Object.keys(datas).sort().forEach(d=>{
         let bloco = datas[d];
 
-        cal.innerHTML += `
-        <div class="dia">
-            <b>${d}</b>
-        `;
+        cal.innerHTML += `<div class="dia"><b>${d}</b>`;
 
         bloco.serv.forEach(s=>{
-            cal.innerHTML += `
-            <div style="background:#2563eb;color:white;padding:5px;margin-top:5px;border-radius:6px;cursor:pointer"
-                 onclick="verCliente('${s.clienteId}')">
-                🔵 ${s.cliente}
-            </div>`;
+            cal.innerHTML += `<div>🔵 ${s.cliente}</div>`;
         });
 
         bloco.ret.forEach(s=>{
-            cal.innerHTML += `
-            <div style="background:#facc15;color:black;padding:5px;margin-top:5px;border-radius:6px;cursor:pointer"
-                 onclick="verCliente('${s.clienteId}')">
-                🟡 RETORNO - ${s.cliente}
-            </div>`;
+            cal.innerHTML += `<div>🟡 RETORNO - ${s.cliente}</div>`;
         });
 
         cal.innerHTML += `</div>`;
@@ -259,6 +363,6 @@ function montarCalendario(){
 function render(){
     atualizarClientes();
     atualizarFinanceiro();
-    atualizarDashboard();
     montarCalendario();
+    preencherClientes();
 }
