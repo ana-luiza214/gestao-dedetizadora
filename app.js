@@ -6,7 +6,7 @@ let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
 let clienteEditandoId = null;
 let clienteSelecionadoId = null;
 
-/* ==========================
+/* ========================== 
    UTIL
 ========================== */
 function salvar(){
