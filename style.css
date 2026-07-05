@@ -2,7 +2,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
@@ -10,9 +10,9 @@ body{
     color:#333;
 }
 
-/* ==========================
+/* =========================
    TOPO
-========================== */
+========================= */
 
 .topbar{
     position:fixed;
@@ -21,17 +21,17 @@ body{
     right:0;
     height:75px;
     background:#0f4c81;
-    color:#fff;
     display:flex;
     align-items:center;
     justify-content:center;
-    box-shadow:0 2px 10px rgba(0,0,0,.2);
+    color:white;
     z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,0.2);
 }
 
 .logo-area{
     position:absolute;
-    left:25px;
+    left:20px;
 }
 
 .logo-only{
@@ -45,18 +45,17 @@ body{
 }
 
 .empresa h1{
-    font-size:24px;
-    font-weight:bold;
+    font-size:22px;
 }
 
 .empresa p{
-    font-size:14px;
-    opacity:.9;
+    font-size:13px;
+    opacity:0.9;
 }
 
-/* ==========================
+/* =========================
    MENU
-========================== */
+========================= */
 
 .sidebar{
     position:fixed;
@@ -65,44 +64,44 @@ body{
     width:230px;
     height:calc(100vh - 75px);
     background:#154c79;
-    padding:20px;
+    padding:15px;
     overflow-y:auto;
 }
 
 .sidebar button{
     width:100%;
-    border:none;
-    padding:14px;
+    padding:12px;
     margin-bottom:10px;
+    border:none;
     border-radius:8px;
     background:#1d6fa5;
     color:white;
     cursor:pointer;
     font-size:15px;
-    transition:.25s;
+    transition:0.2s;
 }
 
 .sidebar button:hover{
     background:#ffc107;
-    color:#000;
-    transform:translateX(4px);
+    color:black;
+    transform:translateX(3px);
 }
 
-/* ==========================
+/* =========================
    CONTEÚDO
-========================== */
+========================= */
 
 .content{
     margin-left:250px;
-    margin-top:95px;
-    padding:25px;
+    margin-top:90px;
+    padding:20px;
 }
 
 .secao{
-    background:#fff;
-    padding:25px;
+    background:white;
+    padding:20px;
     border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
 .hidden{
@@ -110,83 +109,74 @@ body{
 }
 
 h2{
+    margin-bottom:15px;
     color:#0f4c81;
-    margin-bottom:20px;
 }
 
-/* ==========================
+/* =========================
    DASHBOARD
-========================== */
+========================= */
 
 .cards{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+    gap:15px;
 }
 
 .card{
     background:#0f4c81;
     color:white;
-    padding:25px;
+    padding:20px;
     border-radius:12px;
     text-align:center;
-    transition:.3s;
+    transition:0.3s;
 }
 
 .card:hover{
-    transform:translateY(-5px);
+    transform:translateY(-4px);
 }
 
 .card h3{
+    font-size:16px;
     margin-bottom:10px;
-    font-size:18px;
 }
 
 .card span{
-    font-size:28px;
+    font-size:26px;
     font-weight:bold;
 }
 
-/* ==========================
+/* =========================
    FORMULÁRIOS
-========================== */
+========================= */
 
-.form-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:15px;
-    margin-bottom:15px;
-}
-
-input,
-select{
+input, select{
     width:100%;
-    padding:12px;
+    padding:10px;
+    margin-bottom:10px;
     border:1px solid #ccc;
     border-radius:8px;
-    margin-bottom:12px;
-    font-size:15px;
+    font-size:14px;
 }
 
-input:focus,
-select:focus{
+input:focus, select:focus{
     outline:none;
     border-color:#0f4c81;
-    box-shadow:0 0 6px rgba(15,76,129,.3);
+    box-shadow:0 0 5px rgba(15,76,129,0.3);
 }
 
-/* ==========================
+/* =========================
    BOTÕES
-========================== */
+========================= */
 
 button{
-    padding:12px 18px;
+    padding:10px 15px;
     border:none;
     border-radius:8px;
     background:#0f4c81;
     color:white;
     cursor:pointer;
-    transition:.3s;
+    transition:0.2s;
 }
 
 button:hover{
@@ -194,20 +184,20 @@ button:hover{
     color:black;
 }
 
-/* ==========================
+/* =========================
    LISTAS
-========================== */
+========================= */
 
 ul{
     list-style:none;
-    margin-top:20px;
+    margin-top:15px;
 }
 
 li{
     background:#f8f9fa;
-    margin-bottom:10px;
-    padding:14px;
-    border-left:6px solid #0f4c81;
+    margin-bottom:8px;
+    padding:12px;
+    border-left:5px solid #0f4c81;
     border-radius:8px;
     display:flex;
     justify-content:space-between;
@@ -216,140 +206,87 @@ li{
 
 li button{
     background:#dc3545;
-    padding:8px 12px;
+    padding:6px 10px;
 }
 
 li button:hover{
-    background:#b91c1c;
+    background:#a71d2a;
     color:white;
 }
 
-/* ==========================
+/* =========================
    CALENDÁRIO
-========================== */
-
-#cal{
-    display:grid;
-    gap:12px;
-}
-
-.cal-card{
-    background:#0f4c81;
-    color:white;
-    padding:15px;
-    border-radius:10px;
-}
-
-.cal-hoje{
-    background:#ffc107;
-    color:black;
-    font-weight:bold;
-}
-
-/* ==========================
-   PESQUISA
-========================== */
-
-#pesquisaCliente{
-    margin-top:20px;
-}
-
-/* ==========================
-   TOTAL FINANCEIRO
-========================== */
-
-#totalFinanceiro{
-    margin-top:20px;
-    color:#198754;
-}
-
-/* ==========================
-   RESPONSIVO
-========================== */
-
-@media(max-width:900px){
-
-.sidebar{
-
-    position:relative;
-    width:100%;
-    height:auto;
-    top:75px;
-
-}
-
-.content{
-
-    margin-left:0;
-    margin-top:90px;
-
-}
-
-.topbar{
-
-    flex-direction:column;
-    height:auto;
-    padding:15px;
-
-}
-
-.logo-area{
-
-    position:static;
-    margin-bottom:10px;
-
-}
-
-.cards{
-
-    grid-template-columns:1fr;
-
-}
-
-}
-/* ==========================
-   CALENDÁRIO MENSAL (NOVO)
-========================== */
+========================= */
 
 .calendario-grid{
     display:grid;
-    grid-template-columns:repeat(7,1fr);
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
     gap:10px;
 }
 
 .dia{
     background:#f1f5f9;
-    min-height:90px;
+    padding:10px;
     border-radius:10px;
-    padding:8px;
-    font-size:12px;
-    position:relative;
-}
-
-.dia strong{
-    font-size:13px;
+    min-height:90px;
 }
 
 .dia-hoje{
     border:2px solid #dc3545;
 }
 
-/* Serviços feitos hoje */
+/* SERVIÇO (AZUL) */
 .servico-dia{
     background:#2563eb;
     color:white;
-    padding:2px 4px;
+    padding:3px 6px;
     border-radius:6px;
-    margin-top:4px;
-    display:block;
+    margin-top:5px;
+    font-size:13px;
+    cursor:pointer;
 }
 
-/* Retornos do dia */
+/* RETORNO (AMARELO) */
 .retorno-dia{
     background:#facc15;
     color:black;
-    padding:2px 4px;
+    padding:3px 6px;
     border-radius:6px;
-    margin-top:4px;
-    display:block;
+    margin-top:5px;
+    font-size:13px;
+    cursor:pointer;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:900px){
+
+.sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+}
+
+.content{
+    margin-left:0;
+    margin-top:10px;
+}
+
+.topbar{
+    flex-direction:column;
+    height:auto;
+    padding:10px;
+}
+
+.logo-area{
+    position:static;
+    margin-bottom:10px;
+}
+
+.cards{
+    grid-template-columns:1fr;
+}
+
 }
