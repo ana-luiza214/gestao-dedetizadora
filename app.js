@@ -387,3 +387,22 @@ atualizarFinanceiro();
 atualizarHistorico();
 atualizarDashboard();
 montarCalendario();
+function alertaRetornos(){
+
+    let hoje = new Date().toISOString().split("T")[0];
+
+    let hojeRetornos = servicos.filter(s => s.retorno === hoje);
+
+    if(hojeRetornos.length > 0){
+
+        let msg = "🔔 RETORNOS DE HOJE:\n\n";
+
+        hojeRetornos.forEach(s=>{
+            msg += `- ${s.cliente}\n`;
+        });
+
+        alert(msg);
+
+    }
+
+}
