@@ -9,12 +9,12 @@ let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
 
 let clienteSelecionadoId = null;
 let clienteEditandoId = null;
-
+    
 /* ==========================================
    SALVAR
 ========================================== */
 
-function salvar() {
+ function salvar() {
     localStorage.setItem("clientes", JSON.stringify(clientes));
     localStorage.setItem("servicos", JSON.stringify(servicos));
     localStorage.setItem("os", JSON.stringify(os));
