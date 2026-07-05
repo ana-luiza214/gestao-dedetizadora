@@ -406,3 +406,14 @@ atualizarFinanceiro();
 atualizarHistorico();
 atualizarDashboard();
 montarCalendario();
+function delFinanceiro(index){
+
+    if(!confirm("Excluir este lançamento financeiro?")) return;
+
+    financeiro.splice(index, 1);
+
+    salvar();
+    atualizarFinanceiro();
+    atualizarHistorico();
+    atualizarDashboard();
+}
