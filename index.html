@@ -11,169 +11,187 @@
 
 <body>
 
-    <!-- TOPO -->
-    <header class="topbar">
+<!-- =========================
+     TOPO
+========================= -->
+<header class="topbar">
 
-        <div class="logo-area">
-            <img src="logo.png" class="logo-only">
+    <div class="logo-area">
+        <img src="logo.png" class="logo-only">
+    </div>
+
+    <div class="empresa">
+        <h1>Sistema de Gestão</h1>
+        <p>Dedetizadora Confiança</p>
+    </div>
+
+</header>
+
+<!-- =========================
+     MENU
+========================= -->
+<aside class="sidebar">
+
+    <button onclick="abrir('dashboard')">📊 Dashboard</button>
+    <button onclick="abrir('clientes')">👥 Clientes</button>
+    <button onclick="abrir('servicos')">🧴 Serviços</button>
+    <button onclick="abrir('os')">📄 OS</button>
+    <button onclick="abrir('financeiro')">💰 Financeiro</button>
+    <button onclick="abrir('historico')">📚 Histórico</button>
+    <button onclick="abrir('calendario')">📅 Calendário</button>
+
+</aside>
+
+<!-- =========================
+     CONTEÚDO
+========================= -->
+<main class="content">
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+<section id="dashboard" class="secao">
+
+    <h2>Dashboard</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Clientes</h3>
+            <span id="totalClientes">0</span>
         </div>
 
-        <div class="empresa">
-            <h1>Sistema de Gestão</h1>
-            <p>Dedetizadora Confiança</p>
+        <div class="card">
+            <h3>Serviços</h3>
+            <span id="totalServicos">0</span>
         </div>
 
-    </header>
+        <div class="card">
+            <h3>OS</h3>
+            <span id="totalOS">0</span>
+        </div>
 
-    <!-- MENU -->
-    <aside class="sidebar">
+        <div class="card">
+            <h3>Saldo</h3>
+            <span id="saldoTotal">R$ 0,00</span>
+        </div>
 
-        <button onclick="abrir('dashboard')">📊 Dashboard</button>
-        <button onclick="abrir('clientes')">👥 Clientes</button>
-        <button onclick="abrir('servicos')">🧴 Serviços</button>
-        <button onclick="abrir('os')">📄 OS</button>
-        <button onclick="abrir('financeiro')">💰 Financeiro</button>
-        <button onclick="abrir('historico')">📚 Histórico</button>
-        <button onclick="abrir('calendario')">📅 Calendário</button>
+    </div>
 
-    </aside>
+</section>
 
-    <!-- CONTEÚDO -->
-    <main class="content">
+<!-- =========================
+     CLIENTES
+========================= -->
+<section id="clientes" class="secao hidden">
 
-        <!-- DASHBOARD -->
-        <section id="dashboard" class="secao">
+    <h2>Clientes</h2>
 
-            <h2>Dashboard</h2>
+    <input id="nome" placeholder="Nome">
+    <input id="telefone" placeholder="Telefone">
+    <input id="endereco" placeholder="Endereço">
 
-            <div class="cards">
+    <button onclick="addCliente()">Salvar Cliente</button>
 
-                <div class="card">
-                    <h3>Clientes</h3>
-                    <span id="totalClientes">0</span>
-                </div>
+    <input id="pesquisaCliente" placeholder="Pesquisar cliente..." oninput="atualizarClientes()">
 
-                <div class="card">
-                    <h3>Serviços</h3>
-                    <span id="totalServicos">0</span>
-                </div>
+    <ul id="listaClientes"></ul>
 
-                <div class="card">
-                    <h3>OS</h3>
-                    <span id="totalOS">0</span>
-                </div>
+</section>
 
-                <div class="card">
-                    <h3>Saldo</h3>
-                    <span id="saldoTotal">R$ 0,00</span>
-                </div>
+<!-- EDITAR CLIENTE -->
+<section id="editarCliente" class="secao hidden">
 
-            </div>
+    <h2>Editar Cliente</h2>
 
-        </section>
+    <input id="editNome" placeholder="Nome">
+    <input id="editTelefone" placeholder="Telefone">
+    <input id="editEndereco" placeholder="Endereço">
 
-        <!-- CLIENTES -->
-        <section id="clientes" class="secao hidden">
+    <button onclick="salvarEdicaoCliente()">Salvar Alterações</button>
 
-            <h2>Clientes</h2>
+    <button onclick="abrir('clientes')" style="background:#dc3545;margin-top:10px;">
+        Cancelar
+    </button>
 
-            <input id="nome" placeholder="Nome">
-            <input id="telefone" placeholder="Telefone">
-            <input id="endereco" placeholder="Endereço">
+</section>
 
-            <button onclick="addCliente()">Salvar Cliente</button>
+<!-- =========================
+     SERVIÇOS
+========================= -->
+<section id="servicos" class="secao hidden">
 
-            <input id="pesquisaCliente" placeholder="Pesquisar cliente..." oninput="atualizarClientes()">
+    <h2>Serviços</h2>
 
-            <ul id="listaClientes"></ul>
+    <select id="clienteServico"></select>
+    <input id="dataServico" type="date">
+    <input id="retornoDias" type="number" placeholder="Dias para retorno">
 
-        </section>
+    <button onclick="addServico()">Salvar Serviço</button>
 
-        <!-- 🔥 TELA DE EDIÇÃO DE CLIENTE -->
-        <section id="editarCliente" class="secao hidden">
+    <ul id="listaServicos"></ul>
 
-            <h2>Editar Cliente</h2>
+</section>
 
-            <input id="editNome" placeholder="Nome">
-            <input id="editTelefone" placeholder="Telefone">
-            <input id="editEndereco" placeholder="Endereço">
+<!-- =========================
+     OS
+========================= -->
+<section id="os" class="secao hidden">
 
-            <button onclick="salvarEdicaoCliente()">Salvar Alterações</button>
+    <h2>Ordens de Serviço</h2>
 
-            <button onclick="abrir('clientes')"
-                    style="background:#dc3545;margin-top:10px;">
-                Cancelar
-            </button>
+    <select id="clienteOS"></select>
+    <input id="servicoOS" placeholder="Descrição do serviço">
 
-        </section>
+    <button onclick="addOS()">Criar OS</button>
 
-        <!-- SERVIÇOS -->
-        <section id="servicos" class="secao hidden">
+    <ul id="listaOS"></ul>
 
-            <h2>Serviços</h2>
+</section>
 
-            <select id="clienteServico"></select>
-            <input id="dataServico" type="date">
-            <input id="retornoDias" type="number" placeholder="Dias para retorno">
+<!-- =========================
+     FINANCEIRO
+========================= -->
+<section id="financeiro" class="secao hidden">
 
-            <button onclick="addServico()">Salvar Serviço</button>
+    <h2>Financeiro</h2>
 
-            <ul id="listaServicos"></ul>
+    <input id="descFin" placeholder="Descrição">
+    <input id="valorFin" type="number" placeholder="Valor">
 
-        </section>
+    <button onclick="addFinanceiro()">Adicionar</button>
 
-        <!-- OS -->
-        <section id="os" class="secao hidden">
+    <h3 id="totalFinanceiro">Total: R$ 0,00</h3>
 
-            <h2>Ordens de Serviço</h2>
+    <ul id="listaFin"></ul>
 
-            <select id="clienteOS"></select>
-            <input id="servicoOS" placeholder="Descrição do serviço">
+</section>
 
-            <button onclick="addOS()">Criar OS</button>
+<!-- =========================
+     HISTÓRICO
+========================= -->
+<section id="historico" class="secao hidden">
 
-            <ul id="listaOS"></ul>
+    <h2>Histórico Financeiro</h2>
 
-        </section>
+    <ul id="listaHistorico"></ul>
 
-        <!-- FINANCEIRO -->
-        <section id="financeiro" class="secao hidden">
+</section>
 
-            <h2>Financeiro</h2>
+<!-- =========================
+     CALENDÁRIO
+========================= -->
+<section id="calendario" class="secao hidden">
 
-            <input id="descFin" placeholder="Descrição">
-            <input id="valorFin" type="number" placeholder="Valor">
+    <h2>Calendário</h2>
 
-            <button onclick="addFinanceiro()">Adicionar</button>
+    <div id="cal" class="calendario-grid"></div>
 
-            <h3 id="totalFinanceiro">Total: R$ 0,00</h3>
+</section>
 
-            <ul id="listaFin"></ul>
+</main>
 
-        </section>
-
-        <!-- HISTÓRICO -->
-        <section id="historico" class="secao hidden">
-
-            <h2>Histórico Financeiro</h2>
-
-            <ul id="listaHistorico"></ul>
-
-        </section>
-
-        <!-- CALENDÁRIO -->
-        <section id="calendario" class="secao hidden">
-
-            <h2>Calendário</h2>
-
-            <div id="cal" class="calendario-grid"></div>
-
-        </section>
-
-    </main>
-
-    <script src="app.js"></script>
+<script src="app.js"></script>
 
 </body>
-
 </html>
