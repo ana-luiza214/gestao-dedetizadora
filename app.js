@@ -7,11 +7,16 @@ let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
    MENU
 ========================== */
 function abrir(secao){
-    document.querySelectorAll(".secao").forEach(s => s.classList.add("hidden"));
+
+    document.querySelectorAll(".secao")
+    .forEach(s => s.classList.add("hidden"));
+
     document.getElementById(secao).classList.remove("hidden");
 
     atualizarDashboard();
     montarCalendario();
+    atualizarClientes();
+
 }
 
 /* ==========================
@@ -62,6 +67,7 @@ function atualizarClientes(){
         `;
 
     });
+
 }
 
 function delCliente(i){
@@ -76,6 +82,7 @@ function delCliente(i){
         atualizarDashboard();
 
     }
+
 }
 
 /* ==========================
@@ -95,6 +102,7 @@ function atualizarSelects(){
         s2.innerHTML += `<option>${c.nome}</option>`;
 
     });
+
 }
 
 /* ==========================
@@ -125,6 +133,7 @@ function addServico(){
     atualizarServicos();
     atualizarDashboard();
     montarCalendario();
+
 }
 
 function atualizarServicos(){
@@ -137,7 +146,7 @@ function atualizarServicos(){
 
         lista.innerHTML += `
         <li>
-            ${s.cliente} | ${s.data} | retorno ${s.retorno}
+            ${s.cliente} | ${formatarData(s.data)} | retorno ${formatarData(s.retorno)}
             <button onclick="delServico(${i})">🗑️</button>
         </li>
         `;
@@ -181,6 +190,7 @@ function addOS(){
     salvar();
     atualizarOS();
     atualizarDashboard();
+
 }
 
 function atualizarOS(){
@@ -224,7 +234,8 @@ function addFinanceiro(){
     let desc = document.getElementById("descFin");
     let valor = document.getElementById("valorFin");
 
-    if(!desc.value.trim() || !valor.value) return alert("Preencha tudo");
+    if(!desc.value.trim() || !valor.value)
+        return alert("Preencha tudo");
 
     financeiro.push({
         desc: desc.value,
@@ -239,6 +250,7 @@ function addFinanceiro(){
     atualizarFinanceiro();
     atualizarHistorico();
     atualizarDashboard();
+
 }
 
 function atualizarFinanceiro(){
@@ -263,6 +275,7 @@ function atualizarFinanceiro(){
     });
 
     totalEl.innerText = "Total: R$ " + total.toFixed(2);
+
 }
 
 /* ==========================
@@ -291,22 +304,19 @@ function atualizarHistorico(){
 ========================== */
 function atualizarDashboard(){
 
-    let clientesEl = document.getElementById("totalClientes");
-    let servicosEl = document.getElementById("totalServicos");
-    let osEl = document.getElementById("totalOS");
-    let saldoEl = document.getElementById("saldoTotal");
+    document.getElementById("totalClientes").innerText = clientes.length;
+    document.getElementById("totalServicos").innerText = servicos.length;
+    document.getElementById("totalOS").innerText = os.length;
 
-    let total = financeiro.reduce((a,b)=>a+b.valor,0);
+    let total = financeiro.reduce((a,b)=>a + b.valor,0);
 
-    clientesEl.innerText = clientes.length;
-    servicosEl.innerText = servicos.length;
-    osEl.innerText = os.length;
-    saldoEl.innerText = "R$ " + total.toFixed(2);
+    document.getElementById("saldoTotal").innerText =
+    "R$ " + total.toFixed(2);
 
 }
 
 /* ==========================
-   CALENDÁRIO (NOVO)
+   CALENDÁRIO
 ========================== */
 function montarCalendario(){
 
@@ -315,52 +325,106 @@ function montarCalendario(){
 
     let hoje = new Date().toISOString().split("T")[0];
 
-    let html = "";
+    cal.innerHTML = "";
 
-    let eventosPorDia = {};
-
-    servicos.forEach(s=>{
-
-        if(!eventosPorDia[s.data]) eventosPorDia[s.data] = {serv:[], ret:[]};
-
-        eventosPorDia[s.data].serv.push(s);
-
-    });
+    let datas = {};
 
     servicos.forEach(s=>{
 
-        if(!eventosPorDia[s.retorno]) eventosPorDia[s.retorno] = {serv:[], ret:[]};
+        if(!datas[s.data]) datas[s.data] = {serv:[], ret:[]};
+        datas[s.data].serv.push(s);
 
-        eventosPorDia[s.retorno].ret.push(s);
+        if(!datas[s.retorno]) datas[s.retorno] = {serv:[], ret:[]};
+        datas[s.retorno].ret.push(s);
 
     });
 
-    for(let data in eventosPorDia){
+    for(let d in datas){
 
-        let bloco = eventosPorDia[data];
+        let bloco = datas[d];
 
-        let cor = "#f1f5f9";
-
-        let classes = "dia";
-
-        if(data === hoje) classes += " dia-hoje";
-
-        html += `<div class="${classes}">`;
-        html += `<strong>${formatarData(data)}</strong>`;
+        let html = `<div class="dia ${d===hoje?'dia-hoje':''}">
+        <strong>${formatarData(d)}</strong><br>`;
 
         bloco.serv.forEach(s=>{
-            html += `<div class="servico-dia" onclick="verCliente('${s.cliente}')">🔵 ${s.cliente}</div>`;
+            html += `
+            <div class="servico-dia"
+            onclick="verCliente(${JSON.stringify(s.cliente)})">
+            🔵 ${s.cliente}
+            </div>`;
         });
 
         bloco.ret.forEach(s=>{
-            html += `<div class="retorno-dia">🟡 ${s.cliente}</div>`;
+            html += `
+            <div class="retorno-dia"
+            onclick="verCliente(${JSON.stringify(s.cliente)})">
+            🟡 ${s.cliente}
+            </div>`;
         });
 
         html += `</div>`;
 
+        cal.innerHTML += html;
+
     }
 
-    cal.innerHTML = html;
+}
+
+/* ==========================
+   VER CLIENTE
+========================== */
+function verCliente(nome){
+
+    let c = clientes.find(c => c.nome === nome);
+
+    if(!c){
+        alert("Cliente não encontrado");
+        return;
+    }
+
+    alert(
+        "CLIENTE\n\n" +
+        "Nome: " + c.nome + "\n" +
+        "Telefone: " + c.telefone + "\n" +
+        "Endereço: " + c.endereco
+    );
+
+}
+
+/* ==========================
+   DATA BR
+========================== */
+function formatarData(data){
+
+    if(!data) return "";
+
+    let partes = data.split("-");
+    if(partes.length !== 3) return data;
+
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+}
+
+/* ==========================
+   ALERTA RETORNO
+========================== */
+function alertaRetornos(){
+
+    let hoje = new Date().toISOString().split("T")[0];
+
+    let lista = servicos.filter(s => s.retorno === hoje);
+
+    if(lista.length > 0){
+
+        let msg = "RETORNOS DE HOJE:\n\n";
+
+        lista.forEach(s=>{
+            msg += "- " + s.cliente + "\n";
+        });
+
+        alert(msg);
+
+    }
 
 }
 
@@ -387,46 +451,5 @@ atualizarFinanceiro();
 atualizarHistorico();
 atualizarDashboard();
 montarCalendario();
-function alertaRetornos(){
 
-    let hoje = new Date().toISOString().split("T")[0];
-
-    let hojeRetornos = servicos.filter(s => s.retorno === hoje);
-
-    if(hojeRetornos.length > 0){
-
-        let msg = "🔔 RETORNOS DE HOJE:\n\n";
-
-        hojeRetornos.forEach(s=>{
-            msg += `- ${s.cliente}\n`;
-        });
-
-        alert(msg);
-
-    }
-
-}
-function verCliente(nome){
-
-    let c = clientes.find(c => c.nome === nome);
-
-    if(!c){
-        alert("Cliente não encontrado");
-        return;
-    }
-
-    alert(
-        "👤 CLIENTE:\n\n" +
-        "Nome: " + c.nome + "\n" +
-        "Telefone: " + c.telefone + "\n" +
-        "Endereço: " + c.endereco
-    );
-
-}function formatarData(data){
-
-    let d = new Date(data + "T00:00:00");
-
-    return d.toLocaleDateString("pt-BR");
-
-}
-${formatarData(s.retorno)}
+setTimeout(alertaRetornos, 500);
