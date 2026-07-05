@@ -204,14 +204,36 @@ li{
     align-items:center;
 }
 
-li button{
-    background:#dc3545;
-    padding:6px 10px;
+/* botões dentro da lista */
+li div{
+    display:flex;
+    gap:5px;
 }
 
-li button:hover{
-    background:#a71d2a;
+li div button{
+    padding:6px 8px;
+    border-radius:6px;
+    font-size:14px;
+}
+
+/* editar */
+li div button:first-child{
+    background:#facc15;
+    color:black;
+}
+
+li div button:first-child:hover{
+    background:#eab308;
+}
+
+/* excluir */
+li div button:last-child{
+    background:#dc3545;
     color:white;
+}
+
+li div button:last-child:hover{
+    background:#a71d2a;
 }
 
 /* =========================
@@ -224,37 +246,57 @@ li button:hover{
     gap:10px;
 }
 
+/* DIA (VERSÃO FINAL LIMPA) */
 .dia{
     background:#f1f5f9;
-    padding:10px;
-    border-radius:10px;
-    min-height:90px;
+    padding:12px;
+    border-radius:12px;
+    min-height:100px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
 }
 
 .dia-hoje{
     border:2px solid #dc3545;
 }
 
-/* SERVIÇO (AZUL) */
+/* SERVIÇO */
 .servico-dia{
     background:#2563eb;
     color:white;
-    padding:3px 6px;
+    padding:5px 8px;
     border-radius:6px;
     margin-top:5px;
     font-size:13px;
     cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-/* RETORNO (AMARELO) */
+/* RETORNO */
 .retorno-dia{
     background:#facc15;
     color:black;
-    padding:3px 6px;
+    padding:5px 8px;
     border-radius:6px;
     margin-top:5px;
     font-size:13px;
     cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* hover */
+.servico-dia,
+.retorno-dia{
+    transition:0.2s;
+}
+
+.servico-dia:hover,
+.retorno-dia:hover{
+    transform:scale(1.02);
+    opacity:0.9;
 }
 
 /* =========================
@@ -288,49 +330,4 @@ li button:hover{
 .cards{
     grid-template-columns:1fr;
 }
-
-}
-/* BOTÕES DE AÇÃO (editar/excluir) */
-li div{
-    display:flex;
-    gap:5px;
-}
-
-li div button{
-    padding:6px 8px;
-    border-radius:6px;
-    font-size:14px;
-}
-
-/* EDITAR */
-li div button:first-child{
-    background:#facc15;
-    color:black;
-}
-
-li div button:first-child:hover{
-    background:#eab308;
-}
-
-/* EXCLUIR */
-li div button:last-child{
-    background:#dc3545;
-    color:white;
-}
-
-li div button:last-child:hover{
-    background:#a71d2a;
-}
-.dia{
-    background:#f1f5f9;
-    padding:12px;
-    border-radius:12px;
-    min-height:100px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.05);
-}
-.servico-dia:hover,
-.retorno-dia:hover{
-    transform:scale(1.02);
-    transition:0.2s;
-    opacity:0.9;
 }
