@@ -3,6 +3,8 @@ let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
 let os = JSON.parse(localStorage.getItem("os")) || [];
 let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
 
+let clienteEditandoId = null;
+
 /* ==========================
    MENU
 ========================== */
@@ -13,9 +15,10 @@ function abrir(secao){
 
     document.getElementById(secao).classList.remove("hidden");
 
+    atualizarClientes();
+    atualizarSelects();
     atualizarDashboard();
     montarCalendario();
-    atualizarClientes();
 
 }
 
@@ -31,6 +34,7 @@ function addCliente(){
     if(!nome.value.trim()) return alert("Digite o nome");
 
     clientes.push({
+        id: Date.now(),
         nome: nome.value,
         telefone: telefone.value,
         endereco: endereco.value
@@ -44,6 +48,7 @@ function addCliente(){
     atualizarClientes();
     atualizarSelects();
     atualizarDashboard();
+
 }
 
 function atualizarClientes(){
@@ -57,12 +62,17 @@ function atualizarClientes(){
 
     clientes
     .filter(c => c.nome.toLowerCase().includes(filtro))
-    .forEach((c,i)=>{
+    .forEach((c)=>{
 
         lista.innerHTML += `
         <li>
             ${c.nome} - ${c.endereco}
-            <button onclick="delCliente(${i})">🗑️</button>
+
+            <div>
+                <button onclick="editarCliente(${c.id})">✏️</button>
+                <button onclick="delCliente(${c.id})">🗑️</button>
+            </div>
+
         </li>
         `;
 
@@ -70,18 +80,58 @@ function atualizarClientes(){
 
 }
 
-function delCliente(i){
+function delCliente(id){
 
-    if(confirm("Excluir cliente?")){
+    if(!confirm("Excluir cliente?")) return;
 
-        clientes.splice(i,1);
+    clientes = clientes.filter(c => c.id !== id);
 
-        salvar();
-        atualizarClientes();
-        atualizarSelects();
-        atualizarDashboard();
+    salvar();
+    atualizarClientes();
+    atualizarSelects();
+    atualizarDashboard();
 
-    }
+}
+
+/* ==========================
+   EDITAR CLIENTE
+========================== */
+function editarCliente(id){
+
+    let c = clientes.find(c => c.id === id);
+
+    if(!c) return;
+
+    clienteEditandoId = id;
+
+    document.getElementById("editNome").value = c.nome;
+    document.getElementById("editTelefone").value = c.telefone;
+    document.getElementById("editEndereco").value = c.endereco;
+
+    abrir("editarCliente");
+
+}
+
+function salvarEdicaoCliente(){
+
+    let c = clientes.find(c => c.id === clienteEditandoId);
+
+    if(!c) return;
+
+    c.nome = document.getElementById("editNome").value;
+    c.telefone = document.getElementById("editTelefone").value;
+    c.endereco = document.getElementById("editEndereco").value;
+
+    clienteEditandoId = null;
+
+    salvar();
+
+    atualizarClientes();
+    atualizarSelects();
+    atualizarDashboard();
+    montarCalendario();
+
+    abrir("clientes");
 
 }
 
@@ -120,53 +170,15 @@ function addServico(){
     retorno.setDate(retorno.getDate() + Number(dias.value || 0));
 
     servicos.push({
+        clienteId: clientes.find(c => c.nome === cliente.value)?.id,
         cliente: cliente.value,
         data: data.value,
         retorno: retorno.toISOString().split("T")[0]
     });
 
-    cliente.value = "";
-    data.value = "";
-    dias.value = "";
-
     salvar();
-    atualizarServicos();
     atualizarDashboard();
     montarCalendario();
-
-}
-
-function atualizarServicos(){
-
-    let lista = document.getElementById("listaServicos");
-
-    lista.innerHTML = "";
-
-    servicos.forEach((s,i)=>{
-
-        lista.innerHTML += `
-        <li>
-            ${s.cliente} | ${formatarData(s.data)} | retorno ${formatarData(s.retorno)}
-            <button onclick="delServico(${i})">🗑️</button>
-        </li>
-        `;
-
-    });
-
-}
-
-function delServico(i){
-
-    if(confirm("Excluir serviço?")){
-
-        servicos.splice(i,1);
-
-        salvar();
-        atualizarServicos();
-        atualizarDashboard();
-        montarCalendario();
-
-    }
 
 }
 
@@ -188,41 +200,7 @@ function addOS(){
     servico.value = "";
 
     salvar();
-    atualizarOS();
     atualizarDashboard();
-
-}
-
-function atualizarOS(){
-
-    let lista = document.getElementById("listaOS");
-
-    lista.innerHTML = "";
-
-    os.forEach((o,i)=>{
-
-        lista.innerHTML += `
-        <li>
-            ${o.cliente} - ${o.servico}
-            <button onclick="delOS(${i})">🗑️</button>
-        </li>
-        `;
-
-    });
-
-}
-
-function delOS(i){
-
-    if(confirm("Excluir OS?")){
-
-        os.splice(i,1);
-
-        salvar();
-        atualizarOS();
-        atualizarDashboard();
-
-    }
 
 }
 
@@ -308,7 +286,7 @@ function atualizarDashboard(){
     document.getElementById("totalServicos").innerText = servicos.length;
     document.getElementById("totalOS").innerText = os.length;
 
-    let total = financeiro.reduce((a,b)=>a + b.valor,0);
+    let total = financeiro.reduce((a,b)=>a+b.valor,0);
 
     document.getElementById("saldoTotal").innerText =
     "R$ " + total.toFixed(2);
@@ -349,7 +327,7 @@ function montarCalendario(){
         bloco.serv.forEach(s=>{
             html += `
             <div class="servico-dia"
-            onclick="verCliente(${JSON.stringify(s.cliente)})">
+            onclick="verCliente(${s.clienteId})">
             🔵 ${s.cliente}
             </div>`;
         });
@@ -357,7 +335,7 @@ function montarCalendario(){
         bloco.ret.forEach(s=>{
             html += `
             <div class="retorno-dia"
-            onclick="verCliente(${JSON.stringify(s.cliente)})">
+            onclick="verCliente(${s.clienteId})">
             🟡 ${s.cliente}
             </div>`;
         });
@@ -373,9 +351,9 @@ function montarCalendario(){
 /* ==========================
    VER CLIENTE
 ========================== */
-function verCliente(nome){
+function verCliente(id){
 
-    let c = clientes.find(c => c.nome === nome);
+    let c = clientes.find(c => c.id === id);
 
     if(!c){
         alert("Cliente não encontrado");
@@ -406,29 +384,6 @@ function formatarData(data){
 }
 
 /* ==========================
-   ALERTA RETORNO
-========================== */
-function alertaRetornos(){
-
-    let hoje = new Date().toISOString().split("T")[0];
-
-    let lista = servicos.filter(s => s.retorno === hoje);
-
-    if(lista.length > 0){
-
-        let msg = "RETORNOS DE HOJE:\n\n";
-
-        lista.forEach(s=>{
-            msg += "- " + s.cliente + "\n";
-        });
-
-        alert(msg);
-
-    }
-
-}
-
-/* ==========================
    SALVAR
 ========================== */
 function salvar(){
@@ -445,11 +400,7 @@ function salvar(){
 ========================== */
 atualizarClientes();
 atualizarSelects();
-atualizarServicos();
-atualizarOS();
 atualizarFinanceiro();
 atualizarHistorico();
 atualizarDashboard();
 montarCalendario();
-
-setTimeout(alertaRetornos, 500);
