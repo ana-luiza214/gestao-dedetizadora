@@ -87,7 +87,7 @@
     <input id="telefone" placeholder="Telefone">
     <input id="endereco" placeholder="Endereço">
 
-    <button onclick="addCliente()">Salvar Cliente</button>
+    <button class="btn-success" onclick="addCliente()">Salvar Cliente</button>
 
     <input id="pesquisaCliente" placeholder="Pesquisar..." oninput="atualizarClientes()">
 
@@ -118,9 +118,8 @@
     <input id="editTelefone" placeholder="Telefone">
     <input id="editEndereco" placeholder="Endereço">
 
-    <button onclick="salvarEdicaoCliente()">Salvar</button>
-
-    <button onclick="abrir('clientes')" style="background:red;">Cancelar</button>
+    <button class="btn-success" onclick="salvarEdicaoCliente()">Salvar</button>
+    <button class="btn-delete" onclick="abrir('clientes')">Cancelar</button>
 
 </section>
 
@@ -133,7 +132,7 @@
     <input id="dataServico" type="date">
     <input id="retornoDias" type="number" placeholder="Dias retorno">
 
-    <button onclick="addServico()">Salvar Serviço</button>
+    <button class="btn-success" onclick="addServico()">Salvar Serviço</button>
 
 </section>
 
@@ -145,7 +144,7 @@
     <select id="clienteOS"></select>
     <input id="servicoOS" placeholder="Descrição">
 
-    <button onclick="addOS()">Criar OS</button>
+    <button class="btn-success" onclick="addOS()">Criar OS</button>
 
 </section>
 
@@ -162,7 +161,7 @@
         <option value="saida">Saída</option>
     </select>
 
-    <button onclick="addFinanceiro()">Adicionar</button>
+    <button class="btn-success" onclick="addFinanceiro()">Adicionar</button>
 
     <h3 id="totalFinanceiro">Saldo: R$ 0,00</h3>
 
@@ -179,7 +178,7 @@
 
 </section>
 
-<!-- CALENDÁRIO SEMANAL -->
+<!-- CALENDÁRIO -->
 <section id="calendario" class="secao hidden">
 
     <h2>Calendário Semanal</h2>
@@ -191,6 +190,11 @@
 </main>
 
 <script src="app.js"></script>
+
+<script>
+    // abre dashboard automaticamente
+    abrir("dashboard");
+</script>
 
 </body>
 </html>
