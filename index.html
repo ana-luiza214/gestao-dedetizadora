@@ -2,238 +2,641 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dedetizadora Confiança - Sistema</title>
+
+    <title>Dedetizadora Confiança - Sistema de Gestão</title>
+
+    <meta name="description" content="Sistema de Gestão da Dedetizadora Confiança">
 
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<!-- =========================
+<!-- =====================================================
      TOPO
-========================= -->
+===================================================== -->
+
 <header class="topbar">
 
     <div class="logo-area">
-        <img src="logo.png" class="logo-only" alt="Logo">
+        <img
+            src="logo.png"
+            alt="Logo Dedetizadora Confiança"
+            class="logo-only">
     </div>
 
     <div class="empresa">
+
         <h1>Sistema de Gestão</h1>
+
         <p>Dedetizadora Confiança</p>
+
     </div>
 
 </header>
 
-<!-- =========================
-     MENU
-========================= -->
+<!-- =====================================================
+     MENU LATERAL
+===================================================== -->
+
 <aside class="sidebar">
 
-    <button onclick="abrir('dashboard')">📊 Dashboard</button>
-    <button onclick="abrir('clientes')">👥 Clientes</button>
-    <button onclick="abrir('servicos')">🧴 Serviços</button>
-    <button onclick="abrir('os')">📄 OS</button>
-    <button onclick="abrir('financeiro')">💰 Financeiro</button>
-    <button onclick="abrir('historico')">📚 Histórico</button>
-    <button onclick="abrir('calendario')">📅 Calendário</button>
+    <button type="button" onclick="abrir('dashboard')">
+        📊 Dashboard
+    </button>
+
+    <button type="button" onclick="abrir('clientes')">
+        👥 Clientes
+    </button>
+
+    <button type="button" onclick="abrir('servicos')">
+        🧴 Serviços
+    </button>
+
+    <button type="button" onclick="abrir('os')">
+        📄 Ordens de Serviço
+    </button>
+
+    <button type="button" onclick="abrir('financeiro')">
+        💰 Financeiro
+    </button>
+
+    <button type="button" onclick="abrir('historico')">
+        📚 Histórico
+    </button>
+
+    <button type="button" onclick="abrir('calendario')">
+        📅 Calendário
+    </button>
 
 </aside>
 
-<!-- =========================
+<!-- =====================================================
      CONTEÚDO
-========================= -->
+===================================================== -->
+
 <main class="content">
 
-<!-- DASHBOARD -->
-<section id="dashboard" class="secao">
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+    id="dashboard"
+    class="secao">
 
     <h2>Dashboard</h2>
 
     <div class="cards">
 
         <div class="card">
-            <h3>Clientes</h3>
-            <span id="totalClientes">0</span>
+
+            <h3>Total de Clientes</h3>
+
+            <span id="totalClientes">
+                0
+            </span>
+
         </div>
 
         <div class="card">
-            <h3>Serviços</h3>
-            <span id="totalServicos">0</span>
+
+            <h3>Serviços Realizados</h3>
+
+            <span id="totalServicos">
+                0
+            </span>
+
         </div>
 
         <div class="card">
-            <h3>OS</h3>
-            <span id="totalOS">0</span>
+
+            <h3>Ordens de Serviço</h3>
+
+            <span id="totalOS">
+                0
+            </span>
+
         </div>
 
         <div class="card">
-            <h3>Saldo</h3>
-            <span id="saldoTotal">R$ 0,00</span>
+
+            <h3>Saldo Financeiro</h3>
+
+            <span id="saldoTotal">
+                R$ 0,00
+            </span>
+
         </div>
 
     </div>
 
 </section>
 
-<!-- CLIENTES -->
-<section id="clientes" class="secao hidden">
+<!-- =====================================================
+     CLIENTES
+===================================================== -->
 
-    <h2>Clientes</h2>
+<section
+    id="clientes"
+    class="secao hidden">
 
-    <input id="nome" placeholder="Nome">
-    <input id="telefone" placeholder="Telefone">
-    <input id="endereco" placeholder="Endereço">
+    <h2>Cadastro de Clientes</h2>
 
-    <button class="btn-success" onclick="addCliente()">Salvar Cliente</button>
+    <label for="nome">
+        Nome
+    </label>
 
-    <input id="pesquisaCliente" placeholder="Pesquisar..." oninput="atualizarClientes()">
+    <input
+        id="nome"
+        type="text"
+        autocomplete="name"
+        placeholder="Nome completo">
+
+    <label for="telefone">
+        Telefone
+    </label>
+
+    <input
+        id="telefone"
+        type="tel"
+        autocomplete="tel"
+        placeholder="(17) 99999-9999">
+
+    <label for="endereco">
+        Endereço
+    </label>
+
+    <input
+        id="endereco"
+        type="text"
+        autocomplete="street-address"
+        placeholder="Rua, número, bairro">
+
+    <button
+        type="button"
+        class="btn-success"
+        onclick="addCliente()">
+
+        Salvar Cliente
+
+    </button>
+
+    <hr>
+
+    <label for="pesquisaCliente">
+
+        Pesquisar Cliente
+
+    </label>
+
+    <input
+        id="pesquisaCliente"
+        type="search"
+        placeholder="Digite o nome..."
+        oninput="atualizarClientes()">
 
     <ul id="listaClientes"></ul>
 
 </section>
+<!-- =====================================================
+     FICHA DO CLIENTE
+===================================================== -->
 
-<!-- FICHA CLIENTE -->
-<section id="detalheCliente" class="secao hidden">
+<section
+    id="detalheCliente"
+    class="secao hidden">
 
     <h2>Ficha do Cliente</h2>
 
     <div id="infoCliente"></div>
 
-    <h3>Histórico</h3>
+    <hr>
+
+    <h3>Histórico do Cliente</h3>
+
     <ul id="historicoCliente"></ul>
 
-    <button onclick="abrir('clientes')">Voltar</button>
+    <button
+        type="button"
+        onclick="abrir('clientes')">
+
+        ← Voltar
+
+    </button>
 
 </section>
 
-<!-- EDITAR CLIENTE -->
-<section id="editarCliente" class="secao hidden">
+<!-- =====================================================
+     EDITAR CLIENTE
+===================================================== -->
+
+<section
+    id="editarCliente"
+    class="secao hidden">
 
     <h2>Editar Cliente</h2>
 
-    <input id="editNome" placeholder="Nome">
-    <input id="editTelefone" placeholder="Telefone">
-    <input id="editEndereco" placeholder="Endereço">
+    <label for="editNome">
+        Nome
+    </label>
 
-    <button class="btn-success" onclick="salvarEdicaoCliente()">Salvar</button>
-    <button class="btn-delete" onclick="abrir('clientes')">Cancelar</button>
+    <input
+        id="editNome"
+        type="text"
+        autocomplete="name"
+        placeholder="Nome completo">
+
+    <label for="editTelefone">
+        Telefone
+    </label>
+
+    <input
+        id="editTelefone"
+        type="tel"
+        autocomplete="tel"
+        placeholder="(17) 99999-9999">
+
+    <label for="editEndereco">
+        Endereço
+    </label>
+
+    <input
+        id="editEndereco"
+        type="text"
+        autocomplete="street-address"
+        placeholder="Rua, número, bairro">
+
+    <div class="acoes">
+
+        <button
+            type="button"
+            class="btn-success"
+            onclick="salvarEdicaoCliente()">
+
+            Salvar Alterações
+
+        </button>
+
+        <button
+            type="button"
+            class="btn-delete"
+            onclick="abrir('clientes')">
+
+            Cancelar
+
+        </button>
+
+    </div>
 
 </section>
 
-<!-- SERVIÇOS -->
-<section id="servicos" class="secao hidden">
+<!-- =====================================================
+     SERVIÇOS
+===================================================== -->
 
-    <h2>Serviços</h2>
+<section
+    id="servicos"
+    class="secao hidden">
 
-    <select id="clienteServico"></select>
-    <input id="dataServico" type="date">
-    <input id="retornoDias" type="number" placeholder="Dias retorno">
+    <h2>Cadastro de Serviço</h2>
 
-    <button class="btn-success" onclick="addServico()">Salvar Serviço</button>
+    <label for="clienteServico">
+
+        Cliente
+
+    </label>
+
+    <select id="clienteServico">
+
+        <option value="" selected disabled>
+
+            Selecione um cliente
+
+        </option>
+
+    </select>
+
+    <label for="dataServico">
+
+        Data do Serviço
+
+    </label>
+
+    <input
+        id="dataServico"
+        type="date">
+
+    <label for="retornoDias">
+
+        Dias para Retorno
+
+    </label>
+
+    <input
+        id="retornoDias"
+        type="number"
+        min="0"
+        placeholder="Ex.: 180">
+
+    <button
+        type="button"
+        class="btn-success"
+        onclick="addServico()">
+
+        Salvar Serviço
+
+    </button>
+
+    <hr>
+
+    <h3>Serviços Cadastrados</h3>
+
+    <ul id="listaServicos"></ul>
 
 </section>
+<!-- =====================================================
+     ORDENS DE SERVIÇO
+===================================================== -->
 
-<!-- OS -->
-<section id="os" class="secao hidden">
+<section
+    id="os"
+    class="secao hidden">
 
     <h2>Ordens de Serviço</h2>
 
-    <select id="clienteOS"></select>
-    <input id="servicoOS" placeholder="Descrição">
+    <label for="clienteOS">
 
-    <button class="btn-success" onclick="addOS()">Criar OS</button>
+        Cliente
+
+    </label>
+
+    <select id="clienteOS">
+
+        <option value="" selected disabled>
+
+            Selecione um cliente
+
+        </option>
+
+    </select>
+
+    <label for="servicoOS">
+
+        Descrição do Serviço
+
+    </label>
+
+    <textarea
+        id="servicoOS"
+        rows="4"
+        placeholder="Descreva o serviço realizado..."></textarea>
+
+    <button
+        type="button"
+        class="btn-success"
+        onclick="addOS()">
+
+        Criar Ordem de Serviço
+
+    </button>
+
+    <hr>
+
+    <h3>Ordens de Serviço Cadastradas</h3>
+
+    <ul id="listaOS"></ul>
 
 </section>
 
-<!-- FINANCEIRO -->
-<section id="financeiro" class="secao hidden">
+<!-- =====================================================
+     FINANCEIRO
+===================================================== -->
+
+<section
+    id="financeiro"
+    class="secao hidden">
 
     <h2>Financeiro</h2>
 
-    <input id="descFin" placeholder="Descrição">
-    <input id="valorFin" type="number" placeholder="Valor">
+    <label for="descFin">
+
+        Descrição
+
+    </label>
+
+    <input
+        id="descFin"
+        type="text"
+        placeholder="Ex.: Pagamento do serviço">
+
+    <label for="valorFin">
+
+        Valor
+
+    </label>
+
+    <input
+        id="valorFin"
+        type="number"
+        step="0.01"
+        min="0"
+        placeholder="0,00">
+
+    <label for="tipoFin">
+
+        Tipo
+
+    </label>
 
     <select id="tipoFin">
-        <option value="entrada">Entrada</option>
-        <option value="saida">Saída</option>
+
+        <option value="entrada">
+            Entrada
+        </option>
+
+        <option value="saida">
+            Saída
+        </option>
+
     </select>
 
-    <button class="btn-success" onclick="addFinanceiro()">Adicionar</button>
+    <button
+        type="button"
+        class="btn-success"
+        onclick="addFinanceiro()">
 
-    <h3 id="totalFinanceiro">Saldo: R$ 0,00</h3>
+        Adicionar Lançamento
+
+    </button>
+
+    <hr>
+
+    <h3 id="totalFinanceiro">
+
+        Saldo: R$ 0,00
+
+    </h3>
 
     <ul id="listaFin"></ul>
 
 </section>
 
-<!-- HISTÓRICO -->
-<section id="historico" class="secao hidden">
+<!-- =====================================================
+     HISTÓRICO GERAL
+===================================================== -->
 
-    <h2>Histórico</h2>
+<section
+    id="historico"
+    class="secao hidden">
+
+    <h2>Histórico Geral</h2>
+
+    <p class="descricao">
+
+        Aqui serão exibidas todas as movimentações do sistema,
+        incluindo clientes cadastrados, serviços, ordens de
+        serviço e lançamentos financeiros.
+
+    </p>
 
     <ul id="listaHistorico"></ul>
 
 </section>
+<!-- =====================================================
+     CALENDÁRIO
+===================================================== -->
 
-<!-- CALENDÁRIO -->
-<section id="calendario" class="secao hidden">
+<section
+    id="calendario"
+    class="secao hidden">
 
     <h2>Calendário</h2>
 
-    <!-- CONTROLES DO CALENDÁRIO -->
     <div class="cal-toolbar">
 
-        <button onclick="periodoAnterior()">◀</button>
+        <button
+            type="button"
+            onclick="periodoAnterior()">
 
-        <span id="tituloCalendario">Calendário</span>
+            ◀
 
-        <button onclick="proximoPeriodo()">▶</button>
+        </button>
 
-        <select id="modoCalendario" onchange="trocarModoCalendario()">
-            <option value="semana">Semana</option>
-            <option value="mes" selected>Mês</option>
-            <option value="ano">Ano</option>
+        <span id="tituloCalendario">
+
+            Calendário
+
+        </span>
+
+        <button
+            type="button"
+            onclick="proximoPeriodo()">
+
+            ▶
+
+        </button>
+
+        <select
+            id="modoCalendario"
+            onchange="trocarModoCalendario()">
+
+            <option value="semana">
+                Semana
+            </option>
+
+            <option value="mes" selected>
+                Mês
+            </option>
+
+            <option value="ano">
+                Ano
+            </option>
+
         </select>
 
     </div>
 
-    <!-- LEGENDA -->
     <div class="legenda">
-        <span>🔵 Serviço</span>
-        <span>🟡 Retorno</span>
+
+        <span>
+            🔵 Serviço
+        </span>
+
+        <span>
+            🟡 Retorno
+        </span>
+
     </div>
 
-    <!-- CALENDÁRIO -->
-    <div id="cal" class="calendario-grid"></div>
+    <div
+        id="cal"
+        class="calendario-grid"
+        role="grid">
+
+    </div>
 
 </section>
 
 </main>
 
-<!-- =========================
-     MODAL CLIENTE
-========================= -->
-<div id="modalCliente" class="modal hidden">
+<!-- =====================================================
+     MODAL DO CLIENTE
+===================================================== -->
+
+<div
+    id="modalCliente"
+    class="modal hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="tituloModalCliente"
+    aria-hidden="true">
 
     <div class="modal-box">
 
-        <h3>Dados do Cliente</h3>
+        <h3 id="tituloModalCliente">
+
+            Dados do Cliente
+
+        </h3>
 
         <div id="dadosCliente"></div>
 
-        <button onclick="fecharModalCliente()">Fechar</button>
+        <div class="acoes">
+
+            <button
+                type="button"
+                onclick="fecharModalCliente()">
+
+                Fechar
+
+            </button>
+
+        </div>
 
     </div>
 
 </div>
 
+<!-- =====================================================
+     SCRIPTS
+===================================================== -->
+
 <script src="app.js"></script>
 
 <script>
+
+window.addEventListener("load", () => {
+
     abrir("dashboard");
+
+});
+
 </script>
 
 </body>
