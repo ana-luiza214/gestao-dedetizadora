@@ -15,7 +15,7 @@
     <header class="topbar">
 
         <div class="logo-area">
-            <img src="logo.png" alt="Dedetizadora Confiança" class="logo-only">
+            <img src="logo.png" class="logo-only">
         </div>
 
         <div class="empresa">
@@ -31,7 +31,7 @@
         <button onclick="abrir('dashboard')">📊 Dashboard</button>
         <button onclick="abrir('clientes')">👥 Clientes</button>
         <button onclick="abrir('servicos')">🧴 Serviços</button>
-        <button onclick="abrir('os')">📄 Ordens de Serviço</button>
+        <button onclick="abrir('os')">📄 OS</button>
         <button onclick="abrir('financeiro')">💰 Financeiro</button>
         <button onclick="abrir('historico')">📚 Histórico</button>
         <button onclick="abrir('calendario')">📅 Calendário</button>
@@ -77,19 +77,33 @@
 
             <h2>Clientes</h2>
 
-            <div class="form-grid">
-
-                <input id="nome" placeholder="Nome">
-                <input id="telefone" placeholder="Telefone">
-                <input id="endereco" placeholder="Endereço">
-
-            </div>
+            <input id="nome" placeholder="Nome">
+            <input id="telefone" placeholder="Telefone">
+            <input id="endereco" placeholder="Endereço">
 
             <button onclick="addCliente()">Salvar Cliente</button>
 
             <input id="pesquisaCliente" placeholder="Pesquisar cliente..." oninput="atualizarClientes()">
 
             <ul id="listaClientes"></ul>
+
+        </section>
+
+        <!-- 🔥 TELA DE EDIÇÃO DE CLIENTE -->
+        <section id="editarCliente" class="secao hidden">
+
+            <h2>Editar Cliente</h2>
+
+            <input id="editNome" placeholder="Nome">
+            <input id="editTelefone" placeholder="Telefone">
+            <input id="editEndereco" placeholder="Endereço">
+
+            <button onclick="salvarEdicaoCliente()">Salvar Alterações</button>
+
+            <button onclick="abrir('clientes')"
+                    style="background:#dc3545;margin-top:10px;">
+                Cancelar
+            </button>
 
         </section>
 
@@ -150,7 +164,7 @@
         <!-- CALENDÁRIO -->
         <section id="calendario" class="secao hidden">
 
-            <h2>Calendário de Serviços</h2>
+            <h2>Calendário</h2>
 
             <div id="cal" class="calendario-grid"></div>
 
