@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dedetizadora Confiança</title>
+    <title>Dedetizadora Confiança - Sistema Profissional</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,12 +17,12 @@
 <header class="topbar">
 
     <div class="logo-area">
-        <img src="logo.png" class="logo-only">
+        <img src="logo.png" class="logo-only" alt="Logo Dedetizadora Confiança">
     </div>
 
     <div class="empresa">
         <h1>Sistema de Gestão</h1>
-        <p>Dedetizadora Confiança</p>
+        <p>Dedetizadora Confiança - V2.0 Profissional</p>
     </div>
 
 </header>
@@ -32,13 +32,13 @@
 ========================= -->
 <aside class="sidebar">
 
-    <button onclick="abrir('dashboard')">📊 Dashboard</button>
-    <button onclick="abrir('clientes')">👥 Clientes</button>
-    <button onclick="abrir('servicos')">🧴 Serviços</button>
-    <button onclick="abrir('os')">📄 OS</button>
-    <button onclick="abrir('financeiro')">💰 Financeiro</button>
-    <button onclick="abrir('historico')">📚 Histórico</button>
-    <button onclick="abrir('calendario')">📅 Calendário</button>
+    <button data-abrir="dashboard">📊 Dashboard</button>
+    <button data-abrir="clientes">👥 Clientes</button>
+    <button data-abrir="servicos">🧴 Serviços</button>
+    <button data-abrir="os">📄 OS</button>
+    <button data-abrir="financeiro">💰 Financeiro</button>
+    <button data-abrir="historico">📚 Histórico</button>
+    <button data-abrir="calendario">📅 Calendário</button>
 
 </aside>
 
@@ -87,7 +87,7 @@
 
     <h2>Clientes</h2>
 
-    <input id="nome" placeholder="Nome">
+    <input id="nome" placeholder="Nome completo">
     <input id="telefone" placeholder="Telefone">
     <input id="endereco" placeholder="Endereço">
 
@@ -96,6 +96,24 @@
     <input id="pesquisaCliente" placeholder="Pesquisar cliente..." oninput="atualizarClientes()">
 
     <ul id="listaClientes"></ul>
+
+</section>
+
+<!-- =========================
+     DETALHE CLIENTE (HISTÓRICO)
+========================= -->
+<section id="detalheCliente" class="secao hidden">
+
+    <h2>Ficha do Cliente</h2>
+
+    <div id="infoCliente"></div>
+
+    <h3>Histórico Completo</h3>
+    <ul id="historicoCliente"></ul>
+
+    <button onclick="abrir('clientes')" style="margin-top:10px;">
+        Voltar
+    </button>
 
 </section>
 
@@ -131,8 +149,6 @@
 
     <button onclick="addServico()">Salvar Serviço</button>
 
-    <ul id="listaServicos"></ul>
-
 </section>
 
 <!-- =========================
@@ -147,8 +163,6 @@
 
     <button onclick="addOS()">Criar OS</button>
 
-    <ul id="listaOS"></ul>
-
 </section>
 
 <!-- =========================
@@ -161,7 +175,6 @@
     <input id="descFin" placeholder="Descrição">
     <input id="valorFin" type="number" placeholder="Valor">
 
-    <!-- TIPO -->
     <select id="tipoFin">
         <option value="entrada">Entrada</option>
         <option value="saida">Saída</option>
@@ -169,7 +182,6 @@
 
     <button onclick="addFinanceiro()">Adicionar</button>
 
-    <!-- FILTRO MÊS -->
     <input type="month" id="filtroMes" onchange="atualizarFinanceiro()">
 
     <h3 id="totalFinanceiro">Saldo: R$ 0,00</h3>
@@ -179,11 +191,11 @@
 </section>
 
 <!-- =========================
-     HISTÓRICO
+     HISTÓRICO GERAL
 ========================= -->
 <section id="historico" class="secao hidden">
 
-    <h2>Histórico Financeiro</h2>
+    <h2>Histórico Geral</h2>
 
     <ul id="listaHistorico"></ul>
 
@@ -194,7 +206,7 @@
 ========================= -->
 <section id="calendario" class="secao hidden">
 
-    <h2>Calendário</h2>
+    <h2>Calendário de Serviços</h2>
 
     <div id="cal" class="calendario-grid"></div>
 
