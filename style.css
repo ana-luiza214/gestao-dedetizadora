@@ -307,3 +307,49 @@ li button:hover{
 }
 
 }
+/* ==========================
+   CALENDÁRIO MENSAL (NOVO)
+========================== */
+
+.calendario-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:10px;
+}
+
+.dia{
+    background:#f1f5f9;
+    min-height:90px;
+    border-radius:10px;
+    padding:8px;
+    font-size:12px;
+    position:relative;
+}
+
+.dia strong{
+    font-size:13px;
+}
+
+.dia-hoje{
+    border:2px solid #dc3545;
+}
+
+/* Serviços feitos hoje */
+.servico-dia{
+    background:#2563eb;
+    color:white;
+    padding:2px 4px;
+    border-radius:6px;
+    margin-top:4px;
+    display:block;
+}
+
+/* Retornos do dia */
+.retorno-dia{
+    background:#facc15;
+    color:black;
+    padding:2px 4px;
+    border-radius:6px;
+    margin-top:4px;
+    display:block;
+}
