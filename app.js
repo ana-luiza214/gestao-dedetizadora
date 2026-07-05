@@ -4,14 +4,15 @@ let os = JSON.parse(localStorage.getItem("os")) || [];
 let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
 
 let clienteEditandoId = null;
+let clienteSelecionadoId = null;
 
 /* ==========================
-   MENU
+   NAVEGAÇÃO
 ========================== */
 function abrir(secao){
 
     document.querySelectorAll(".secao")
-    .forEach(s => s.classList.add("hidden"));
+        .forEach(s => s.classList.add("hidden"));
 
     document.getElementById(secao).classList.remove("hidden");
 
@@ -24,58 +25,80 @@ function abrir(secao){
 }
 
 /* ==========================
-   CLIENTES
+   CLIENTES - ANTI DUPLICAÇÃO
 ========================== */
+function clienteExiste(nome, telefone, endereco){
+
+    return clientes.some(c =>
+        c.nome.toLowerCase() === nome.toLowerCase() ||
+        c.telefone === telefone ||
+        c.endereco.toLowerCase() === endereco.toLowerCase()
+    );
+}
+
 function addCliente(){
 
-    let nome = document.getElementById("nome");
-    let telefone = document.getElementById("telefone");
-    let endereco = document.getElementById("endereco");
+    let nome = document.getElementById("nome").value.trim();
+    let telefone = document.getElementById("telefone").value.trim();
+    let endereco = document.getElementById("endereco").value.trim();
 
-    if(!nome.value.trim()) return alert("Digite o nome");
+    if(!nome) return alert("Digite o nome");
+
+    if(clienteExiste(nome, telefone, endereco)){
+        return alert("Cliente já cadastrado!");
+    }
 
     clientes.push({
-        id: Date.now(),
-        nome: nome.value,
-        telefone: telefone.value,
-        endereco: endereco.value
+        id: crypto.randomUUID(),
+        nome,
+        telefone,
+        endereco
     });
 
-    nome.value = "";
-    telefone.value = "";
-    endereco.value = "";
-
     salvar();
+    limparInputs();
     atualizarClientes();
     atualizarSelects();
     atualizarDashboard();
 }
 
+function limparInputs(){
+    document.getElementById("nome").value = "";
+    document.getElementById("telefone").value = "";
+    document.getElementById("endereco").value = "";
+}
+
+/* ==========================
+   LISTA CLIENTES
+========================== */
 function atualizarClientes(){
 
     let lista = document.getElementById("listaClientes");
-    let pesquisa = document.getElementById("pesquisaCliente");
+    let filtro = document.getElementById("pesquisaCliente")?.value.toLowerCase() || "";
 
     lista.innerHTML = "";
 
-    let filtro = pesquisa ? pesquisa.value.toLowerCase() : "";
-
     clientes
     .filter(c => c.nome.toLowerCase().includes(filtro))
-    .forEach((c)=>{
+    .forEach(c => {
 
         lista.innerHTML += `
         <li>
-            ${c.nome} - ${c.endereco}
+            <div onclick="verCliente('${c.id}')" style="cursor:pointer">
+                ${c.nome}
+            </div>
 
             <div>
-                <button onclick="editarCliente(${c.id})">✏️</button>
-                <button onclick="delCliente(${c.id})">🗑️</button>
+                <button onclick="editarCliente('${c.id}')">✏️</button>
+                <button onclick="delCliente('${c.id}')">🗑️</button>
             </div>
         </li>`;
     });
 }
 
+/* ==========================
+   DELETAR CLIENTE
+========================== */
 function delCliente(id){
 
     if(!confirm("Excluir cliente?")) return;
@@ -86,6 +109,44 @@ function delCliente(id){
     atualizarClientes();
     atualizarSelects();
     atualizarDashboard();
+}
+
+/* ==========================
+   DETALHE CLIENTE (HISTÓRICO COMPLETO)
+========================== */
+function verCliente(id){
+
+    clienteSelecionadoId = id;
+
+    let c = clientes.find(c => c.id === id);
+    if(!c) return;
+
+    document.getElementById("infoCliente").innerHTML = `
+        <p><strong>Nome:</strong> ${c.nome}</p>
+        <p><strong>Telefone:</strong> ${c.telefone}</p>
+        <p><strong>Endereço:</strong> ${c.endereco}</p>
+    `;
+
+    let lista = document.getElementById("historicoCliente");
+    lista.innerHTML = "";
+
+    let serv = servicos.filter(s => s.clienteId === id);
+    let ordens = os.filter(o => o.clienteId === id);
+    let fin = financeiro.filter(f => f.clienteId === id);
+
+    serv.forEach(s => {
+        lista.innerHTML += `<li>🧴 Serviço: ${s.data}</li>`;
+    });
+
+    ordens.forEach(o => {
+        lista.innerHTML += `<li>📄 OS: ${o.servico}</li>`;
+    });
+
+    fin.forEach(f => {
+        lista.innerHTML += `<li>💰 ${f.tipo}: R$ ${f.valor}</li>`;
+    });
+
+    abrir("detalheCliente");
 }
 
 /* ==========================
@@ -117,17 +178,15 @@ function salvarEdicaoCliente(){
     clienteEditandoId = null;
 
     salvar();
-
     atualizarClientes();
     atualizarSelects();
     atualizarDashboard();
-    montarCalendario();
 
     abrir("clientes");
 }
 
 /* ==========================
-   SELECTS
+   SELECTS (AGORA COM ID REAL)
 ========================== */
 function atualizarSelects(){
 
@@ -137,14 +196,14 @@ function atualizarSelects(){
     if(s1){
         s1.innerHTML = "";
         clientes.forEach(c=>{
-            s1.innerHTML += `<option>${c.nome}</option>`;
+            s1.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
         });
     }
 
     if(s2){
         s2.innerHTML = "";
         clientes.forEach(c=>{
-            s2.innerHTML += `<option>${c.nome}</option>`;
+            s2.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
         });
     }
 }
@@ -154,35 +213,20 @@ function atualizarSelects(){
 ========================== */
 function addServico(){
 
-    let cliente = document.getElementById("clienteServico");
-    let data = document.getElementById("dataServico");
-    let dias = document.getElementById("retornoDias");
+    let clienteId = document.getElementById("clienteServico").value;
+    let data = document.getElementById("dataServico").value;
+    let dias = Number(document.getElementById("retornoDias").value || 0);
 
-    if(!data.value) return alert("Escolha a data");
+    if(!data) return alert("Escolha a data");
 
-    let retorno = new Date(data.value);
-    retorno.setDate(retorno.getDate() + Number(dias.value || 0));
+    let retorno = new Date(data);
+    retorno.setDate(retorno.getDate() + dias);
 
     servicos.push({
-        clienteId: clientes.find(c => c.nome === cliente.value)?.id,
-        cliente: cliente.value,
-        data: data.value,
+        clienteId,
+        data,
         retorno: retorno.toISOString().split("T")[0]
     });
-
-    salvar();
-    atualizarDashboard();
-    montarCalendario();
-}
-
-/* ==========================
-   EXCLUIR SERVIÇO
-========================== */
-function delServico(index){
-
-    if(!confirm("Excluir este serviço?")) return;
-
-    servicos.splice(index, 1);
 
     salvar();
     atualizarDashboard();
@@ -194,136 +238,43 @@ function delServico(index){
 ========================== */
 function addOS(){
 
-    let cliente = document.getElementById("clienteOS");
-    let servico = document.getElementById("servicoOS");
+    let clienteId = document.getElementById("clienteOS").value;
+    let servico = document.getElementById("servicoOS").value;
 
-    if(!servico.value.trim()) return alert("Digite o serviço");
+    if(!servico) return alert("Digite o serviço");
 
     os.push({
-        cliente: cliente.value,
-        servico: servico.value
+        clienteId,
+        servico
     });
-
-    servico.value = "";
 
     salvar();
     atualizarDashboard();
 }
 
 /* ==========================
-   FINANCEIRO
+   FINANCEIRO (AGORA POR CLIENTE)
 ========================== */
 function addFinanceiro(){
 
-    let desc = document.getElementById("descFin");
-    let valor = document.getElementById("valorFin");
-    let tipo = document.getElementById("tipoFin");
+    let desc = document.getElementById("descFin").value;
+    let valor = Number(document.getElementById("valorFin").value);
+    let tipo = document.getElementById("tipoFin").value;
 
-    if(!desc.value.trim() || !valor.value)
-        return alert("Preencha tudo");
+    if(!desc || !valor) return alert("Preencha tudo");
 
     financeiro.push({
-        desc: desc.value,
-        valor: Number(valor.value),
-        tipo: tipo.value,
+        clienteId: clienteSelecionadoId || null,
+        desc,
+        valor,
+        tipo,
         data: new Date().toISOString().split("T")[0]
     });
 
-    desc.value = "";
-    valor.value = "";
-
     salvar();
     atualizarFinanceiro();
     atualizarHistorico();
     atualizarDashboard();
-}
-
-/* ==========================
-   EXCLUIR FINANCEIRO
-========================== */
-function delFinanceiro(index){
-
-    if(!confirm("Excluir lançamento?")) return;
-
-    financeiro.splice(index, 1);
-
-    salvar();
-    atualizarFinanceiro();
-    atualizarHistorico();
-    atualizarDashboard();
-}
-
-/* ==========================
-   FINANCEIRO LISTA + FILTRO
-========================== */
-function atualizarFinanceiro(){
-
-    let lista = document.getElementById("listaFin");
-    let totalEl = document.getElementById("totalFinanceiro");
-    let filtro = document.getElementById("filtroMes");
-
-    if(!lista || !totalEl) return;
-
-    lista.innerHTML = "";
-
-    let dados = financeiro;
-
-    if(filtro && filtro.value){
-        dados = financeiro.filter(f =>
-            f.data.startsWith(filtro.value)
-        );
-    }
-
-    let total = 0;
-
-    dados.forEach((f, index)=>{
-
-        let valorFinal = f.tipo === "entrada" ? f.valor : -f.valor;
-        total += valorFinal;
-
-        let cor = f.tipo === "entrada" ? "#16a34a" : "#dc2626";
-        let sinal = f.tipo === "entrada" ? "+" : "-";
-
-        lista.innerHTML += `
-        <li style="display:flex;justify-content:space-between;align-items:center;">
-            
-            <div>
-                <strong>${f.desc}</strong><br>
-                <small>${f.data} - ${f.tipo}</small>
-            </div>
-
-            <div style="display:flex;align-items:center;gap:10px;">
-                
-                <span style="color:${cor};font-weight:bold;">
-                    ${sinal} R$ ${f.valor.toFixed(2)}
-                </span>
-
-                <button onclick="delFinanceiro(${index})"
-                style="background:#dc3545;color:white;border:none;padding:5px 8px;border-radius:6px;cursor:pointer;">
-                    🗑️
-                </button>
-
-            </div>
-        </li>`;
-    });
-
-    totalEl.innerText = "Saldo: R$ " + total.toFixed(2);
-}
-
-/* ==========================
-   HISTÓRICO
-========================== */
-function atualizarHistorico(){
-
-    let lista = document.getElementById("listaHistorico");
-    if(!lista) return;
-
-    lista.innerHTML = "";
-
-    financeiro.forEach(f=>{
-        lista.innerHTML += `
-        <li>${f.data} - ${f.desc} - R$ ${f.valor.toFixed(2)}</li>`;
-    });
 }
 
 /* ==========================
@@ -335,119 +286,18 @@ function atualizarDashboard(){
     document.getElementById("totalServicos").innerText = servicos.length;
     document.getElementById("totalOS").innerText = os.length;
 
-    let total = financeiro.reduce((acc, f) => {
-        return f.tipo === "entrada"
-            ? acc + f.valor
-            : acc - f.valor;
-    }, 0);
+    let total = financeiro.reduce((acc, f)=>{
+        return f.tipo === "entrada" ? acc + f.valor : acc - f.valor;
+    },0);
 
     document.getElementById("saldoTotal").innerText =
         "R$ " + total.toFixed(2);
 }
 
 /* ==========================
-   CALENDÁRIO
-========================== */
-function montarCalendario(){
-
-    let cal = document.getElementById("cal");
-    if(!cal) return;
-
-    let hoje = new Date().toISOString().split("T")[0];
-
-    cal.innerHTML = "";
-
-    let datas = {};
-
-    servicos.forEach(s=>{
-
-        if(!datas[s.data]) datas[s.data] = {serv:[], ret:[]};
-        datas[s.data].serv.push(s);
-
-        if(!datas[s.retorno]) datas[s.retorno] = {serv:[], ret:[]};
-        datas[s.retorno].ret.push(s);
-    });
-
-    for(let d in datas){
-
-        let bloco = datas[d];
-
-        let html = `<div class="dia ${d===hoje?'dia-hoje':''}">
-        <strong>${formatarData(d)}</strong><br>`;
-
-        bloco.serv.forEach(s=>{
-
-            let realIndex = servicos.findIndex(x =>
-                x.clienteId === s.clienteId &&
-                x.data === s.data &&
-                x.retorno === s.retorno
-            );
-
-            html += `
-            <div class="servico-dia">
-                🔵 ${s.cliente}
-                <button onclick="delServico(${realIndex})">X</button>
-            </div>`;
-        });
-
-        bloco.ret.forEach(s=>{
-
-            let realIndex = servicos.findIndex(x =>
-                x.clienteId === s.clienteId &&
-                x.data === s.data &&
-                x.retorno === s.retorno
-            );
-
-            html += `
-            <div class="retorno-dia">
-                🟡 ${s.cliente}
-                <button onclick="delServico(${realIndex})">X</button>
-            </div>`;
-        });
-
-        html += `</div>`;
-        cal.innerHTML += html;
-    }
-}
-
-/* ==========================
-   VER CLIENTE
-========================== */
-function verCliente(id){
-
-    let c = clientes.find(c => c.id === id);
-
-    if(!c){
-        alert("Cliente não encontrado");
-        return;
-    }
-
-    alert(
-        "CLIENTE\n\n" +
-        "Nome: " + c.nome + "\n" +
-        "Telefone: " + c.telefone + "\n" +
-        "Endereço: " + c.endereco
-    );
-}
-
-/* ==========================
-   FORMATAR DATA
-========================== */
-function formatarData(data){
-
-    if(!data) return "";
-
-    let partes = data.split("-");
-    if(partes.length !== 3) return data;
-
-    return `${partes[2]}/${partes[1]}/${partes[0]}`;
-}
-
-/* ==========================
    SALVAR
 ========================== */
 function salvar(){
-
     localStorage.setItem("clientes", JSON.stringify(clientes));
     localStorage.setItem("servicos", JSON.stringify(servicos));
     localStorage.setItem("os", JSON.stringify(os));
