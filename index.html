@@ -1,6 +1,6 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-   
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -181,18 +181,58 @@
 <!-- CALENDÁRIO -->
 <section id="calendario" class="secao hidden">
 
-    <h2>Calendário Semanal</h2>
+    <h2>Calendário</h2>
 
+    <!-- CONTROLES DO CALENDÁRIO -->
+    <div class="cal-toolbar">
+
+        <button onclick="periodoAnterior()">◀</button>
+
+        <span id="tituloCalendario">Calendário</span>
+
+        <button onclick="proximoPeriodo()">▶</button>
+
+        <select id="modoCalendario" onchange="trocarModoCalendario()">
+            <option value="semana">Semana</option>
+            <option value="mes" selected>Mês</option>
+            <option value="ano">Ano</option>
+        </select>
+
+    </div>
+
+    <!-- LEGENDA -->
+    <div class="legenda">
+        <span>🔵 Serviço</span>
+        <span>🟡 Retorno</span>
+    </div>
+
+    <!-- CALENDÁRIO -->
     <div id="cal" class="calendario-grid"></div>
 
 </section>
 
 </main>
 
+<!-- =========================
+     MODAL CLIENTE
+========================= -->
+<div id="modalCliente" class="modal hidden">
+
+    <div class="modal-box">
+
+        <h3>Dados do Cliente</h3>
+
+        <div id="dadosCliente"></div>
+
+        <button onclick="fecharModalCliente()">Fechar</button>
+
+    </div>
+
+</div>
+
 <script src="app.js"></script>
 
 <script>
-    // abre dashboard automaticamente
     abrir("dashboard");
 </script>
 
