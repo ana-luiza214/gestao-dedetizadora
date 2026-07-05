@@ -383,3 +383,24 @@ function fecharModalCliente(){
         modal.classList.add("hidden");
     }
 }
+function testeCalendario(){
+
+    const cliente = clientes[0];
+
+    if(!cliente){
+        alert("Cadastre um cliente primeiro");
+        return;
+    }
+
+    servicos.push({
+        id: Date.now().toString(),
+        clienteId: cliente.id,
+        data: "2026-01-05",
+        retorno: "2026-01-10"
+    });
+
+    salvar();
+    render();
+
+    alert("Serviço de teste criado!");
+}
