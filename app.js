@@ -346,10 +346,10 @@ function montarCalendario(){
         if(data === hoje) classes += " dia-hoje";
 
         html += `<div class="${classes}">`;
-        html += `<strong>${data}</strong>`;
+        html += `<strong>${formatarData(data)}</strong>`;
 
         bloco.serv.forEach(s=>{
-            html += `<div class="servico-dia">🔵 ${s.cliente}</div>`;
+            html += `<div class="servico-dia" onclick="verCliente('${s.cliente}')">🔵 ${s.cliente}</div>`;
         });
 
         bloco.ret.forEach(s=>{
@@ -406,3 +406,27 @@ function alertaRetornos(){
     }
 
 }
+function verCliente(nome){
+
+    let c = clientes.find(c => c.nome === nome);
+
+    if(!c){
+        alert("Cliente não encontrado");
+        return;
+    }
+
+    alert(
+        "👤 CLIENTE:\n\n" +
+        "Nome: " + c.nome + "\n" +
+        "Telefone: " + c.telefone + "\n" +
+        "Endereço: " + c.endereco
+    );
+
+}function formatarData(data){
+
+    let d = new Date(data + "T00:00:00");
+
+    return d.toLocaleDateString("pt-BR");
+
+}
+${formatarData(s.retorno)}
