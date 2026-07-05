@@ -1,3 +1,4 @@
+
 *{
     margin:0;
     padding:0;
@@ -7,7 +8,21 @@
 
 body{
     background:#eef2f7;
-    color:#333;
+    color:#1f2937;
+}
+
+/* =========================
+   VARIÁVEIS (DESIGN SYSTEM)
+========================= */
+
+:root{
+    --primary:#0f4c81;
+    --secondary:#154c79;
+    --accent:#ffc107;
+    --danger:#dc3545;
+    --success:#16a34a;
+    --radius:12px;
+    --shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
 /* =========================
@@ -20,13 +35,13 @@ body{
     left:0;
     right:0;
     height:75px;
-    background:#0f4c81;
+    background:var(--primary);
     display:flex;
     align-items:center;
     justify-content:center;
     color:white;
     z-index:1000;
-    box-shadow:0 2px 10px rgba(0,0,0,0.2);
+    box-shadow:var(--shadow);
 }
 
 .logo-area{
@@ -36,7 +51,6 @@ body{
 
 .logo-only{
     height:52px;
-    width:auto;
     object-fit:contain;
 }
 
@@ -45,7 +59,7 @@ body{
 }
 
 .empresa h1{
-    font-size:22px;
+    font-size:20px;
 }
 
 .empresa p{
@@ -54,7 +68,7 @@ body{
 }
 
 /* =========================
-   MENU
+   SIDEBAR
 ========================= */
 
 .sidebar{
@@ -63,7 +77,7 @@ body{
     left:0;
     width:230px;
     height:calc(100vh - 75px);
-    background:#154c79;
+    background:var(--secondary);
     padding:15px;
     overflow-y:auto;
 }
@@ -73,16 +87,16 @@ body{
     padding:12px;
     margin-bottom:10px;
     border:none;
-    border-radius:8px;
+    border-radius:var(--radius);
     background:#1d6fa5;
     color:white;
     cursor:pointer;
-    font-size:15px;
+    font-size:14px;
     transition:0.2s;
 }
 
 .sidebar button:hover{
-    background:#ffc107;
+    background:var(--accent);
     color:black;
     transform:translateX(3px);
 }
@@ -100,8 +114,8 @@ body{
 .secao{
     background:white;
     padding:20px;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
 }
 
 .hidden{
@@ -110,11 +124,11 @@ body{
 
 h2{
     margin-bottom:15px;
-    color:#0f4c81;
+    color:var(--primary);
 }
 
 /* =========================
-   DASHBOARD
+   CARDS DASHBOARD
 ========================= */
 
 .cards{
@@ -124,12 +138,12 @@ h2{
 }
 
 .card{
-    background:#0f4c81;
+    background:var(--primary);
     color:white;
     padding:20px;
-    border-radius:12px;
+    border-radius:var(--radius);
     text-align:center;
-    transition:0.3s;
+    transition:0.2s;
 }
 
 .card:hover{
@@ -137,7 +151,7 @@ h2{
 }
 
 .card h3{
-    font-size:16px;
+    font-size:14px;
     margin-bottom:10px;
 }
 
@@ -147,22 +161,24 @@ h2{
 }
 
 /* =========================
-   FORMULÁRIOS
+   INPUTS
 ========================= */
 
 input, select{
     width:100%;
     padding:10px;
     margin-bottom:10px;
-    border:1px solid #ccc;
-    border-radius:8px;
+    border:1px solid #d1d5db;
+    border-radius:var(--radius);
     font-size:14px;
+    transition:0.2s;
 }
 
 input:focus, select:focus{
     outline:none;
-    border-color:#0f4c81;
+    border-color:var(--primary);
     box-shadow:0 0 5px rgba(15,76,129,0.3);
+    transform:scale(1.01);
 }
 
 /* =========================
@@ -172,15 +188,15 @@ input:focus, select:focus{
 button{
     padding:10px 15px;
     border:none;
-    border-radius:8px;
-    background:#0f4c81;
+    border-radius:var(--radius);
+    background:var(--primary);
     color:white;
     cursor:pointer;
     transition:0.2s;
 }
 
 button:hover{
-    background:#ffc107;
+    background:var(--accent);
     color:black;
 }
 
@@ -194,17 +210,24 @@ ul{
 }
 
 li{
-    background:#f8f9fa;
-    margin-bottom:8px;
+    background:white;
+    margin-bottom:10px;
     padding:12px;
-    border-left:5px solid #0f4c81;
-    border-radius:8px;
+    border:1px solid #e5e7eb;
+    border-left:5px solid var(--primary);
+    border-radius:var(--radius);
     display:flex;
     justify-content:space-between;
     align-items:center;
+    transition:0.2s;
 }
 
-/* botões lista */
+li:hover{
+    transform:translateX(3px);
+    box-shadow:var(--shadow);
+}
+
+/* botões dentro da lista */
 li div{
     display:flex;
     gap:5px;
@@ -212,28 +235,20 @@ li div{
 
 li div button{
     padding:6px 8px;
-    border-radius:6px;
-    font-size:14px;
+    border-radius:8px;
+    font-size:13px;
 }
 
 /* editar */
 li div button:first-child{
-    background:#facc15;
+    background:var(--accent);
     color:black;
-}
-
-li div button:first-child:hover{
-    background:#eab308;
 }
 
 /* excluir */
 li div button:last-child{
-    background:#dc3545;
+    background:var(--danger);
     color:white;
-}
-
-li div button:last-child:hover{
-    background:#a71d2a;
 }
 
 /* =========================
@@ -246,80 +261,57 @@ li div button:last-child:hover{
     gap:10px;
 }
 
-/* DIA */
 .dia{
-    background:#f1f5f9;
+    background:#f8fafc;
     padding:12px;
-    border-radius:12px;
+    border-radius:var(--radius);
     min-height:100px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+    box-shadow:var(--shadow);
+    transition:0.2s;
+}
+
+.dia:hover{
+    transform:translateY(-2px);
 }
 
 .dia-hoje{
-    border:2px solid #dc3545;
+    border:2px solid var(--danger);
 }
 
-/* SERVIÇO */
 .servico-dia{
     background:#2563eb;
     color:white;
     padding:5px 8px;
-    border-radius:6px;
+    border-radius:8px;
     margin-top:5px;
-    font-size:13px;
+    font-size:12px;
     display:flex;
     justify-content:space-between;
-    align-items:center;
 }
 
-/* RETORNO */
 .retorno-dia{
-    background:#facc15;
+    background:var(--accent);
     color:black;
     padding:5px 8px;
-    border-radius:6px;
+    border-radius:8px;
     margin-top:5px;
-    font-size:13px;
+    font-size:12px;
     display:flex;
     justify-content:space-between;
-    align-items:center;
-}
-
-/* hover efeito */
-.servico-dia,
-.retorno-dia{
-    transition:0.2s;
-}
-
-.servico-dia:hover,
-.retorno-dia:hover{
-    transform:scale(1.02);
-    opacity:0.9;
 }
 
 /* =========================
    FINANCEIRO
 ========================= */
 
-/* saldo positivo/negativo */
 .financeiro-entrada{
-    color:#16a34a;
+    color:var(--success);
     font-weight:bold;
 }
 
 .financeiro-saida{
-    color:#dc2626;
+    color:var(--danger);
     font-weight:bold;
-}
-
-/* botão lixeira financeiro */
-.financeiro-btn{
-    background:#dc3545;
-    color:white;
-    border:none;
-    padding:5px 8px;
-    border-radius:6px;
-    cursor:pointer;
 }
 
 /* =========================
@@ -329,25 +321,25 @@ li div button:last-child:hover{
 @media(max-width:900px){
 
 .sidebar{
-    position:relative;
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
     width:100%;
     height:auto;
+    display:flex;
+    overflow-x:auto;
+}
+
+.sidebar button{
+    flex:1;
+    font-size:12px;
+    margin-bottom:0;
 }
 
 .content{
     margin-left:0;
-    margin-top:10px;
-}
-
-.topbar{
-    flex-direction:column;
-    height:auto;
-    padding:10px;
-}
-
-.logo-area{
-    position:static;
-    margin-bottom:10px;
+    margin-top:100px;
 }
 
 .cards{
