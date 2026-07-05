@@ -204,7 +204,7 @@ li{
     align-items:center;
 }
 
-/* botões dentro da lista */
+/* botões lista */
 li div{
     display:flex;
     gap:5px;
@@ -246,7 +246,7 @@ li div button:last-child:hover{
     gap:10px;
 }
 
-/* DIA (VERSÃO FINAL LIMPA) */
+/* DIA */
 .dia{
     background:#f1f5f9;
     padding:12px;
@@ -267,7 +267,6 @@ li div button:last-child:hover{
     border-radius:6px;
     margin-top:5px;
     font-size:13px;
-    cursor:pointer;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -281,13 +280,12 @@ li div button:last-child:hover{
     border-radius:6px;
     margin-top:5px;
     font-size:13px;
-    cursor:pointer;
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
-/* hover */
+/* hover efeito */
 .servico-dia,
 .retorno-dia{
     transition:0.2s;
@@ -297,6 +295,31 @@ li div button:last-child:hover{
 .retorno-dia:hover{
     transform:scale(1.02);
     opacity:0.9;
+}
+
+/* =========================
+   FINANCEIRO
+========================= */
+
+/* saldo positivo/negativo */
+.financeiro-entrada{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+.financeiro-saida{
+    color:#dc2626;
+    font-weight:bold;
+}
+
+/* botão lixeira financeiro */
+.financeiro-btn{
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:5px 8px;
+    border-radius:6px;
+    cursor:pointer;
 }
 
 /* =========================
