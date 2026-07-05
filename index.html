@@ -83,19 +83,19 @@
 
     <h2>Clientes</h2>
 
-    <input id="nome" placeholder="Nome completo">
+    <input id="nome" placeholder="Nome">
     <input id="telefone" placeholder="Telefone">
     <input id="endereco" placeholder="Endereço">
 
     <button onclick="addCliente()">Salvar Cliente</button>
 
-    <input id="pesquisaCliente" placeholder="Pesquisar cliente..." oninput="atualizarClientes()">
+    <input id="pesquisaCliente" placeholder="Pesquisar..." oninput="atualizarClientes()">
 
     <ul id="listaClientes"></ul>
 
 </section>
 
-<!-- DETALHE CLIENTE -->
+<!-- FICHA CLIENTE -->
 <section id="detalheCliente" class="secao hidden">
 
     <h2>Ficha do Cliente</h2>
@@ -120,9 +120,7 @@
 
     <button onclick="salvarEdicaoCliente()">Salvar</button>
 
-    <button onclick="abrir('clientes')" style="background:#dc3545;margin-top:10px;">
-        Cancelar
-    </button>
+    <button onclick="abrir('clientes')" style="background:red;">Cancelar</button>
 
 </section>
 
@@ -133,7 +131,7 @@
 
     <select id="clienteServico"></select>
     <input id="dataServico" type="date">
-    <input id="retornoDias" type="number" placeholder="Dias para retorno">
+    <input id="retornoDias" type="number" placeholder="Dias retorno">
 
     <button onclick="addServico()">Salvar Serviço</button>
 
@@ -145,7 +143,7 @@
     <h2>Ordens de Serviço</h2>
 
     <select id="clienteOS"></select>
-    <input id="servicoOS" placeholder="Descrição do serviço">
+    <input id="servicoOS" placeholder="Descrição">
 
     <button onclick="addOS()">Criar OS</button>
 
@@ -166,8 +164,6 @@
 
     <button onclick="addFinanceiro()">Adicionar</button>
 
-    <input type="month" id="filtroMes" onchange="atualizarFinanceiro()">
-
     <h3 id="totalFinanceiro">Saldo: R$ 0,00</h3>
 
     <ul id="listaFin"></ul>
@@ -177,16 +173,16 @@
 <!-- HISTÓRICO -->
 <section id="historico" class="secao hidden">
 
-    <h2>Histórico Geral</h2>
+    <h2>Histórico</h2>
 
     <ul id="listaHistorico"></ul>
 
 </section>
 
-<!-- CALENDÁRIO -->
+<!-- CALENDÁRIO SEMANAL -->
 <section id="calendario" class="secao hidden">
 
-    <h2>Calendário</h2>
+    <h2>Calendário Semanal</h2>
 
     <div id="cal" class="calendario-grid"></div>
 
