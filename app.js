@@ -3,185 +3,387 @@ let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
 let os = JSON.parse(localStorage.getItem("os")) || [];
 let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
 
-/* MENU */
-function abrir(secao) {
-  document.querySelectorAll(".secao").forEach(s => s.classList.add("hidden"));
-  document.getElementById(secao).classList.remove("hidden");
+/* ==========================
+   MENU
+========================== */
+function abrir(secao){
+    document.querySelectorAll(".secao").forEach(s => s.classList.add("hidden"));
+    document.getElementById(secao).classList.remove("hidden");
+
+    atualizarDashboard();
+    montarCalendario();
 }
 
-/* CLIENTES */
-function addCliente() {
-  clientes.push({
-    nome: nome.value,
-    telefone: telefone.value,
-    endereco: endereco.value
-  });
+/* ==========================
+   CLIENTES
+========================== */
+function addCliente(){
 
-  salvar();
-  atualizarClientes();
-  atualizarSelects();
+    let nome = document.getElementById("nome");
+    let telefone = document.getElementById("telefone");
+    let endereco = document.getElementById("endereco");
+
+    if(!nome.value.trim()) return alert("Digite o nome");
+
+    clientes.push({
+        nome: nome.value,
+        telefone: telefone.value,
+        endereco: endereco.value
+    });
+
+    nome.value = "";
+    telefone.value = "";
+    endereco.value = "";
+
+    salvar();
+    atualizarClientes();
+    atualizarSelects();
+    atualizarDashboard();
 }
 
-function atualizarClientes() {
-  listaClientes.innerHTML = "";
+function atualizarClientes(){
 
-  clientes.forEach((c, i) => {
-    listaClientes.innerHTML += `
-      <li>
-        ${c.nome} - ${c.endereco}
-        <button onclick="delCliente(${i})">🗑️</button>
-      </li>
-    `;
-  });
+    let lista = document.getElementById("listaClientes");
+    let pesquisa = document.getElementById("pesquisaCliente");
+
+    lista.innerHTML = "";
+
+    let filtro = pesquisa ? pesquisa.value.toLowerCase() : "";
+
+    clientes
+    .filter(c => c.nome.toLowerCase().includes(filtro))
+    .forEach((c,i)=>{
+
+        lista.innerHTML += `
+        <li>
+            ${c.nome} - ${c.endereco}
+            <button onclick="delCliente(${i})">🗑️</button>
+        </li>
+        `;
+
+    });
 }
 
-function delCliente(i) {
-  clientes.splice(i, 1);
-  salvar();
-  atualizarClientes();
-  atualizarSelects();
+function delCliente(i){
+
+    if(confirm("Excluir cliente?")){
+
+        clientes.splice(i,1);
+
+        salvar();
+        atualizarClientes();
+        atualizarSelects();
+        atualizarDashboard();
+
+    }
 }
 
-/* SELECT CLIENTES */
-function atualizarSelects() {
-  clienteServico.innerHTML = "";
-  clienteOS.innerHTML = "";
+/* ==========================
+   SELECTS
+========================== */
+function atualizarSelects(){
 
-  clientes.forEach(c => {
-    clienteServico.innerHTML += `<option>${c.nome}</option>`;
-    clienteOS.innerHTML += `<option>${c.nome}</option>`;
-  });
+    let s1 = document.getElementById("clienteServico");
+    let s2 = document.getElementById("clienteOS");
+
+    s1.innerHTML = "";
+    s2.innerHTML = "";
+
+    clientes.forEach(c=>{
+
+        s1.innerHTML += `<option>${c.nome}</option>`;
+        s2.innerHTML += `<option>${c.nome}</option>`;
+
+    });
 }
 
-/* SERVIÇOS */
-function addServico() {
-  let data = dataServico.value;
+/* ==========================
+   SERVIÇOS
+========================== */
+function addServico(){
 
-  let retorno = new Date(data);
-  retorno.setDate(retorno.getDate() + Number(retornoDias.value));
+    let cliente = document.getElementById("clienteServico");
+    let data = document.getElementById("dataServico");
+    let dias = document.getElementById("retornoDias");
 
-  servicos.push({
-    cliente: clienteServico.value,
-    data,
-    retorno: retorno.toISOString().split("T")[0]
-  });
+    if(!data.value) return alert("Escolha a data");
 
-  salvar();
-  atualizarServicos();
+    let retorno = new Date(data.value);
+    retorno.setDate(retorno.getDate() + Number(dias.value || 0));
+
+    servicos.push({
+        cliente: cliente.value,
+        data: data.value,
+        retorno: retorno.toISOString().split("T")[0]
+    });
+
+    cliente.value = "";
+    data.value = "";
+    dias.value = "";
+
+    salvar();
+    atualizarServicos();
+    atualizarDashboard();
+    montarCalendario();
 }
 
-function atualizarServicos() {
-  listaServicos.innerHTML = "";
+function atualizarServicos(){
 
-  servicos.forEach((s, i) => {
-    listaServicos.innerHTML += `
-      <li>
-        ${s.cliente} | ${s.data} | retorno ${s.retorno}
-        <button onclick="delServico(${i})">🗑️</button>
-      </li>
-    `;
-  });
+    let lista = document.getElementById("listaServicos");
+
+    lista.innerHTML = "";
+
+    servicos.forEach((s,i)=>{
+
+        lista.innerHTML += `
+        <li>
+            ${s.cliente} | ${s.data} | retorno ${s.retorno}
+            <button onclick="delServico(${i})">🗑️</button>
+        </li>
+        `;
+
+    });
+
 }
 
-function delServico(i) {
-  servicos.splice(i, 1);
-  salvar();
-  atualizarServicos();
+function delServico(i){
+
+    if(confirm("Excluir serviço?")){
+
+        servicos.splice(i,1);
+
+        salvar();
+        atualizarServicos();
+        atualizarDashboard();
+        montarCalendario();
+
+    }
+
 }
 
-/* OS */
-function addOS() {
-  os.push({
-    cliente: clienteOS.value,
-    servico: servicoOS.value
-  });
+/* ==========================
+   OS
+========================== */
+function addOS(){
 
-  salvar();
-  atualizarOS();
+    let cliente = document.getElementById("clienteOS");
+    let servico = document.getElementById("servicoOS");
+
+    if(!servico.value.trim()) return alert("Digite o serviço");
+
+    os.push({
+        cliente: cliente.value,
+        servico: servico.value
+    });
+
+    servico.value = "";
+
+    salvar();
+    atualizarOS();
+    atualizarDashboard();
 }
 
-function atualizarOS() {
-  listaOS.innerHTML = "";
+function atualizarOS(){
 
-  os.forEach((o, i) => {
-    listaOS.innerHTML += `
-      <li>
-        ${o.cliente} - ${o.servico}
-        <button onclick="delOS(${i})">🗑️</button>
-      </li>
-    `;
-  });
+    let lista = document.getElementById("listaOS");
+
+    lista.innerHTML = "";
+
+    os.forEach((o,i)=>{
+
+        lista.innerHTML += `
+        <li>
+            ${o.cliente} - ${o.servico}
+            <button onclick="delOS(${i})">🗑️</button>
+        </li>
+        `;
+
+    });
+
 }
 
-function delOS(i) {
-  os.splice(i, 1);
-  salvar();
-  atualizarOS();
+function delOS(i){
+
+    if(confirm("Excluir OS?")){
+
+        os.splice(i,1);
+
+        salvar();
+        atualizarOS();
+        atualizarDashboard();
+
+    }
+
 }
 
-/* FINANCEIRO */
-function addFinanceiro() {
-  financeiro.push({
-    desc: descFin.value,
-    valor: Number(valorFin.value)
-  });
+/* ==========================
+   FINANCEIRO
+========================== */
+function addFinanceiro(){
 
-  salvar();
-  atualizarFinanceiro();
-  atualizarHistorico();
+    let desc = document.getElementById("descFin");
+    let valor = document.getElementById("valorFin");
+
+    if(!desc.value.trim() || !valor.value) return alert("Preencha tudo");
+
+    financeiro.push({
+        desc: desc.value,
+        valor: Number(valor.value),
+        data: new Date().toLocaleDateString("pt-BR")
+    });
+
+    desc.value = "";
+    valor.value = "";
+
+    salvar();
+    atualizarFinanceiro();
+    atualizarHistorico();
+    atualizarDashboard();
 }
 
-function atualizarFinanceiro() {
-  listaFin.innerHTML = "";
+function atualizarFinanceiro(){
 
-  financeiro.forEach(f => {
-    listaFin.innerHTML += `<li>${f.desc} - R$ ${f.valor}</li>`;
-  });
+    let lista = document.getElementById("listaFin");
+    let totalEl = document.getElementById("totalFinanceiro");
+
+    let total = 0;
+
+    lista.innerHTML = "";
+
+    financeiro.forEach(f=>{
+
+        total += f.valor;
+
+        lista.innerHTML += `
+        <li>
+            ${f.desc} - R$ ${f.valor.toFixed(2)}
+        </li>
+        `;
+
+    });
+
+    totalEl.innerText = "Total: R$ " + total.toFixed(2);
 }
 
-/* HISTÓRICO */
-function atualizarHistorico() {
-  listaHistorico.innerHTML = "";
+/* ==========================
+   HISTÓRICO
+========================== */
+function atualizarHistorico(){
 
-  financeiro.forEach(f => {
-    listaHistorico.innerHTML += `<li>${f.desc} - R$ ${f.valor}</li>`;
-  });
+    let lista = document.getElementById("listaHistorico");
+
+    lista.innerHTML = "";
+
+    financeiro.forEach(f=>{
+
+        lista.innerHTML += `
+        <li>
+            ${f.data} - ${f.desc} - R$ ${f.valor.toFixed(2)}
+        </li>
+        `;
+
+    });
+
 }
 
-/* CALENDÁRIO */
-function montarCalendario() {
-  let html = "";
+/* ==========================
+   DASHBOARD
+========================== */
+function atualizarDashboard(){
 
-  servicos.forEach(s => {
-    let cor = s.retorno === new Date().toISOString().split("T")[0]
-      ? "#facc15"
-      : "#2563eb";
+    let clientesEl = document.getElementById("totalClientes");
+    let servicosEl = document.getElementById("totalServicos");
+    let osEl = document.getElementById("totalOS");
+    let saldoEl = document.getElementById("saldoTotal");
 
-    html += `
-      <div style="background:${cor};color:white;padding:10px;margin:5px;border-radius:6px;">
-        ${s.data} - ${s.cliente} <br>
-        retorno: ${s.retorno}
-      </div>
-    `;
-  });
+    let total = financeiro.reduce((a,b)=>a+b.valor,0);
 
-  cal.innerHTML = html;
+    clientesEl.innerText = clientes.length;
+    servicosEl.innerText = servicos.length;
+    osEl.innerText = os.length;
+    saldoEl.innerText = "R$ " + total.toFixed(2);
+
 }
 
-setInterval(montarCalendario, 1000);
+/* ==========================
+   CALENDÁRIO (NOVO)
+========================== */
+function montarCalendario(){
 
-/* SALVAR */
-function salvar() {
-  localStorage.setItem("clientes", JSON.stringify(clientes));
-  localStorage.setItem("servicos", JSON.stringify(servicos));
-  localStorage.setItem("os", JSON.stringify(os));
-  localStorage.setItem("financeiro", JSON.stringify(financeiro));
+    let cal = document.getElementById("cal");
+    if(!cal) return;
+
+    let hoje = new Date().toISOString().split("T")[0];
+
+    let html = "";
+
+    let eventosPorDia = {};
+
+    servicos.forEach(s=>{
+
+        if(!eventosPorDia[s.data]) eventosPorDia[s.data] = {serv:[], ret:[]};
+
+        eventosPorDia[s.data].serv.push(s);
+
+    });
+
+    servicos.forEach(s=>{
+
+        if(!eventosPorDia[s.retorno]) eventosPorDia[s.retorno] = {serv:[], ret:[]};
+
+        eventosPorDia[s.retorno].ret.push(s);
+
+    });
+
+    for(let data in eventosPorDia){
+
+        let bloco = eventosPorDia[data];
+
+        let cor = "#f1f5f9";
+
+        let classes = "dia";
+
+        if(data === hoje) classes += " dia-hoje";
+
+        html += `<div class="${classes}">`;
+        html += `<strong>${data}</strong>`;
+
+        bloco.serv.forEach(s=>{
+            html += `<div class="servico-dia">🔵 ${s.cliente}</div>`;
+        });
+
+        bloco.ret.forEach(s=>{
+            html += `<div class="retorno-dia">🟡 ${s.cliente}</div>`;
+        });
+
+        html += `</div>`;
+
+    }
+
+    cal.innerHTML = html;
+
 }
 
-/* INIT */
+/* ==========================
+   SALVAR
+========================== */
+function salvar(){
+
+    localStorage.setItem("clientes", JSON.stringify(clientes));
+    localStorage.setItem("servicos", JSON.stringify(servicos));
+    localStorage.setItem("os", JSON.stringify(os));
+    localStorage.setItem("financeiro", JSON.stringify(financeiro));
+
+}
+
+/* ==========================
+   INIT
+========================== */
 atualizarClientes();
 atualizarSelects();
 atualizarServicos();
 atualizarOS();
 atualizarFinanceiro();
 atualizarHistorico();
+atualizarDashboard();
+montarCalendario();
