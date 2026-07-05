@@ -1,4 +1,4 @@
-alert("JS CARREGOU");   
+alert("JS CARREGOU");
 
 /* ==========================================
    DADOS
@@ -33,9 +33,6 @@ function abrir(id){
         s.classList.add("hidden");
     });
 
-    const modal = document.getElementById("modalCliente");
-    if(modal) modal.classList.add("hidden");
-
     const alvo = document.getElementById(id);
     if(alvo) alvo.classList.remove("hidden");
 
@@ -43,41 +40,16 @@ function abrir(id){
 }
 
 /* ==========================================
-   RENDER GERAL
+   RENDER
 ========================================== */
 
 function render(){
-    atualizarDashboard();
     atualizarClientes();
     atualizarServicos();
     atualizarOS();
     atualizarFinanceiro();
     montarCalendario();
     preencherClientes();
-}
-
-/* ==========================================
-   DASHBOARD
-========================================== */
-
-function atualizarDashboard(){
-
-    const c = document.getElementById("totalClientes");
-    const s = document.getElementById("totalServicos");
-    const o = document.getElementById("totalOS");
-    const f = document.getElementById("saldoTotal");
-
-    if(c) c.textContent = clientes.length;
-    if(s) s.textContent = servicos.length;
-    if(o) o.textContent = os.length;
-
-    let saldo = 0;
-
-    financeiro.forEach(x=>{
-        saldo += x.tipo === "entrada" ? Number(x.valor) : -Number(x.valor);
-    });
-
-    if(f) f.textContent = "R$ " + saldo.toFixed(2).replace(".", ",");
 }
 
 /* ==========================================
@@ -90,7 +62,9 @@ function addCliente(){
     const telefone = document.getElementById("telefone").value.trim();
     const endereco = document.getElementById("endereco").value.trim();
 
-    if(!nome || !telefone || !endereco) return alert("Preencha tudo");
+    if(!nome || !telefone || !endereco){
+        return alert("Preencha tudo");
+    }
 
     clientes.push({
         id: Date.now().toString(),
@@ -132,8 +106,6 @@ function atualizarClientes(){
 }
 
 function delCliente(id){
-
-    if(!confirm("Excluir cliente?")) return;
 
     clientes = clientes.filter(c=>c.id!==id);
     servicos = servicos.filter(s=>s.clienteId!==id);
@@ -192,6 +164,30 @@ function salvarEdicaoCliente(){
    SERVIÇOS
 ========================================== */
 
+function addServico(){
+
+    const clienteId = document.getElementById("clienteServico").value;
+    const data = document.getElementById("dataServico").value;
+    const retornoDias = Number(document.getElementById("retornoDias").value || 0);
+
+    if(!clienteId || !data){
+        return alert("Preencha tudo");
+    }
+
+    let retorno = new Date(data);
+    retorno.setDate(retorno.getDate() + retornoDias);
+
+    servicos.push({
+        id: Date.now().toString(),
+        clienteId,
+        data,
+        retorno: retorno.toISOString().split("T")[0]
+    });
+
+    salvar();
+    render();
+}
+
 function atualizarServicos(){
 
     const lista = document.getElementById("listaServicos");
@@ -207,11 +203,9 @@ function atualizarServicos(){
         <li>
             <span>
                 ${c?.nome || "Cliente"}<br>
-                ${s.data} - retorno ${s.retorno || ""}
+                ${s.data} → ${s.retorno}
             </span>
-            <div>
-                <button class="btn-delete" onclick="delServico(${i})">🗑️</button>
-            </div>
+            <button class="btn-delete" onclick="delServico(${i})">🗑️</button>
         </li>`;
     });
 }
@@ -225,6 +219,26 @@ function delServico(i){
 /* ==========================================
    OS
 ========================================== */
+
+function addOS(){
+
+    const clienteId = document.getElementById("clienteOS").value;
+    const servico = document.getElementById("servicoOS").value;
+
+    if(!clienteId || !servico){
+        return alert("Preencha tudo");
+    }
+
+    os.push({
+        id: Date.now().toString(),
+        clienteId,
+        servico,
+        data: new Date().toISOString().split("T")[0]
+    });
+
+    salvar();
+    render();
+}
 
 function atualizarOS(){
 
@@ -243,9 +257,7 @@ function atualizarOS(){
                 ${c?.nome || "Cliente"}<br>
                 ${o.servico}
             </span>
-            <div>
-                <button class="btn-delete" onclick="delOS(${i})">🗑️</button>
-            </div>
+            <button class="btn-delete" onclick="delOS(${i})">🗑️</button>
         </li>`;
     });
 }
@@ -259,6 +271,29 @@ function delOS(i){
 /* ==========================================
    FINANCEIRO
 ========================================== */
+
+function addFinanceiro(){
+
+    const desc = document.getElementById("descFin").value;
+    const valor = Number(document.getElementById("valorFin").value);
+    const tipo = document.getElementById("tipoFin").value;
+
+    if(!desc || isNaN(valor)){
+        return alert("Preencha tudo");
+    }
+
+    financeiro.push({
+        id: Date.now().toString(),
+        clienteId: clienteSelecionadoId,
+        desc,
+        valor,
+        tipo,
+        data: new Date().toISOString().split("T")[0]
+    });
+
+    salvar();
+    render();
+}
 
 function atualizarFinanceiro(){
 
@@ -282,28 +317,9 @@ function atualizarFinanceiro(){
         </li>`;
     });
 
-    if(total) total.textContent = "Saldo: R$ " + saldo.toFixed(2);
-}
-
-function addFinanceiro(){
-
-    const desc = document.getElementById("descFin").value;
-    const valor = Number(document.getElementById("valorFin").value);
-    const tipo = document.getElementById("tipoFin").value;
-
-    if(!desc || isNaN(valor)) return alert("Preencha");
-
-    financeiro.push({
-        id: Date.now().toString(),
-        clienteId: clienteSelecionadoId,
-        desc,
-        valor,
-        tipo,
-        data: new Date().toISOString().split("T")[0]
-    });
-
-    salvar();
-    render();
+    if(total){
+        total.textContent = "Saldo: R$ " + saldo.toFixed(2);
+    }
 }
 
 function delFinanceiro(i){
@@ -313,7 +329,7 @@ function delFinanceiro(i){
 }
 
 /* ==========================================
-   CALENDÁRIO
+   CALENDÁRIO (FUNCIONANDO)
 ========================================== */
 
 function montarCalendario(){
@@ -329,13 +345,12 @@ function montarCalendario(){
 
         const c = clientes.find(x=>x.id===s.clienteId);
 
-        if(!dias[s.data]) dias[s.data]=[];
-
-        dias[s.data].push("🔵 "+(c?.nome||"Cliente"));
+        if(!dias[s.data]) dias[s.data] = [];
+        dias[s.data].push("🔵 " + (c?.nome || "Cliente"));
 
         if(s.retorno){
-            if(!dias[s.retorno]) dias[s.retorno]=[];
-            dias[s.retorno].push("🟡 retorno "+(c?.nome||"Cliente"));
+            if(!dias[s.retorno]) dias[s.retorno] = [];
+            dias[s.retorno].push("🟡 Retorno " + (c?.nome || "Cliente"));
         }
     });
 
@@ -349,20 +364,18 @@ function montarCalendario(){
 }
 
 /* ==========================================
-   CLIENTES SELECT
+   SELECT CLIENTES
 ========================================== */
 
 function preencherClientes(){
 
-    const selects = [
-        document.getElementById("clienteServico"),
-        document.getElementById("clienteOS")
-    ];
+    const sel1 = document.getElementById("clienteServico");
+    const sel2 = document.getElementById("clienteOS");
 
-    selects.forEach(sel=>{
+    [sel1, sel2].forEach(sel=>{
         if(!sel) return;
 
-        sel.innerHTML = `<option value="">Selecione</option>`;
+        sel.innerHTML = `<option disabled selected>Selecione</option>`;
 
         clientes.forEach(c=>{
             sel.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
@@ -371,36 +384,9 @@ function preencherClientes(){
 }
 
 /* ==========================================
-   INICIAL
+   INICIO
 ========================================== */
 
 window.addEventListener("load",()=>{
     abrir("dashboard");
 });
-function fecharModalCliente(){
-    const modal = document.getElementById("modalCliente");
-    if(modal){
-        modal.classList.add("hidden");
-    }
-}
-function testeCalendario(){
-
-    const cliente = clientes[0];
-
-    if(!cliente){
-        alert("Cadastre um cliente primeiro");
-        return;
-    }
-
-    servicos.push({
-        id: Date.now().toString(),
-        clienteId: cliente.id,
-        data: "2026-01-05",
-        retorno: "2026-01-10"
-    });
-
-    salvar();
-    render();
-
-    alert("Serviço de teste criado!");
-}
