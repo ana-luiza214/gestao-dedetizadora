@@ -99,7 +99,9 @@
 
 </section>
 
-<!-- EDITAR CLIENTE -->
+<!-- =========================
+     EDITAR CLIENTE
+========================= -->
 <section id="editarCliente" class="secao hidden">
 
     <h2>Editar Cliente</h2>
@@ -159,9 +161,18 @@
     <input id="descFin" placeholder="Descrição">
     <input id="valorFin" type="number" placeholder="Valor">
 
+    <!-- TIPO -->
+    <select id="tipoFin">
+        <option value="entrada">Entrada</option>
+        <option value="saida">Saída</option>
+    </select>
+
     <button onclick="addFinanceiro()">Adicionar</button>
 
-    <h3 id="totalFinanceiro">Total: R$ 0,00</h3>
+    <!-- FILTRO MÊS -->
+    <input type="month" id="filtroMes" onchange="atualizarFinanceiro()">
+
+    <h3 id="totalFinanceiro">Saldo: R$ 0,00</h3>
 
     <ul id="listaFin"></ul>
 
