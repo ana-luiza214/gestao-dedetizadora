@@ -988,3 +988,6 @@ function safeCall(fn) {
     }
 
 }
+function fecharModalCliente(){
+    document.getElementById("modalCliente").classList.add("hidden");
+}
