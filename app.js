@@ -3,11 +3,10 @@ let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
 let os = JSON.parse(localStorage.getItem("os")) || [];
 let financeiro = JSON.parse(localStorage.getItem("financeiro")) || [];
 
-let clienteEditandoId = null;
 let clienteSelecionadoId = null;
 
-/* ========================== 
-   UTIL
+/* ==========================
+   SALVAR
 ========================== */
 function salvar(){
     localStorage.setItem("clientes", JSON.stringify(clientes));
@@ -17,34 +16,18 @@ function salvar(){
 }
 
 /* ==========================
-   NAVEGAÇÃO SEGURA
+   CLIENTE DUPLICADO
 ========================== */
-function abrir(secao){
-
-    document.querySelectorAll(".secao").forEach(s=>{
-        if(s) s.classList.add("hidden");
-    });
-
-    let el = document.getElementById(secao);
-    if(el) el.classList.remove("hidden");
-
-    renderTudo();
+function clienteDuplicado(nome, telefone, endereco){
+    return clientes.some(c =>
+        c.nome.toLowerCase() === nome.toLowerCase() ||
+        c.telefone === telefone ||
+        c.endereco.toLowerCase() === endereco.toLowerCase()
+    );
 }
 
 /* ==========================
-   RENDER CENTRAL (IMPORTANTE)
-========================== */
-function renderTudo(){
-    atualizarClientes();
-    atualizarSelects();
-    atualizarFinanceiro();
-    atualizarHistorico();
-    atualizarDashboard();
-    montarCalendarioSemanal();
-}
-
-/* ==========================
-   CLIENTE (CRIAR)
+   ADD CLIENTE
 ========================== */
 function addCliente(){
 
@@ -56,6 +39,10 @@ function addCliente(){
         return alert("Preencha tudo");
     }
 
+    if(clienteDuplicado(nome, telefone, endereco)){
+        return alert("Cliente já existe");
+    }
+
     clientes.push({
         id: Date.now().toString(),
         nome,
@@ -64,14 +51,14 @@ function addCliente(){
     });
 
     salvar();
-    limparInputs();
-    renderTudo();
+    limpar();
+    render();
 }
 
 /* ==========================
    LIMPAR
 ========================== */
-function limparInputs(){
+function limpar(){
     ["nome","telefone","endereco"].forEach(id=>{
         let el = document.getElementById(id);
         if(el) el.value = "";
@@ -79,7 +66,7 @@ function limparInputs(){
 }
 
 /* ==========================
-   LISTA CLIENTES (CORRIGIDO CLICK)
+   LISTA CLIENTES
 ========================== */
 function atualizarClientes(){
 
@@ -88,12 +75,7 @@ function atualizarClientes(){
 
     lista.innerHTML = "";
 
-    let filtro = document.getElementById("pesquisaCliente")?.value.toLowerCase() || "";
-
-    clientes
-    .filter(c => c.nome.toLowerCase().includes(filtro))
-    .forEach(c=>{
-
+    clientes.forEach(c=>{
         lista.innerHTML += `
         <li>
             <span onclick="verCliente('${c.id}')" style="cursor:pointer">
@@ -109,63 +91,25 @@ function atualizarClientes(){
 }
 
 /* ==========================
-   DELETE CLIENTE (FORÇADO REFRESH)
+   DELETE CLIENTE
 ========================== */
 function delCliente(id){
-
     if(!confirm("Excluir cliente?")) return;
 
-    clientes = clientes.filter(c => c.id !== id);
-
+    clientes = clientes.filter(c=>c.id!==id);
     salvar();
-    renderTudo();
+    render();
 }
 
 /* ==========================
-   EDITAR CLIENTE (CORRIGIDO)
-========================== */
-function editarCliente(id){
-
-    let c = clientes.find(x => x.id === id);
-    if(!c) return;
-
-    clienteEditandoId = id;
-
-    document.getElementById("editNome").value = c.nome;
-    document.getElementById("editTelefone").value = c.telefone;
-    document.getElementById("editEndereco").value = c.endereco;
-
-    abrir("editarCliente");
-}
-
-/* ==========================
-   SALVAR EDIÇÃO
-========================== */
-function salvarEdicaoCliente(){
-
-    let c = clientes.find(x => x.id === clienteEditandoId);
-    if(!c) return;
-
-    c.nome = document.getElementById("editNome").value;
-    c.telefone = document.getElementById("editTelefone").value;
-    c.endereco = document.getElementById("editEndereco").value;
-
-    salvar();
-    clienteEditandoId = null;
-
-    renderTudo();
-    abrir("clientes");
-}
-
-/* ==========================
-   VER CLIENTE (FICHA)
+   VER CLIENTE
 ========================== */
 function verCliente(id){
 
-    clienteSelecionadoId = id;
-
-    let c = clientes.find(x => x.id === id);
+    let c = clientes.find(x=>x.id===id);
     if(!c) return;
+
+    clienteSelecionadoId = id;
 
     document.getElementById("infoCliente").innerHTML = `
         <b>${c.nome}</b><br>
@@ -173,89 +117,23 @@ function verCliente(id){
         ${c.endereco}
     `;
 
-    let lista = document.getElementById("historicoCliente");
-    lista.innerHTML = "";
-
-    servicos.filter(s=>s.clienteId===id).forEach(s=>{
-        lista.innerHTML += `<li>🧴 Serviço: ${s.data}</li>`;
-    });
-
-    os.filter(o=>o.clienteId===id).forEach(o=>{
-        lista.innerHTML += `<li>📄 OS: ${o.servico}</li>`;
-    });
-
-    financeiro.filter(f=>f.clienteId===id).forEach(f=>{
-        lista.innerHTML += `<li>💰 ${f.tipo}: R$ ${f.valor}</li>`;
-    });
-
     abrir("detalheCliente");
 }
 
 /* ==========================
-   SELECTS
+   FINANCEIRO DELETE
 ========================== */
-function atualizarSelects(){
+function delFinanceiro(index){
 
-    let s1 = document.getElementById("clienteServico");
-    let s2 = document.getElementById("clienteOS");
+    if(!confirm("Excluir lançamento?")) return;
 
-    if(s1){
-        s1.innerHTML = "";
-        clientes.forEach(c=>{
-            s1.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-        });
-    }
-
-    if(s2){
-        s2.innerHTML = "";
-        clientes.forEach(c=>{
-            s2.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-        });
-    }
-}
-
-/* ==========================
-   SERVIÇO
-========================== */
-function addServico(){
-
-    let clienteId = document.getElementById("clienteServico")?.value;
-    let data = document.getElementById("dataServico")?.value;
-    let dias = Number(document.getElementById("retornoDias")?.value || 0);
-
-    if(!clienteId || !data) return alert("Preencha serviço");
-
-    let retorno = new Date(data);
-    retorno.setDate(retorno.getDate()+dias);
-
-    servicos.push({
-        clienteId,
-        data,
-        retorno: retorno.toISOString().split("T")[0]
-    });
-
+    financeiro.splice(index,1);
     salvar();
-    renderTudo();
+    render();
 }
 
 /* ==========================
-   OS
-========================== */
-function addOS(){
-
-    let clienteId = document.getElementById("clienteOS")?.value;
-    let servico = document.getElementById("servicoOS")?.value;
-
-    if(!clienteId || !servico) return alert("Preencha OS");
-
-    os.push({clienteId, servico});
-
-    salvar();
-    renderTudo();
-}
-
-/* ==========================
-   FINANCEIRO (CORRIGIDO TOTAL)
+   FINANCEIRO
 ========================== */
 function addFinanceiro(){
 
@@ -263,7 +141,7 @@ function addFinanceiro(){
     let valor = Number(document.getElementById("valorFin")?.value);
     let tipo = document.getElementById("tipoFin")?.value;
 
-    if(!desc || !valor) return alert("Preencha financeiro");
+    if(!desc || !valor) return alert("Preencha");
 
     financeiro.push({
         clienteId: clienteSelecionadoId,
@@ -274,29 +152,32 @@ function addFinanceiro(){
     });
 
     salvar();
-    renderTudo();
+    render();
 }
 
 /* ==========================
-   FINANCEIRO
+   LISTA FINANCEIRO
 ========================== */
 function atualizarFinanceiro(){
 
     let lista = document.getElementById("listaFin");
     let totalEl = document.getElementById("totalFinanceiro");
 
-    if(!lista || !totalEl) return;
+    if(!lista) return;
 
     lista.innerHTML = "";
 
     let total = 0;
 
-    financeiro.forEach(f=>{
+    financeiro.forEach((f,i)=>{
+
         total += f.tipo==="entrada" ? f.valor : -f.valor;
 
         lista.innerHTML += `
         <li>
             ${f.desc} - ${f.tipo} - R$ ${f.valor}
+
+            <button onclick="delFinanceiro(${i})">🗑️</button>
         </li>`;
     });
 
@@ -304,71 +185,80 @@ function atualizarFinanceiro(){
 }
 
 /* ==========================
-   HISTÓRICO
+   CALENDÁRIO (SEMANAL / MENSAL / ANUAL)
 ========================== */
-function atualizarHistorico(){
+let modoCalendario = "semanal";
 
-    let lista = document.getElementById("listaHistorico");
-    if(!lista) return;
-
-    lista.innerHTML = "";
-
-    financeiro.forEach(f=>{
-        lista.innerHTML += `<li>${f.data} - ${f.desc}</li>`;
-    });
+function setCalendarioModo(modo){
+    modoCalendario = modo;
+    montarCalendario();
 }
 
-/* ==========================
-   DASHBOARD
-========================== */
-function atualizarDashboard(){
-
-    document.getElementById("totalClientes").innerText = clientes.length;
-    document.getElementById("totalServicos").innerText = servicos.length;
-    document.getElementById("totalOS").innerText = os.length;
-
-    let total = financeiro.reduce((a,f)=>{
-        return f.tipo==="entrada" ? a+f.valor : a-f.valor;
-    },0);
-
-    document.getElementById("saldoTotal").innerText =
-        "R$ " + total.toFixed(2);
-}
-
-/* ==========================
-   CALENDÁRIO SEMANAL (NOVO)
-========================== */
-function montarCalendarioSemanal(){
+function montarCalendario(){
 
     let cal = document.getElementById("cal");
     if(!cal) return;
 
     cal.innerHTML = "";
 
-    let hoje = new Date();
+    let datas = {};
 
-    for(let i=0;i<7;i++){
+    servicos.forEach(s=>{
 
-        let d = new Date();
-        d.setDate(hoje.getDate()+i);
+        if(!datas[s.data]) datas[s.data] = {serv:[], ret:[]};
 
-        let dataStr = d.toISOString().split("T")[0];
+        let c = clientes.find(x=>x.id===s.clienteId);
 
-        let itens = servicos.filter(s=>s.data===dataStr);
+        datas[s.data].serv.push({
+            ...s,
+            cliente: c?.nome || "Cliente"
+        });
 
-        let html = `<div class="dia">
-            <b>${dataStr}</b>`;
+        if(!datas[s.retorno]) datas[s.retorno] = {serv:[], ret:[]};
 
-        itens.forEach(s=>{
-            let cliente = clientes.find(c=>c.id===s.clienteId);
+        datas[s.retorno].ret.push({
+            ...s,
+            cliente: c?.nome || "Cliente"
+        });
+    });
 
-            html += `<div>
-                🧴 ${cliente?.nome || "Cliente"}
+    let keys = Object.keys(datas).sort();
+
+    keys.forEach(d=>{
+
+        let bloco = datas[d];
+
+        cal.innerHTML += `
+        <div class="dia">
+            <b>${d}</b>
+        `;
+
+        bloco.serv.forEach(s=>{
+            cal.innerHTML += `
+            <div style="background:#2563eb;color:white;padding:5px;margin-top:5px;border-radius:6px;cursor:pointer"
+                 onclick="verCliente('${s.clienteId}')">
+                🔵 ${s.cliente}
             </div>`;
         });
 
-        html += `</div>`;
+        bloco.ret.forEach(s=>{
+            cal.innerHTML += `
+            <div style="background:#facc15;color:black;padding:5px;margin-top:5px;border-radius:6px;cursor:pointer"
+                 onclick="verCliente('${s.clienteId}')">
+                🟡 RETORNO - ${s.cliente}
+            </div>`;
+        });
 
-        cal.innerHTML += html;
-    }
+        cal.innerHTML += `</div>`;
+    });
+}
+
+/* ==========================
+   RENDER GERAL
+========================== */
+function render(){
+    atualizarClientes();
+    atualizarFinanceiro();
+    atualizarDashboard();
+    montarCalendario();
 }
