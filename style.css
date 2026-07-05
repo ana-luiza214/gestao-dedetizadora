@@ -1,88 +1,309 @@
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #f3f4f6;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-/* TOPO */
-.topbar {
-  display: flex;
-  align-items: center;
-  background: #1e3a8a;
-  color: white;
-  padding: 10px 20px;
+body{
+    background:#eef2f7;
+    color:#333;
 }
 
-.logo {
-  width: 45px;
-  margin-right: 10px;
+/* ==========================
+   TOPO
+========================== */
+
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:75px;
+    background:#0f4c81;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+    z-index:1000;
 }
 
-/* MENU */
-.sidebar {
-  position: fixed;
-  width: 200px;
-  height: 100vh;
-  background: #2563eb;
-  padding: 10px;
+.logo-area{
+    position:absolute;
+    left:25px;
 }
 
-.sidebar button {
-  width: 100%;
-  margin: 5px 0;
-  padding: 10px;
-  border: none;
-  background: #1e3a8a;
-  color: white;
-  cursor: pointer;
+.logo-only{
+    height:52px;
+    width:auto;
+    object-fit:contain;
 }
 
-.sidebar button:hover {
-  background: #facc15;
-  color: black;
+.empresa{
+    text-align:center;
 }
 
-/* CONTEÚDO */
-.content {
-  margin-left: 220px;
-  padding: 20px;
+.empresa h1{
+    font-size:24px;
+    font-weight:bold;
 }
 
-.secao {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
+.empresa p{
+    font-size:14px;
+    opacity:.9;
 }
 
-.hidden {
-  display: none;
+/* ==========================
+   MENU
+========================== */
+
+.sidebar{
+    position:fixed;
+    top:75px;
+    left:0;
+    width:230px;
+    height:calc(100vh - 75px);
+    background:#154c79;
+    padding:20px;
+    overflow-y:auto;
 }
 
-button {
-  margin-top: 5px;
-  padding: 8px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  cursor: pointer;
+.sidebar button{
+    width:100%;
+    border:none;
+    padding:14px;
+    margin-bottom:10px;
+    border-radius:8px;
+    background:#1d6fa5;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+    transition:.25s;
 }
 
-li {
-  background: #facc15;
-  margin: 5px 0;
-  padding: 5px;
-  border-radius: 5px;
-}
-.topbar {
-  display: flex;
-  align-items: center;
-  background: #1e3a8a;
-  padding: 12px;
-  justify-content: center;
+.sidebar button:hover{
+    background:#ffc107;
+    color:#000;
+    transform:translateX(4px);
 }
 
-.logo-only {
-  height: 45px;   /* mesmo “tamanho visual” do título */
-  width: auto;
-  object-fit: contain;
+/* ==========================
+   CONTEÚDO
+========================== */
+
+.content{
+    margin-left:250px;
+    margin-top:95px;
+    padding:25px;
+}
+
+.secao{
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.hidden{
+    display:none;
+}
+
+h2{
+    color:#0f4c81;
+    margin-bottom:20px;
+}
+
+/* ==========================
+   DASHBOARD
+========================== */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#0f4c81;
+    color:white;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    margin-bottom:10px;
+    font-size:18px;
+}
+
+.card span{
+    font-size:28px;
+    font-weight:bold;
+}
+
+/* ==========================
+   FORMULÁRIOS
+========================== */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+    margin-bottom:15px;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    margin-bottom:12px;
+    font-size:15px;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+    border-color:#0f4c81;
+    box-shadow:0 0 6px rgba(15,76,129,.3);
+}
+
+/* ==========================
+   BOTÕES
+========================== */
+
+button{
+    padding:12px 18px;
+    border:none;
+    border-radius:8px;
+    background:#0f4c81;
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#ffc107;
+    color:black;
+}
+
+/* ==========================
+   LISTAS
+========================== */
+
+ul{
+    list-style:none;
+    margin-top:20px;
+}
+
+li{
+    background:#f8f9fa;
+    margin-bottom:10px;
+    padding:14px;
+    border-left:6px solid #0f4c81;
+    border-radius:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+li button{
+    background:#dc3545;
+    padding:8px 12px;
+}
+
+li button:hover{
+    background:#b91c1c;
+    color:white;
+}
+
+/* ==========================
+   CALENDÁRIO
+========================== */
+
+#cal{
+    display:grid;
+    gap:12px;
+}
+
+.cal-card{
+    background:#0f4c81;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+}
+
+.cal-hoje{
+    background:#ffc107;
+    color:black;
+    font-weight:bold;
+}
+
+/* ==========================
+   PESQUISA
+========================== */
+
+#pesquisaCliente{
+    margin-top:20px;
+}
+
+/* ==========================
+   TOTAL FINANCEIRO
+========================== */
+
+#totalFinanceiro{
+    margin-top:20px;
+    color:#198754;
+}
+
+/* ==========================
+   RESPONSIVO
+========================== */
+
+@media(max-width:900px){
+
+.sidebar{
+
+    position:relative;
+    width:100%;
+    height:auto;
+    top:75px;
+
+}
+
+.content{
+
+    margin-left:0;
+    margin-top:90px;
+
+}
+
+.topbar{
+
+    flex-direction:column;
+    height:auto;
+    padding:15px;
+
+}
+
+.logo-area{
+
+    position:static;
+    margin-bottom:10px;
+
+}
+
+.cards{
+
+    grid-template-columns:1fr;
+
+}
+
 }
