@@ -342,3 +342,6 @@ li div{
         grid-template-columns:1fr;
     }
 }
+.modal.hidden{
+    display:none;
+}
