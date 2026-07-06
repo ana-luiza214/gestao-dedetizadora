@@ -345,3 +345,211 @@ li div{
 .modal.hidden{
     display:none;
 }
+/* =========================
+   NOVA FICHA DO CLIENTE
+========================= */
+
+.ficha-cliente{
+
+    background:#f8fafc;
+
+    border-radius:12px;
+
+    padding:20px;
+
+    border-left:6px solid #0f4c81;
+
+    margin-bottom:20px;
+
+}
+
+
+.ficha-cliente h3{
+
+    color:#0f4c81;
+
+    margin-bottom:15px;
+
+}
+
+
+.ficha-cliente p{
+
+    margin:8px 0;
+
+    font-size:15px;
+
+}
+
+
+
+/* =========================
+   HISTÓRICO DO CLIENTE
+========================= */
+
+
+#historicoCliente li{
+
+    display:block;
+
+    background:#ffffff;
+
+    border-left:5px solid #28a745;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+
+}
+
+
+#historicoCliente h4{
+
+    color:#0f4c81;
+
+    margin:20px 0 10px;
+
+}
+
+
+
+/* =========================
+   CLIENTE NO CALENDÁRIO
+========================= */
+
+
+.clienteCalendario{
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.clienteCalendario:hover{
+
+    background:#ffc107 !important;
+
+    color:#000;
+
+}
+
+
+
+/* =========================
+   MODAL CLIENTE MELHORADO
+========================= */
+
+
+.modal-box{
+
+    max-height:80vh;
+
+    overflow-y:auto;
+
+}
+
+
+.modal-box h3{
+
+    color:#0f4c81;
+
+    margin-bottom:15px;
+
+}
+
+
+#dadosCliente{
+
+    background:#f1f5f9;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    line-height:1.8;
+
+}
+
+
+
+/* =========================
+   BOTÃO ABRIR FICHA
+========================= */
+
+
+.btn-ficha{
+
+    background:#0f4c81;
+
+    color:white;
+
+    margin-top:15px;
+
+}
+
+
+.btn-ficha:hover{
+
+    background:#ffc107;
+
+    color:#000;
+
+}
+
+
+
+/* =========================
+   VALORES
+========================= */
+
+
+.valor-servico{
+
+    color:#198754;
+
+    font-weight:bold;
+
+}
+
+
+.total-cliente{
+
+    background:#0f4c81;
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    text-align:center;
+
+    font-size:20px;
+
+    margin-top:15px;
+
+}
+
+
+
+/* =========================
+   RESPONSIVO FICHA
+========================= */
+
+
+@media(max-width:600px){
+
+    .ficha-cliente{
+
+        padding:15px;
+
+    }
+
+
+    .modal-box{
+
+        width:95%;
+
+    }
+
+}
