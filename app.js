@@ -81,7 +81,24 @@ function addCliente(){
     const telefone = document.getElementById("telefone").value.trim();
     const endereco = document.getElementById("endereco").value.trim();
 
-    if(!nome || !telefone || !endereco) return alert("Preencha tudo");
+    if(!nome || !telefone || !endereco)
+    return alert("Preencha todos os campos.");
+
+const existente = clientes.find(c =>
+    c.nome.toLowerCase() === nome.toLowerCase() ||
+    c.telefone === telefone ||
+    c.endereco.toLowerCase() === endereco.toLowerCase()
+);
+
+if(existente){
+    return alert(
+`Este cliente já está cadastrado!
+
+Nome: ${existente.nome}
+Telefone: ${existente.telefone}
+Endereço: ${existente.endereco}`
+    );
+}
 
     clientes.push({
         id: Date.now().toString(),
@@ -108,7 +125,15 @@ function atualizarClientes(){
     lista.innerHTML = "";
 
     clientes
-    .filter(c=>c.nome.toLowerCase().includes(filtro))
+    .filter(c=>
+
+    c.nome.toLowerCase().includes(filtro)
+
+    ||
+
+    c.telefone.includes(filtro)
+
+)
     .forEach(c=>{
 
         lista.innerHTML += `
@@ -255,6 +280,9 @@ function addFinanceiro(){
         desc,
         valor,
         tipo
+       const total = financeiro
+.filter(f=>f.clienteId===id && f.tipo==="entrada")
+.reduce((s,f)=>s+Number(f.valor),0);
     });
 
     salvar();
@@ -354,8 +382,11 @@ function montarCalendario(){
 
         if(!dias[s.data]) dias[s.data]=[];
 
-        dias[s.data].push("🔵 "+(c?.nome||"Cliente"));
-
+        dias[s.data].push(`
+<div onclick="verCliente('${c.id}')" class="clienteCalendario">
+🔵 ${c.nome}
+</div>
+`);
         if(s.retorno){
             if(!dias[s.retorno]) dias[s.retorno]=[];
             dias[s.retorno].push("🟡 Retorno "+(c?.nome||"Cliente"));
