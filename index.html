@@ -198,11 +198,12 @@
 
     </label>
 
-    <input
-        id="pesquisaCliente"
-        type="search"
-        placeholder="Digite o nome..."
-        oninput="atualizarClientes()">
+   
+       <input
+    id="pesquisaCliente"
+    type="search"
+    placeholder="Digite nome, telefone ou endereço..."
+    oninput="atualizarClientes()">
 
     <ul id="listaClientes"></ul>
 
@@ -215,26 +216,40 @@
     id="detalheCliente"
     class="secao hidden">
 
-    <h2>Ficha do Cliente</h2>
+
+<h2>Ficha do Cliente</h2>
+
+
+<div class="ficha-cliente">
+
 
     <div id="infoCliente"></div>
 
-    <hr>
 
-    <h3>Histórico do Cliente</h3>
+</div>
 
-    <ul id="historicoCliente"></ul>
 
-    <button
-        type="button"
-        onclick="abrir('clientes')">
+<hr>
 
-        ← Voltar
 
-    </button>
+<h3>
+📋 Histórico de Serviços, OS e Financeiro
+</h3>
+
+
+<ul id="historicoCliente"></ul>
+
+
+<button
+type="button"
+onclick="abrir('clientes')">
+
+← Voltar para Clientes
+
+</button>
+
 
 </section>
-
 <!-- =====================================================
      EDITAR CLIENTE
 ===================================================== -->
@@ -346,7 +361,19 @@
         type="number"
         min="0"
         placeholder="Ex.: 180">
+<label for="valorServico">
 
+Valor do Serviço
+
+</label>
+
+
+<input
+id="valorServico"
+type="number"
+step="0.01"
+min="0"
+placeholder="0,00">
     <button
         type="button"
         class="btn-success"
@@ -593,36 +620,57 @@
 ===================================================== -->
 
 <div
-    id="modalCliente"
-    class="modal hidden"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="tituloModalCliente"
-    aria-hidden="true">
+id="modalCliente"
+class="modal hidden"
+role="dialog"
+aria-modal="true">
 
-    <div class="modal-box">
 
-        <h3 id="tituloModalCliente">
+<div class="modal-box">
 
-            Dados do Cliente
 
-        </h3>
+<h3>
+Ficha rápida do cliente
+</h3>
 
-        <div id="dadosCliente"></div>
 
-        <div class="acoes">
 
-            <button
-                type="button"
-                onclick="fecharModalCliente()">
+<div id="dadosCliente">
 
-                Fechar
 
-            </button>
+</div>
 
-        </div>
 
-    </div>
+
+<div class="acoes">
+
+
+<button
+type="button"
+onclick="verClienteModalCompleto()">
+
+📋 Abrir ficha completa
+
+</button>
+
+
+
+<button
+type="button"
+onclick="fecharModalCliente()">
+
+Fechar
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
 
 </div>
 
