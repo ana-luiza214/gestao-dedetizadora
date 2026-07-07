@@ -107,18 +107,14 @@ function render(){
 
 function atualizarDashboard(){
 
-
     const totalClientes =
     document.getElementById("totalClientes");
-
 
     const totalServicos =
     document.getElementById("totalServicos");
 
-
     const totalOS =
     document.getElementById("totalOS");
-
 
 
     if(totalClientes)
@@ -162,18 +158,11 @@ function atualizarDashboard(){
 
     }
 
-
-}
-
-
-
-/* =========================
+} /* =========================
    CLIENTES
 ========================= */
 
-
 function addCliente(){
-
 
     const nome =
     document.getElementById("nome")
@@ -193,20 +182,16 @@ function addCliente(){
 
     if(!nome || !telefone || !endereco){
 
-        return alert(
-            "Preencha todos os campos."
-        );
+        return alert("Preencha todos os campos.");
 
     }
-
 
 
 
     const existente =
     clientes.find(c=>
 
-        c.nome.toLowerCase()
-        === nome.toLowerCase()
+        c.nome.toLowerCase() === nome.toLowerCase()
 
         ||
 
@@ -214,8 +199,7 @@ function addCliente(){
 
         ||
 
-        c.endereco.toLowerCase()
-        === endereco.toLowerCase()
+        c.endereco.toLowerCase() === endereco.toLowerCase()
 
     );
 
@@ -242,11 +226,9 @@ ${existente.endereco}`
 
 
 
-
     clientes.push({
 
-        id:
-        Date.now().toString(),
+        id: Date.now().toString(),
 
         nome,
 
@@ -255,8 +237,7 @@ ${existente.endereco}`
         endereco,
 
         cadastro:
-        new Date()
-        .toLocaleDateString()
+        new Date().toLocaleDateString()
 
     });
 
@@ -269,25 +250,21 @@ ${existente.endereco}`
 
 
     document.getElementById("nome").value="";
-
     document.getElementById("telefone").value="";
-
     document.getElementById("endereco").value="";
-
 
 }
 
 
 
-
 function atualizarClientes(){
-
 
     const lista =
     document.getElementById("listaClientes");
 
 
-    if(!lista) return;
+    if(!lista)
+        return;
 
 
 
@@ -305,27 +282,19 @@ function atualizarClientes(){
 
 
     clientes
-
     .filter(c=>
 
-
-        c.nome.toLowerCase()
-        .includes(filtro)
+        c.nome.toLowerCase().includes(filtro)
 
         ||
 
-        c.telefone
-        .includes(filtro)
+        c.telefone.includes(filtro)
 
         ||
 
-        c.endereco
-        .toLowerCase()
-        .includes(filtro)
+        c.endereco.toLowerCase().includes(filtro)
 
     )
-
-
     .forEach(c=>{
 
 
@@ -333,9 +302,7 @@ function atualizarClientes(){
 
 <li>
 
-
 <div>
-
 
 <span
 onclick="verCliente('${c.id}')"
@@ -353,13 +320,11 @@ style="cursor:pointer">
 
 </span>
 
-
 </div>
 
 
 
 <div>
-
 
 <button
 class="btn-edit"
@@ -370,7 +335,6 @@ onclick="editarCliente('${c.id}')">
 </button>
 
 
-
 <button
 class="btn-delete"
 onclick="delCliente('${c.id}')">
@@ -379,40 +343,30 @@ onclick="delCliente('${c.id}')">
 
 </button>
 
-
 </div>
-
 
 </li>
 
 `;
 
-
-
     });
-
 
 }
 
 
 
-
 function delCliente(id){
-
 
     clientes =
     clientes.filter(c=>c.id!==id);
-
 
 
     servicos =
     servicos.filter(s=>s.clienteId!==id);
 
 
-
     os =
     os.filter(o=>o.clienteId!==id);
-
 
 
     financeiro =
@@ -424,18 +378,16 @@ function delCliente(id){
 
     render();
 
-
 }
 
 
 
 /* =========================
-   FICHA DO CLIENTE
+   FICHA CLIENTE
 ========================= */
 
 
 function verCliente(id){
-
 
     const cliente =
     clientes.find(c=>c.id===id);
@@ -447,7 +399,7 @@ function verCliente(id){
 
 
 
-    clienteSelecionadoId = id;
+    clienteSelecionadoId=id;
 
 
 
@@ -471,12 +423,10 @@ function verCliente(id){
 ${cliente.telefone}
 </p>
 
-
 <p>
 📍 <b>Endereço:</b>
 ${cliente.endereco}
 </p>
-
 
 <p>
 📅 <b>Cadastro:</b>
@@ -489,10 +439,9 @@ ${cliente.cadastro || "-"}
 
 
 
-
     if(historico){
 
-        historico.innerHTML = "";
+        historico.innerHTML="";
 
     }
 
@@ -500,14 +449,30 @@ ${cliente.cadastro || "-"}
 
     abrir("detalheCliente");
 
+}
 
-}/* =========================
+
+
+const verClienteOriginal = verCliente;
+
+
+verCliente = function(id){
+
+    verClienteOriginal(id);
+
+    carregarHistoricoCliente(id);
+
+};
+
+
+
+
+/* =========================
    SERVIÇOS
 ========================= */
 
 
 function addServico(){
-
 
     const clienteId =
     document.getElementById("clienteServico").value;
@@ -532,28 +497,24 @@ function addServico(){
 
     if(!clienteId || !data){
 
-        return alert(
-            "Preencha todos os campos."
-        );
+        return alert("Preencha todos os campos.");
 
     }
 
 
 
-    let retorno =
-    new Date(data);
+    let retorno = new Date(data);
 
 
     retorno.setDate(
-        retorno.getDate() + dias
+        retorno.getDate()+dias
     );
 
 
 
     servicos.push({
 
-        id:
-        Date.now().toString(),
+        id:Date.now().toString(),
 
         clienteId,
 
@@ -574,7 +535,6 @@ function addServico(){
     render();
 
 
-
     const campoValor =
     document.getElementById("valorServico");
 
@@ -587,7 +547,6 @@ function addServico(){
 
 
 function atualizarServicos(){
-
 
     const lista =
     document.getElementById("listaServicos");
@@ -616,7 +575,6 @@ function atualizarServicos(){
 
 <li>
 
-
 <span>
 
 <b>${cliente?.nome || "Cliente"}</b>
@@ -633,11 +591,9 @@ ${s.retorno}
 <br>
 
 💰 R$
-${Number(s.valor || 0)
-.toFixed(2)}
+${Number(s.valor || 0).toFixed(2)}
 
 </span>
-
 
 
 <button
@@ -648,15 +604,11 @@ onclick="delServico(${i})">
 
 </button>
 
-
 </li>
 
 `;
 
-
-
     });
-
 
 }
 
@@ -670,34 +622,25 @@ function delServico(i){
 
     render();
 
-}
-
-
-
-
-
-/* =========================
+} /* =========================
    ORDENS DE SERVIÇO
 ========================= */
 
-
 function addOS(){
-
 
     const clienteId =
     document.getElementById("clienteOS").value;
 
 
     const servico =
-    document.getElementById("servicoOS").value.trim();
+    document.getElementById("servicoOS")
+    .value.trim();
 
 
 
     if(!clienteId || !servico){
 
-        return alert(
-            "Preencha todos os campos."
-        );
+        return alert("Preencha todos os campos.");
 
     }
 
@@ -705,8 +648,7 @@ function addOS(){
 
     os.push({
 
-        id:
-        Date.now().toString(),
+        id:Date.now().toString(),
 
         clienteId,
 
@@ -725,14 +667,11 @@ function addOS(){
 
     render();
 
-
 }
 
 
 
-
 function atualizarOS(){
-
 
     const lista =
     document.getElementById("listaOS");
@@ -761,7 +700,6 @@ function atualizarOS(){
 
 <li>
 
-
 <span>
 
 <b>${cliente?.nome || "Cliente"}</b>
@@ -777,7 +715,6 @@ ${o.servico}
 </span>
 
 
-
 <button
 class="btn-delete"
 onclick="delOS(${i})">
@@ -786,16 +723,11 @@ onclick="delOS(${i})">
 
 </button>
 
-
 </li>
 
 `;
 
-
-
     });
-
-
 
 }
 
@@ -821,7 +753,6 @@ function delOS(i){
 
 function addFinanceiro(){
 
-
     const desc =
     document.getElementById("descFin")
     .value.trim();
@@ -829,22 +760,18 @@ function addFinanceiro(){
 
     const valor =
     Number(
-        document.getElementById("valorFin")
-        .value
+        document.getElementById("valorFin").value
     );
 
 
     const tipo =
-    document.getElementById("tipoFin")
-    .value;
+    document.getElementById("tipoFin").value;
 
 
 
     if(!desc || isNaN(valor)){
 
-        return alert(
-            "Preencha tudo."
-        );
+        return alert("Preencha tudo.");
 
     }
 
@@ -852,11 +779,9 @@ function addFinanceiro(){
 
     financeiro.push({
 
-        id:
-        Date.now().toString(),
+        id:Date.now().toString(),
 
-        clienteId:
-        clienteSelecionadoId,
+        clienteId:clienteSelecionadoId,
 
         desc,
 
@@ -872,16 +797,11 @@ function addFinanceiro(){
 
     render();
 
-
-
 }
 
 
 
-
-
 function atualizarFinanceiro(){
-
 
     const lista =
     document.getElementById("listaFin");
@@ -898,7 +818,6 @@ function atualizarFinanceiro(){
 
 
     lista.innerHTML="";
-
 
 
     let saldo=0;
@@ -921,19 +840,16 @@ function atualizarFinanceiro(){
 
 <li>
 
-
 <span>
 
 ${f.desc}
 
 <br>
 
-R$ 
-${Number(f.valor)
-.toFixed(2)}
+R$
+${Number(f.valor).toFixed(2)}
 
 </span>
-
 
 
 <button
@@ -949,8 +865,6 @@ onclick="delFinanceiro(${i})">
 
 `;
 
-
-
     });
 
 
@@ -960,12 +874,9 @@ onclick="delFinanceiro(${i})">
         total.textContent =
         "Saldo: R$ "
         +
-        saldo
-        .toFixed(2);
+        saldo.toFixed(2);
 
     }
-
-
 
 }
 
@@ -983,18 +894,15 @@ function delFinanceiro(i){
 
 
 
-
 /* =========================
-   COMPLETAR HISTÓRICO CLIENTE
+   HISTÓRICO CLIENTE
 ========================= */
 
 
 function carregarHistoricoCliente(id){
 
-
     const historico =
     document.getElementById("historicoCliente");
-
 
 
     if(!historico)
@@ -1005,7 +913,6 @@ function carregarHistoricoCliente(id){
     historico.innerHTML="";
 
 
-
     let total=0;
 
 
@@ -1013,20 +920,95 @@ function carregarHistoricoCliente(id){
     historico.innerHTML += `
 
 <h4>
-/* =========================
-   ATUALIZA VER CLIENTE
-========================= */
+🧴 Serviços
+</h4>
 
-const verClienteOriginal = verCliente;
+`;
 
 
-verCliente = function(id){
 
-    verClienteOriginal(id);
+    servicos
+    .filter(s=>s.clienteId===id)
+    .forEach(s=>{
 
-    carregarHistoricoCliente(id);
 
-};
+        total += Number(s.valor || 0);
+
+
+
+        historico.innerHTML += `
+
+<li>
+
+📅 ${s.data}
+
+<br>
+
+Serviço realizado
+
+<br>
+
+💰 R$
+${Number(s.valor || 0).toFixed(2)}
+
+</li>
+
+`;
+
+    });
+
+
+
+    historico.innerHTML += `
+
+<h4>
+📄 Ordens de Serviço
+</h4>
+
+`;
+
+
+
+    os
+    .filter(o=>o.clienteId===id)
+    .forEach(o=>{
+
+
+        historico.innerHTML += `
+
+<li>
+
+📅 ${o.data}
+
+<br>
+
+${o.servico}
+
+</li>
+
+`;
+
+    });
+
+
+
+    historico.innerHTML += `
+
+<h4>
+💰 Total gasto
+</h4>
+
+
+<li class="total-cliente">
+
+R$
+${total.toFixed(2)}
+
+</li>
+
+`;
+
+}
 
 
 
@@ -1038,63 +1020,49 @@ verCliente = function(id){
 function trocarModoCalendario(){
 
     modoCalendario =
-    document.getElementById("modoCalendario")
-    .value;
+    document.getElementById("modoCalendario").value;
 
 
     montarCalendario();
 
 }
-
 
 
 
 function periodoAnterior(){
 
     if(modoCalendario==="mes")
-        dataBase.setMonth(
-            dataBase.getMonth()-1
-        );
+        dataBase.setMonth(dataBase.getMonth()-1);
 
 
     if(modoCalendario==="semana")
-        dataBase.setDate(
-            dataBase.getDate()-7
-        );
+        dataBase.setDate(dataBase.getDate()-7);
 
 
     if(modoCalendario==="ano")
-        dataBase.setFullYear(
-            dataBase.getFullYear()-1
-        );
+        dataBase.setFullYear(dataBase.getFullYear()-1);
+
 
 
     montarCalendario();
 
 }
-
-
 
 
 
 function proximoPeriodo(){
 
     if(modoCalendario==="mes")
-        dataBase.setMonth(
-            dataBase.getMonth()+1
-        );
+        dataBase.setMonth(dataBase.getMonth()+1);
 
 
     if(modoCalendario==="semana")
-        dataBase.setDate(
-            dataBase.getDate()+7
-        );
+        dataBase.setDate(dataBase.getDate()+7);
 
 
     if(modoCalendario==="ano")
-        dataBase.setFullYear(
-            dataBase.getFullYear()+1
-        );
+        dataBase.setFullYear(dataBase.getFullYear()+1);
+
 
 
     montarCalendario();
@@ -1103,10 +1071,7 @@ function proximoPeriodo(){
 
 
 
-
-
 function montarCalendario(){
-
 
     const cal =
     document.getElementById("cal");
@@ -1120,7 +1085,6 @@ function montarCalendario(){
     cal.innerHTML="";
 
 
-
     const dias={};
 
 
@@ -1132,72 +1096,16 @@ function montarCalendario(){
         new Date(s.data);
 
 
-        let mostrar=false;
-
-
-
-        if(modoCalendario==="mes"){
-
-            mostrar =
-            data.getMonth()
-            ===
-            dataBase.getMonth()
-
+        if(
+            modoCalendario==="mes"
             &&
-
-            data.getFullYear()
-            ===
-            dataBase.getFullYear();
-
-        }
-
-
-
-        if(modoCalendario==="ano"){
-
-            mostrar =
-            data.getFullYear()
-            ===
-            dataBase.getFullYear();
-
-        }
-
-
-
-
-        if(modoCalendario==="semana"){
-
-
-            const inicio =
-            new Date(dataBase);
-
-
-            inicio.setDate(
-                inicio.getDate()
-                -
-                inicio.getDay()
-            );
-
-
-            const fim =
-            new Date(inicio);
-
-
-            fim.setDate(
-                fim.getDate()+6
-            );
-
-
-            mostrar =
-            data>=inicio &&
-            data<=fim;
-
-        }
-
-
-
-        if(!mostrar)
-            return;
+            (
+            data.getMonth()!==dataBase.getMonth()
+            ||
+            data.getFullYear()!==dataBase.getFullYear()
+            )
+        )
+        return;
 
 
 
@@ -1230,36 +1138,7 @@ onclick="abrirModalCliente('${cliente.id}')">
 
 `);
 
-
-
-
-        if(s.retorno){
-
-
-            if(!dias[s.retorno])
-                dias[s.retorno]=[];
-
-
-
-            dias[s.retorno].push(`
-
-<div
-class="clienteCalendario"
-onclick="abrirModalCliente('${cliente.id}')">
-
-🟡 Retorno ${cliente.nome}
-
-</div>
-
-`);
-
-        }
-
-
-
     });
-
-
 
 
 
@@ -1272,47 +1151,32 @@ onclick="abrirModalCliente('${cliente.id}')">
 
 <div class="dia">
 
-
 <b>${data}</b>
 
-
 ${dias[data].join("")}
-
 
 </div>
 
 `;
 
-
-
     });
-
-
 
 }
 
 
 
-
-
-
 /* =========================
-   MODAL CLIENTE
+   MODAL
 ========================= */
 
 
 function abrirModalCliente(id){
 
-
     clienteSelecionadoId=id;
 
 
-
     const cliente =
-    clientes.find(
-        c=>c.id===id
-    );
-
+    clientes.find(c=>c.id===id);
 
 
     if(!cliente)
@@ -1320,34 +1184,14 @@ function abrirModalCliente(id){
 
 
 
-    const modal =
-    document.getElementById("modalCliente");
+    document.getElementById("dadosCliente")
+    .innerHTML = `
 
+<h3>${cliente.nome}</h3>
 
-    const dados =
-    document.getElementById("dadosCliente");
+<p>📞 ${cliente.telefone}</p>
 
-
-
-    dados.innerHTML = `
-
-<h3>
-${cliente.nome}
-</h3>
-
-
-<p>
-📞 ${cliente.telefone}
-</p>
-
-
-<p>
-📍 ${cliente.endereco}
-</p>
-
-
-<br>
-
+<p>📍 ${cliente.endereco}</p>
 
 <button
 class="btn-ficha"
@@ -1361,46 +1205,36 @@ onclick="verCliente('${cliente.id}')">
 
 
 
-    modal.classList.remove("hidden");
+    document
+    .getElementById("modalCliente")
+    .classList.remove("hidden");
 
 }
-
 
 
 
 function fecharModalCliente(){
 
-    const modal =
-    document.getElementById("modalCliente");
-
-
-    modal.classList.add("hidden");
+    document
+    .getElementById("modalCliente")
+    .classList.add("hidden");
 
 }
 
 
 
-
-
 function verClienteModalCompleto(){
-
 
     fecharModalCliente();
 
 
     if(clienteSelecionadoId){
 
-        verCliente(
-            clienteSelecionadoId
-        );
+        verCliente(clienteSelecionadoId);
 
     }
 
-
 }
-
-
-
 
 
 
@@ -1410,7 +1244,6 @@ function verClienteModalCompleto(){
 
 
 function preencherClientes(){
-
 
     const selects=[
 
@@ -1430,11 +1263,6 @@ function preencherClientes(){
 
 
 
-        const valorAtual =
-        select.value;
-
-
-
         select.innerHTML = `
 
 <option value="">
@@ -1451,43 +1279,25 @@ Selecione um cliente
             select.innerHTML += `
 
 <option value="${c.id}">
-
 ${c.nome}
-
 </option>
 
 `;
 
-
-
         });
 
-
-
-        if(valorAtual)
-            select.value=valorAtual;
-
-
-
     });
-
-
 
 }
 
 
 
-
-
 /* =========================
-   FECHAR MODAL CLICANDO FORA
+   FECHAR MODAL
 ========================= */
 
 
-window.addEventListener(
-"click",
-function(e){
-
+window.addEventListener("click",function(e){
 
     const modal =
     document.getElementById("modalCliente");
@@ -1499,10 +1309,7 @@ function(e){
 
     }
 
-
 });
-
-
 
 
 
@@ -1511,109 +1318,8 @@ function(e){
 ========================= */
 
 
-window.addEventListener(
-"load",
-()=>{
+window.addEventListener("load",()=>{
 
     abrir("dashboard");
 
-}); Serviços
-</h4>
-
-`;
-
-
-
-    servicos
-
-    .filter(s=>s.clienteId===id)
-
-    .forEach(s=>{
-
-
-        total += Number(s.valor || 0);
-
-
-
-        historico.innerHTML += `
-
-<li>
-
-📅 ${s.data}
-
-<br>
-
-Serviço realizado
-
-<br>
-
-💰 R$
-${Number(s.valor || 0)
-.toFixed(2)}
-
-</li>
-
-`;
-
-
-
-    });
-
-
-
-    historico.innerHTML += `
-
-<h4>
-📄 Ordens de Serviço
-</h4>
-
-`;
-
-
-
-    os
-
-    .filter(o=>o.clienteId===id)
-
-    .forEach(o=>{
-
-
-        historico.innerHTML += `
-
-<li>
-
-📅 ${o.data}
-
-<br>
-
-${o.servico}
-
-</li>
-
-`;
-
-
-
-    });
-
-
-
-    historico.innerHTML += `
-
-<h4>
-💰 Total gasto
-</h4>
-
-
-<li class="total-cliente">
-
-R$
-${total.toFixed(2)}
-
-</li>
-
-`;
-
-
-
-}
+});
