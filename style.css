@@ -1,353 +1,488 @@
- *{    
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
     font-family:Arial, Helvetica, sans-serif;
 }
 
-   body{
+
+body{
+
     background:#eef2f7;
+
     color:#333;
+
 }
+
 
 /* =========================
    TOPO
 ========================= */
 
+
 .topbar{
+
     position:fixed;
+
     top:0;
+
     left:0;
+
     right:0;
+
     height:75px;
+
     background:#0f4c81;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     color:white;
+
     z-index:1000;
-    box-shadow:0 2px 10px rgba(0,0,0,0.2);
+
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+
 }
+
+
 
 .logo-area{
+
     position:absolute;
+
     left:20px;
+
 }
+
+
 
 .logo-only{
+
     height:50px;
+
 }
+
+
 
 .empresa{
+
     text-align:center;
+
 }
+
+
 
 .empresa h1{
+
     font-size:20px;
+
 }
+
+
 
 .empresa p{
+
     font-size:13px;
-    opacity:0.9;
+
+    opacity:.9;
+
 }
+
+
+
+
 
 /* =========================
-   MENU
+   MENU LATERAL
 ========================= */
 
+
 .sidebar{
+
     position:fixed;
+
     top:75px;
+
     left:0;
+
     width:230px;
+
     height:calc(100vh - 75px);
+
     background:#154c79;
+
     padding:15px;
+
     overflow-y:auto;
+
 }
+
+
 
 .sidebar button{
+
     width:100%;
+
     padding:12px;
+
     margin-bottom:10px;
+
     border:none;
+
     border-radius:8px;
+
     background:#1d6fa5;
+
     color:white;
+
     cursor:pointer;
-    transition:0.2s;
+
+    transition:.2s;
+
 }
 
+
+
 .sidebar button:hover{
+
     background:#ffc107;
-    color:black;
+
+    color:#000;
+
     transform:translateX(3px);
+
 }
+
+
+
+
 
 /* =========================
    CONTEÚDO
 ========================= */
 
+
 .content{
+
     margin-left:230px;
+
     margin-top:90px;
+
     padding:20px;
+
 }
+
+
 
 .secao{
+
     background:white;
+
     padding:20px;
+
     border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
 }
+
+
 
 .hidden{
+
     display:none;
+
 }
 
+
+
 h2{
+
     margin-bottom:15px;
+
     color:#0f4c81;
+
 }
+
+
+
+
 
 /* =========================
    DASHBOARD
 ========================= */
 
+
 .cards{
+
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+
+    grid-template-columns:
+
+    repeat(auto-fit,minmax(180px,1fr));
+
     gap:15px;
+
 }
+
+
 
 .card{
+
     background:#0f4c81;
+
     color:white;
+
     padding:20px;
+
     border-radius:12px;
+
     text-align:center;
+
 }
+
+
+
+.card h3{
+
+    font-size:16px;
+
+    margin-bottom:10px;
+
+}
+
+
 
 .card span{
-    font-size:26px;
-    font-weight:bold;
-}
 
-/* =========================
+    font-size:28px;
+
+    font-weight:bold;
+
+}/* =========================
    INPUTS
 ========================= */
 
-input, select, textarea{
+
+input,
+select,
+textarea{
+
     width:100%;
+
     padding:10px;
+
     margin-bottom:10px;
+
     border:1px solid #ccc;
+
     border-radius:8px;
+
     font-size:14px;
+
 }
 
-input:focus, select:focus, textarea:focus{
+
+
+input:focus,
+select:focus,
+textarea:focus{
+
     outline:none;
+
     border-color:#0f4c81;
+
 }
+
+
+
+
 
 /* =========================
    BOTÕES
 ========================= */
 
+
 button{
+
     padding:10px 15px;
+
     border:none;
+
     border-radius:8px;
+
     background:#0f4c81;
+
     color:white;
+
     cursor:pointer;
-    transition:0.2s;
+
+    transition:.2s;
+
 }
+
+
 
 button:hover{
+
     background:#ffc107;
-    color:black;
+
+    color:#000;
+
 }
 
-.btn-edit{
-    background:#facc15;
-    color:black;
-}
 
-.btn-delete{
-    background:#dc3545;
-    color:white;
-}
 
 .btn-success{
+
     background:#28a745;
+
     color:white;
+
 }
+
+
+
+.btn-success:hover{
+
+    background:#218838;
+
+    color:white;
+
+}
+
+
+
+.btn-delete{
+
+    background:#dc3545;
+
+    color:white;
+
+}
+
+
+
+.btn-delete:hover{
+
+    background:#b02a37;
+
+    color:white;
+
+}
+
+
+
+.btn-edit{
+
+    background:#facc15;
+
+    color:#000;
+
+}
+
+
+
+.btn-edit:hover{
+
+    background:#eab308;
+
+}
+
+
+
+
+
+/* =========================
+   AÇÕES
+========================= */
+
+
+.acoes{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:15px;
+
+    flex-wrap:wrap;
+
+}
+
+
+
+
 
 /* =========================
    LISTAS
 ========================= */
 
+
 ul{
+
     list-style:none;
+
     margin-top:15px;
+
 }
+
+
 
 li{
+
     background:#f8f9fa;
+
     margin-bottom:8px;
+
     padding:12px;
+
     border-left:5px solid #0f4c81;
+
     border-radius:8px;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     gap:10px;
+
 }
+
+
 
 li span{
+
     flex:1;
+
     word-break:break-word;
+
 }
+
+
 
 li div{
+
     display:flex;
+
     gap:5px;
+
 }
+
+
+
+
 
 /* =========================
-   FICHA CLIENTE
+   FICHA DO CLIENTE
 ========================= */
 
-#infoCliente{
-    background:#f1f5f9;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:15px;
-}
-
-/* =========================
-   FINANCEIRO
-========================= */
-
-#totalFinanceiro{
-    margin-top:10px;
-    font-size:18px;
-    color:#0f4c81;
-    font-weight:bold;
-}
-
-/* =========================
-   CALENDÁRIO
-========================= */
-
-.calendario-grid{
-    display:grid;
-    grid-template-columns:repeat(7, 1fr);
-    gap:10px;
-    max-height:600px;
-    overflow:auto;
-}
-
-.dia{
-    background:#f1f5f9;
-    padding:12px;
-    border-radius:10px;
-    min-height:120px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.05);
-}
-
-.dia b{
-    display:block;
-    margin-bottom:8px;
-    color:#0f4c81;
-}
-
-.dia div{
-    background:#2563eb;
-    color:white;
-    padding:5px;
-    margin-top:5px;
-    border-radius:6px;
-    font-size:12px;
-}
-
-/* =========================
-   CALENDÁRIO TOOLBAR (NOVO)
-========================= */
-
-.cal-toolbar{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:15px;
-    flex-wrap:wrap;
-}
-
-.legenda{
-    display:flex;
-    gap:15px;
-    margin-bottom:10px;
-    font-weight:bold;
-}
-
-/* =========================
-   MODAL (NOVO)
-========================= */
-
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.5);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:2000;
-}
-
-.modal-box{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    width:min(500px, 90%);
-}
-
-/* =========================
-   RESPONSIVO
-========================= */
-
-@media(max-width:900px){
-
-.sidebar{
-    width:100%;
-    height:auto;
-    position:relative;
-}
-
-.content{
-    margin-left:0;
-    margin-top:10px;
-}
-
-.calendario-grid{
-    grid-template-columns:repeat(2,1fr);
-}
-
-}
-
-@media(max-width:600px){
-    .calendario-grid{
-        grid-template-columns:1fr;
-    }
-}
-.modal.hidden{
-    display:none;
-}
-/* =========================
-   NOVA FICHA DO CLIENTE
-========================= */
 
 .ficha-cliente{
 
@@ -364,6 +499,15 @@ li div{
 }
 
 
+
+#infoCliente{
+
+    line-height:1.8;
+
+}
+
+
+
 .ficha-cliente h3{
 
     color:#0f4c81;
@@ -373,18 +517,19 @@ li div{
 }
 
 
+
 .ficha-cliente p{
 
     margin:8px 0;
-
-    font-size:15px;
 
 }
 
 
 
+
+
 /* =========================
-   HISTÓRICO DO CLIENTE
+   HISTÓRICO CLIENTE
 ========================= */
 
 
@@ -392,61 +537,229 @@ li div{
 
     display:block;
 
-    background:#ffffff;
+    background:white;
 
     border-left:5px solid #28a745;
 
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
+    box-shadow:
+
+    0 2px 8px rgba(0,0,0,.05);
 
 }
+
 
 
 #historicoCliente h4{
 
-    color:#0f4c81;
-
     margin:20px 0 10px;
+
+    color:#0f4c81;
 
 }
 
 
 
+.total-cliente{
+
+    background:#0f4c81;
+
+    color:white;
+
+    text-align:center;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    font-size:20px;
+
+}
+
+
+
+
+
 /* =========================
-   CLIENTE NO CALENDÁRIO
+   FINANCEIRO
 ========================= */
+
+
+#totalFinanceiro{
+
+    margin-top:10px;
+
+    color:#0f4c81;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+
+
+
+
+/* =========================
+   CALENDÁRIO
+========================= */
+
+
+.cal-toolbar{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:15px;
+
+}
+
+
+
+.legenda{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:10px;
+
+    font-weight:bold;
+
+}
+
+
+
+.calendario-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(7,1fr);
+
+    gap:10px;
+
+    max-height:600px;
+
+    overflow:auto;
+
+}
+
+
+
+.dia{
+
+    background:#f1f5f9;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    min-height:120px;
+
+    box-shadow:
+
+    0 2px 6px rgba(0,0,0,.05);
+
+}
+
+
+
+.dia b{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    color:#0f4c81;
+
+}
+
 
 
 .clienteCalendario{
 
+    background:#2563eb;
+
+    color:white;
+
+    padding:6px;
+
+    margin-top:5px;
+
+    border-radius:6px;
+
+    font-size:12px;
+
     cursor:pointer;
 
-    transition:.2s;
-
 }
+
 
 
 .clienteCalendario:hover{
 
-    background:#ffc107 !important;
+    background:#ffc107;
 
     color:#000;
+
+}/* =========================
+   MODAL CLIENTE
+========================= */
+
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.5);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:2000;
 
 }
 
 
 
-/* =========================
-   MODAL CLIENTE MELHORADO
-========================= */
+.modal.hidden{
+
+    display:none;
+
+}
+
 
 
 .modal-box{
+
+    background:white;
+
+    width:min(500px,90%);
 
     max-height:80vh;
 
     overflow-y:auto;
 
+    padding:20px;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.3);
+
 }
+
 
 
 .modal-box h3{
@@ -456,6 +769,7 @@ li div{
     margin-bottom:15px;
 
 }
+
 
 
 #dadosCliente{
@@ -472,11 +786,6 @@ li div{
 
 
 
-/* =========================
-   BOTÃO ABRIR FICHA
-========================= */
-
-
 .btn-ficha{
 
     background:#0f4c81;
@@ -486,6 +795,7 @@ li div{
     margin-top:15px;
 
 }
+
 
 
 .btn-ficha:hover{
@@ -498,58 +808,195 @@ li div{
 
 
 
+
+
 /* =========================
-   VALORES
+   EDIÇÃO CLIENTE
 ========================= */
 
 
-.valor-servico{
+#editarCliente{
 
-    color:#198754;
-
-    font-weight:bold;
+    max-width:600px;
 
 }
 
 
-.total-cliente{
 
-    background:#0f4c81;
+#editarCliente input{
 
-    color:white;
+    background:#fff;
+
+}
+
+
+
+#editarCliente .acoes button{
+
+    min-width:150px;
+
+}
+
+
+
+
+
+/* =========================
+   DESCRIÇÃO
+========================= */
+
+
+.descricao{
+
+    background:#f8fafc;
 
     padding:15px;
 
     border-radius:10px;
 
-    text-align:center;
-
-    font-size:20px;
-
-    margin-top:15px;
+    line-height:1.6;
 
 }
 
 
 
+
+
 /* =========================
-   RESPONSIVO FICHA
+   RESPONSIVO TABLET
+========================= */
+
+
+@media(max-width:900px){
+
+
+    .sidebar{
+
+        width:100%;
+
+        height:auto;
+
+        position:relative;
+
+        top:0;
+
+    }
+
+
+
+    .topbar{
+
+        position:relative;
+
+    }
+
+
+
+    .content{
+
+        margin-left:0;
+
+        margin-top:10px;
+
+        padding:10px;
+
+    }
+
+
+
+    .calendario-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+
+}
+
+
+
+
+
+/* =========================
+   RESPONSIVO CELULAR
 ========================= */
 
 
 @media(max-width:600px){
 
-    .ficha-cliente{
 
-        padding:15px;
+    .empresa h1{
+
+        font-size:16px;
+
+    }
+
+
+
+    .logo-only{
+
+        height:40px;
 
     }
 
 
-    .modal-box{
 
-        width:95%;
+    .cards{
+
+        grid-template-columns:1fr;
 
     }
+
+
+
+    .calendario-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+
+    li{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+
+
+    li div{
+
+        width:100%;
+
+    }
+
+
+
+    li button{
+
+        width:100%;
+
+    }
+
+
+
+    .acoes{
+
+        flex-direction:column;
+
+    }
+
+
+
+    .acoes button{
+
+        width:100%;
+
+    }
+
+
 
 }
