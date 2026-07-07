@@ -3,218 +3,237 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dedetizadora Confiança - Sistema de Gestão</title>
+<title>Dedetizadora Confiança - Sistema de Gestão</title>
 
-    <meta name="description" content="Sistema de Gestão da Dedetizadora Confiança">
+<meta name="description" content="Sistema de Gestão da Dedetizadora Confiança">
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
+
 <body>
 
-<!-- =====================================================
-     TOPO
-===================================================== -->
 
 <header class="topbar">
 
-    <div class="logo-area">
-        <img
-            src="logo.png"
-            alt="Logo Dedetizadora Confiança"
-            class="logo-only">
-    </div>
+<div class="logo-area">
 
-    <div class="empresa">
+<img
+src="logo.png"
+alt="Logo Dedetizadora Confiança"
+class="logo-only">
 
-        <h1>Sistema de Gestão</h1>
+</div>
 
-        <p>Dedetizadora Confiança</p>
 
-    </div>
+<div class="empresa">
+
+<h1>Sistema de Gestão</h1>
+
+<p>Dedetizadora Confiança</p>
+
+</div>
 
 </header>
 
-<!-- =====================================================
-     MENU LATERAL
-===================================================== -->
+
+
 
 <aside class="sidebar">
 
-    <button type="button" onclick="abrir('dashboard')">
-        📊 Dashboard
-    </button>
 
-    <button type="button" onclick="abrir('clientes')">
-        👥 Clientes
-    </button>
+<button type="button" onclick="abrir('dashboard')">
+📊 Dashboard
+</button>
 
-    <button type="button" onclick="abrir('servicos')">
-        🧴 Serviços
-    </button>
 
-    <button type="button" onclick="abrir('os')">
-        📄 Ordens de Serviço
-    </button>
+<button type="button" onclick="abrir('clientes')">
+👥 Clientes
+</button>
 
-    <button type="button" onclick="abrir('financeiro')">
-        💰 Financeiro
-    </button>
 
-    <button type="button" onclick="abrir('historico')">
-        📚 Histórico
-    </button>
+<button type="button" onclick="abrir('servicos')">
+🧴 Serviços
+</button>
 
-    <button type="button" onclick="abrir('calendario')">
-        📅 Calendário
-    </button>
+
+<button type="button" onclick="abrir('os')">
+📄 Ordens de Serviço
+</button>
+
+
+<button type="button" onclick="abrir('financeiro')">
+💰 Financeiro
+</button>
+
+
+<button type="button" onclick="abrir('historico')">
+📚 Histórico
+</button>
+
+
+<button type="button" onclick="abrir('calendario')">
+📅 Calendário
+</button>
+
 
 </aside>
 
-<!-- =====================================================
-     CONTEÚDO
-===================================================== -->
+
+
+
 
 <main class="content">
 
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
 
-<section
-    id="dashboard"
-    class="secao">
 
-    <h2>Dashboard</h2>
+<section id="dashboard" class="secao">
 
-    <div class="cards">
 
-        <div class="card">
+<h2>Dashboard</h2>
 
-            <h3>Total de Clientes</h3>
 
-            <span id="totalClientes">
-                0
-            </span>
+<div class="cards">
 
-        </div>
 
-        <div class="card">
+<div class="card">
 
-            <h3>Serviços Realizados</h3>
+<h3>Total de Clientes</h3>
 
-            <span id="totalServicos">
-                0
-            </span>
+<span id="totalClientes">0</span>
 
-        </div>
+</div>
 
-        <div class="card">
 
-            <h3>Ordens de Serviço</h3>
 
-            <span id="totalOS">
-                0
-            </span>
+<div class="card">
 
-        </div>
+<h3>Serviços Realizados</h3>
 
-        <div class="card">
+<span id="totalServicos">0</span>
 
-            <h3>Saldo Financeiro</h3>
+</div>
 
-            <span id="saldoTotal">
-                R$ 0,00
-            </span>
 
-        </div>
 
-    </div>
+<div class="card">
+
+<h3>Ordens de Serviço</h3>
+
+<span id="totalOS">0</span>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>Saldo Financeiro</h3>
+
+<span id="saldoTotal">
+R$ 0,00
+</span>
+
+</div>
+
+
+</div>
+
 
 </section>
-    <button onclick="testeCalendario()">
-    🧪 Testar Calendário
+
+
+
+
+
+<section id="clientes" class="secao hidden">
+
+
+<h2>Cadastro de Clientes</h2>
+
+
+
+<label>
+Nome
+</label>
+
+
+<input
+id="nome"
+type="text"
+placeholder="Nome completo">
+
+
+
+<label>
+Telefone
+</label>
+
+
+<input
+id="telefone"
+type="tel"
+placeholder="Telefone">
+
+
+
+<label>
+Endereço
+</label>
+
+
+<input
+id="endereco"
+type="text"
+placeholder="Endereço">
+
+
+
+<button
+type="button"
+class="btn-success"
+onclick="addCliente()">
+
+Salvar Cliente
+
 </button>
 
-<!-- =====================================================
-     CLIENTES
-===================================================== -->
 
-<section
-    id="clientes"
-    class="secao hidden">
 
-    <h2>Cadastro de Clientes</h2>
+<hr>
 
-    <label for="nome">
-        Nome
-    </label>
 
-    <input
-        id="nome"
-        type="text"
-        autocomplete="name"
-        placeholder="Nome completo">
 
-    <label for="telefone">
-        Telefone
-    </label>
+<label>
+Pesquisar Cliente
+</label>
 
-    <input
-        id="telefone"
-        type="tel"
-        autocomplete="tel"
-        placeholder="(17) 99999-9999">
 
-    <label for="endereco">
-        Endereço
-    </label>
+<input
+id="pesquisaCliente"
+type="search"
+placeholder="Digite nome, telefone ou endereço..."
+oninput="atualizarClientes()">
 
-    <input
-        id="endereco"
-        type="text"
-        autocomplete="street-address"
-        placeholder="Rua, número, bairro">
 
-    <button
-        type="button"
-        class="btn-success"
-        onclick="addCliente()">
 
-        Salvar Cliente
+<ul id="listaClientes"></ul>
 
-    </button>
 
-    <hr>
-
-    <label for="pesquisaCliente">
-
-        Pesquisar Cliente
-
-    </label>
-
-   
-       <input
-    id="pesquisaCliente"
-    type="search"
-    placeholder="Digite nome, telefone ou endereço..."
-    oninput="atualizarClientes()">
-
-    <ul id="listaClientes"></ul>
 
 </section>
-<!-- =====================================================
+<!-- =========================
      FICHA DO CLIENTE
-===================================================== -->
+========================= -->
 
 <section
-    id="detalheCliente"
-    class="secao hidden">
+id="detalheCliente"
+class="secao hidden">
 
 
 <h2>Ficha do Cliente</h2>
@@ -223,7 +242,7 @@
 <div class="ficha-cliente">
 
 
-    <div id="infoCliente"></div>
+<div id="infoCliente"></div>
 
 
 </div>
@@ -240,6 +259,7 @@
 <ul id="historicoCliente"></ul>
 
 
+
 <button
 type="button"
 onclick="abrir('clientes')">
@@ -250,121 +270,154 @@ onclick="abrir('clientes')">
 
 
 </section>
-<!-- =====================================================
+
+
+
+
+
+<!-- =========================
      EDITAR CLIENTE
-===================================================== -->
+========================= -->
+
 
 <section
-    id="editarCliente"
-    class="secao hidden">
+id="editarCliente"
+class="secao hidden">
 
-    <h2>Editar Cliente</h2>
 
-    <label for="editNome">
-        Nome
-    </label>
+<h2>Editar Cliente</h2>
 
-    <input
-        id="editNome"
-        type="text"
-        autocomplete="name"
-        placeholder="Nome completo">
 
-    <label for="editTelefone">
-        Telefone
-    </label>
 
-    <input
-        id="editTelefone"
-        type="tel"
-        autocomplete="tel"
-        placeholder="(17) 99999-9999">
+<label>
+Nome
+</label>
 
-    <label for="editEndereco">
-        Endereço
-    </label>
 
-    <input
-        id="editEndereco"
-        type="text"
-        autocomplete="street-address"
-        placeholder="Rua, número, bairro">
+<input
+id="editNome"
+type="text"
+placeholder="Nome completo">
 
-    <div class="acoes">
 
-        <button
-            type="button"
-            class="btn-success"
-            onclick="salvarEdicaoCliente()">
 
-            Salvar Alterações
+<label>
+Telefone
+</label>
 
-        </button>
 
-        <button
-            type="button"
-            class="btn-delete"
-            onclick="abrir('clientes')">
+<input
+id="editTelefone"
+type="tel"
+placeholder="Telefone">
 
-            Cancelar
 
-        </button>
 
-    </div>
+<label>
+Endereço
+</label>
+
+
+<input
+id="editEndereco"
+type="text"
+placeholder="Endereço">
+
+
+
+<div class="acoes">
+
+
+<button
+type="button"
+class="btn-success"
+onclick="salvarEdicaoCliente()">
+
+Salvar Alterações
+
+</button>
+
+
+
+<button
+type="button"
+class="btn-delete"
+onclick="abrir('clientes')">
+
+Cancelar
+
+</button>
+
+
+
+</div>
+
 
 </section>
 
-<!-- =====================================================
+
+
+
+
+<!-- =========================
      SERVIÇOS
-===================================================== -->
+========================= -->
+
 
 <section
-    id="servicos"
-    class="secao hidden">
+id="servicos"
+class="secao hidden">
 
-    <h2>Cadastro de Serviço</h2>
 
-    <label for="clienteServico">
+<h2>Cadastro de Serviço</h2>
 
-        Cliente
 
-    </label>
 
-    <select id="clienteServico">
+<label>
+Cliente
+</label>
 
-        <option value="" selected disabled>
 
-            Selecione um cliente
+<select id="clienteServico">
 
-        </option>
 
-    </select>
+<option value="">
+Selecione um cliente
+</option>
 
-    <label for="dataServico">
 
-        Data do Serviço
+</select>
 
-    </label>
 
-    <input
-        id="dataServico"
-        type="date">
 
-    <label for="retornoDias">
 
-        Dias para Retorno
+<label>
+Data do Serviço
+</label>
 
-    </label>
 
-    <input
-        id="retornoDias"
-        type="number"
-        min="0"
-        placeholder="Ex.: 180">
-<label for="valorServico">
+<input
+id="dataServico"
+type="date">
 
+
+
+
+<label>
+Dias para Retorno
+</label>
+
+
+<input
+id="retornoDias"
+type="number"
+min="0"
+placeholder="Ex: 180">
+
+
+
+<label>
 Valor do Serviço
-
 </label>
 
 
@@ -372,261 +425,377 @@ Valor do Serviço
 id="valorServico"
 type="number"
 step="0.01"
-min="0"
 placeholder="0,00">
-    <button
-        type="button"
-        class="btn-success"
-        onclick="addServico()">
 
-        Salvar Serviço
 
-    </button>
 
-    <hr>
+<button
+type="button"
+class="btn-success"
+onclick="addServico()">
 
-    <h3>Serviços Cadastrados</h3>
+Salvar Serviço
 
-    <ul id="listaServicos"></ul>
+</button>
+
+
+
+<hr>
+
+
+
+<h3>
+Serviços Cadastrados
+</h3>
+
+
+<ul id="listaServicos"></ul>
+
+
 
 </section>
-<!-- =====================================================
+
+
+
+
+
+<!-- =========================
      ORDENS DE SERVIÇO
-===================================================== -->
+========================= -->
+
 
 <section
-    id="os"
-    class="secao hidden">
+id="os"
+class="secao hidden">
 
-    <h2>Ordens de Serviço</h2>
 
-    <label for="clienteOS">
+<h2>
+Ordens de Serviço
+</h2>
 
-        Cliente
 
-    </label>
 
-    <select id="clienteOS">
+<label>
+Cliente
+</label>
 
-        <option value="" selected disabled>
 
-            Selecione um cliente
+<select id="clienteOS">
 
-        </option>
 
-    </select>
+<option value="">
+Selecione um cliente
+</option>
 
-    <label for="servicoOS">
 
-        Descrição do Serviço
+</select>
 
-    </label>
 
-    <textarea
-        id="servicoOS"
-        rows="4"
-        placeholder="Descreva o serviço realizado..."></textarea>
 
-    <button
-        type="button"
-        class="btn-success"
-        onclick="addOS()">
 
-        Criar Ordem de Serviço
+<label>
+Descrição do Serviço
+</label>
 
-    </button>
 
-    <hr>
+<textarea
+id="servicoOS"
+rows="4"
+placeholder="Descreva o serviço realizado...">
+</textarea>
 
-    <h3>Ordens de Serviço Cadastradas</h3>
 
-    <ul id="listaOS"></ul>
+
+
+<button
+type="button"
+class="btn-success"
+onclick="addOS()">
+
+Criar Ordem de Serviço
+
+</button>
+
+
+
+<hr>
+
+
+
+<h3>
+Ordens de Serviço Cadastradas
+</h3>
+
+
+<ul id="listaOS"></ul>
+
+
 
 </section>
-
-<!-- =====================================================
+<!-- =========================
      FINANCEIRO
-===================================================== -->
+========================= -->
 
 <section
-    id="financeiro"
-    class="secao hidden">
+id="financeiro"
+class="secao hidden">
 
-    <h2>Financeiro</h2>
 
-    <label for="descFin">
+<h2>
+Financeiro
+</h2>
 
-        Descrição
 
-    </label>
 
-    <input
-        id="descFin"
-        type="text"
-        placeholder="Ex.: Pagamento do serviço">
+<label>
+Descrição
+</label>
 
-    <label for="valorFin">
 
-        Valor
+<input
+id="descFin"
+type="text"
+placeholder="Ex: Pagamento do serviço">
 
-    </label>
 
-    <input
-        id="valorFin"
-        type="number"
-        step="0.01"
-        min="0"
-        placeholder="0,00">
 
-    <label for="tipoFin">
+<label>
+Valor
+</label>
 
-        Tipo
 
-    </label>
+<input
+id="valorFin"
+type="number"
+step="0.01"
+placeholder="0,00">
 
-    <select id="tipoFin">
 
-        <option value="entrada">
-            Entrada
-        </option>
 
-        <option value="saida">
-            Saída
-        </option>
+<label>
+Tipo
+</label>
 
-    </select>
 
-    <button
-        type="button"
-        class="btn-success"
-        onclick="addFinanceiro()">
+<select id="tipoFin">
 
-        Adicionar Lançamento
 
-    </button>
+<option value="entrada">
+Entrada
+</option>
 
-    <hr>
 
-    <h3 id="totalFinanceiro">
+<option value="saida">
+Saída
+</option>
 
-        Saldo: R$ 0,00
 
-    </h3>
+</select>
 
-    <ul id="listaFin"></ul>
+
+
+
+<button
+type="button"
+class="btn-success"
+onclick="addFinanceiro()">
+
+Adicionar Lançamento
+
+</button>
+
+
+
+
+<hr>
+
+
+
+
+<h3 id="totalFinanceiro">
+
+Saldo: R$ 0,00
+
+</h3>
+
+
+
+<ul id="listaFin"></ul>
+
+
 
 </section>
 
-<!-- =====================================================
+
+
+
+
+<!-- =========================
      HISTÓRICO GERAL
-===================================================== -->
+========================= -->
+
 
 <section
-    id="historico"
-    class="secao hidden">
+id="historico"
+class="secao hidden">
 
-    <h2>Histórico Geral</h2>
 
-    <p class="descricao">
+<h2>
+Histórico Geral
+</h2>
 
-        Aqui serão exibidas todas as movimentações do sistema,
-        incluindo clientes cadastrados, serviços, ordens de
-        serviço e lançamentos financeiros.
 
-    </p>
+<p class="descricao">
 
-    <ul id="listaHistorico"></ul>
+Aqui serão exibidas as movimentações do sistema.
+
+</p>
+
+
+<ul id="listaHistorico"></ul>
+
+
 
 </section>
-<!-- =====================================================
+
+
+
+
+
+<!-- =========================
      CALENDÁRIO
-===================================================== -->
+========================= -->
+
 
 <section
-    id="calendario"
-    class="secao hidden">
+id="calendario"
+class="secao hidden">
 
-    <h2>Calendário</h2>
 
-    <div class="cal-toolbar">
+<h2>
+Calendário
+</h2>
 
-        <button
-            type="button"
-            onclick="periodoAnterior()">
 
-            ◀
 
-        </button>
+<div class="cal-toolbar">
 
-        <span id="tituloCalendario">
 
-            Calendário
 
-        </span>
+<button
+type="button"
+onclick="periodoAnterior()">
 
-        <button
-            type="button"
-            onclick="proximoPeriodo()">
+◀
 
-            ▶
+</button>
 
-        </button>
 
-        <select
-            id="modoCalendario"
-            onchange="trocarModoCalendario()">
 
-            <option value="semana">
-                Semana
-            </option>
+<span id="tituloCalendario">
 
-            <option value="mes" selected>
-                Mês
-            </option>
+Calendário
 
-            <option value="ano">
-                Ano
-            </option>
+</span>
 
-        </select>
 
-    </div>
 
-    <div class="legenda">
 
-        <span>
-            🔵 Serviço
-        </span>
+<button
+type="button"
+onclick="proximoPeriodo()">
 
-        <span>
-            🟡 Retorno
-        </span>
+▶
 
-    </div>
+</button>
 
-    <div
-        id="cal"
-        class="calendario-grid"
-        role="grid">
 
-    </div>
+
+
+<select
+id="modoCalendario"
+onchange="trocarModoCalendario()">
+
+
+
+<option value="semana">
+Semana
+</option>
+
+
+
+<option value="mes" selected>
+Mês
+</option>
+
+
+
+<option value="ano">
+Ano
+</option>
+
+
+
+</select>
+
+
+
+</div>
+
+
+
+
+<div class="legenda">
+
+
+<span>
+🔵 Serviço
+</span>
+
+
+<span>
+🟡 Retorno
+</span>
+
+
+</div>
+
+
+
+
+<div
+id="cal"
+class="calendario-grid">
+
+</div>
+
+
 
 </section>
+
+
+
+
 
 </main>
 
-<!-- =====================================================
-     MODAL DO CLIENTE
-===================================================== -->
+
+
+
+
+<!-- =========================
+     MODAL CLIENTE
+========================= -->
+
 
 <div
 id="modalCliente"
-class="modal hidden"
-role="dialog"
-aria-modal="true">
+class="modal hidden">
+
 
 
 <div class="modal-box">
+
 
 
 <h3>
@@ -637,12 +806,12 @@ Ficha rápida do cliente
 
 <div id="dadosCliente">
 
-
 </div>
 
 
 
 <div class="acoes">
+
 
 
 <button
@@ -674,21 +843,18 @@ Fechar
 
 </div>
 
-<!-- =====================================================
-     SCRIPTS
-===================================================== -->
+
+
+
+
+<!-- =========================
+     SCRIPT
+========================= -->
+
 
 <script src="app.js"></script>
 
-<script>
-
-window.addEventListener("load", () => {
-
-    abrir("dashboard");
-
-});
-
-</script>
 
 </body>
+
 </html>
